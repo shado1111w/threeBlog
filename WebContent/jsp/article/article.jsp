@@ -107,7 +107,6 @@ $(function() {
     </ul>
   </div>
 </div>
-</div>
 
 <!--顶端栏end-->
 <!--内容框begin-->
@@ -118,7 +117,7 @@ $(function() {
         <img src="${pageContext.request.contextPath}/image/head.png" style="width:40px; float:left; margin-left:70px;" />
         <span style="float:left;margin-top:10px;margin-left:5px;">Tom</span>
         <span style="float:left;margin-top:10px;margin-left:20px;">2018-05-18</span>
-        <span style="float:left;margin-top:10px;margin-left:20px;"><标签></span>
+        <span style="float:left;margin-top:10px;margin-left:20px;">标签</span>
         <span style="float:left;margin-top:10px;margin-left:20px;">阅读&ensp;xxx</span><br>
         <p style="margin-left:70px; margin-top:30px;width:820px;">趁着五一放假，我回家呆了两天。我以前从来没有趁着小假期回过家，每次都是挨到寒暑假才回去，正好一年两次的频率。整个寝室里，我算是学校离家最近的一个了，但回家的次数却仿佛是最少的，室友开玩笑说我是个“不爱回家的坏小孩”。
 

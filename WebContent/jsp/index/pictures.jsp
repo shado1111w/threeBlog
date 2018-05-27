@@ -49,16 +49,16 @@ $(function() {
   <div id="index_head_logo"> <img src="${pageContext.request.contextPath}/image/logo.png"> </div>
   <div id="index_head_menu">
     <ul>
-      <li><a href="#" >首页</a></li>
-      <li><a href="#" >博文</a></li>
-      <li><a href="#" >画廊</a></li>
-      <li><a href="#" >我的</a></li>
+      <li><a href="${pageContext.request.contextPath}/index.jsp" >首页</a></li>
+      <li><a href="${pageContext.request.contextPath}/jsp/index/blog.jsp" >博文</a></li>
+      <li><a href="${pageContext.request.contextPath}/jsp/index/pictures.jsp" >画廊</a></li>
+      <li><a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp" >我的</a></li>
     </ul>
   </div>
   <div id="index_head_tools"> 
   <ul>
   	<li>
-    	<a href="#">
+    	<a href="${pageContext.request.contextPath}/jsp/index/search.jsp">
         	<img  src="${pageContext.request.contextPath}/image/search.png" style="float:left;" />
        	</a> 
     </li>
@@ -95,12 +95,12 @@ $(function() {
   <span style="color:#FFF; font-size:36px;float:left; margin-top:15px;"> |</span>
   <div id="index_head_signin">
     <ul>
-      <li><a href="register.html">注册</a></li>
-      <li><a href="signin.html">登录</a></li>
+      <li><a href="${pageContext.request.contextPath}/jsp/login/register.jsp">注册</a></li>
+      <li><a href="${pageContext.request.contextPath}/jsp/login/sign_in.jsp">登录</a></li>
     </ul>
   </div>
 </div>
-</div>
+
 <!--顶端栏end-->
 <!--内容框begin-->
 <div id="index_all">
@@ -108,7 +108,7 @@ $(function() {
     <div id="index_body_right">
     	<div id="index_body_enter">
         	<div id="index_body_enter_write">
-            	<a href="#"><img src="${pageContext.request.contextPath}/image/write.png" style="float:left;">
+            	<a href="${pageContext.request.contextPath}/jsp/article/publish.jsp"><img src="${pageContext.request.contextPath}/image/write.png" style="float:left;">
                 <div style="margin-top:10px;width:260px;height:30px;float:left;">
                 	<span style="font-size:18px;font-weight:bold;color:#000;">写博文</span>&emsp;
                     <span style="font-size:18px;font-weight:bold;color:#999;">|&emsp;记录你生活的剪影</span>
@@ -117,8 +117,8 @@ $(function() {
             </div>
             <div id="index_body_enter_guideboard">
             	<h3 style="margin-left:20px;padding-top:20px;">█ 指路牌</h3>
-                <a href="#"><span style="margin-left:20px;color:#000;">博客文章欣赏</span></a><br/><br/>
-                <a href="#"><span style="margin-left:20px;margin-top:20px;color:#000;">博客图片画廊</span></a><br /><br/>
+                  <a href="${pageContext.request.contextPath}/jsp/index/blog.jsp"><span style="margin-left:20px;color:#000;">博客文章欣赏</span></a><br/><br/>
+                <a href="${pageContext.request.contextPath}/jsp/index/pictures.jsp"><span style="margin-left:20px;margin-top:20px;color:#000;">博客图片画廊</span></a><br /><br/>
                 <a href="#"><span style="margin-left:20px;margin-top:20px;color:#000;">博客举报中心入口</span></a>
             </div>
         </div>

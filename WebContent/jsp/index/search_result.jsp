@@ -99,7 +99,7 @@ $(function() {
     </ul>
   </div>
 </div>
-</div>
+
 <!--顶端栏end-->
 <!--内容框begin-->
 <div id="index_all">

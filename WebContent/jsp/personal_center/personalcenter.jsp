@@ -85,16 +85,16 @@ $(function() {
   <div id="index_head_logo"> <img src="${pageContext.request.contextPath}/image/logo.png"> </div>
   <div id="index_head_menu">
     <ul>
-      <li><a href="#" >首页</a></li>
-      <li><a href="#" >博文</a></li>
-      <li><a href="#" >画廊</a></li>
-      <li><a href="#" >我的</a></li>
+    <li><a href="${pageContext.request.contextPath}/index.jsp" >首页</a></li>
+      <li><a href="${pageContext.request.contextPath}/jsp/index/blog.jsp" >博文</a></li>
+      <li><a href="${pageContext.request.contextPath}/jsp/index/pictures.jsp" >画廊</a></li>
+      <li><a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp" >我的</a></li>
     </ul>
   </div>
   <div id="index_head_tools"> 
   <ul>
   	<li>
-    	<a href="#">
+    	<a href="${pageContext.request.contextPath}/jsp/index/search.jsp">
         	<img  src="${pageContext.request.contextPath}/image/search.png" style="float:left;" />
        	</a> 
     </li>
@@ -131,8 +131,8 @@ $(function() {
   <span style="color:#FFF; font-size:36px;float:left; margin-top:15px;"> |</span>
   <div id="index_head_signin">
     <ul>
-      <li><a href="register.html">注册</a></li>
-      <li><a href="signin.html">登录</a></li>
+     <li><a href="${pageContext.request.contextPath}/jsp/login/register.jsp">注册</a></li>
+      <li><a href="${pageContext.request.contextPath}/jsp/login/sign_in.jsp">登录</a></li>
     </ul>
   </div>
 </div>

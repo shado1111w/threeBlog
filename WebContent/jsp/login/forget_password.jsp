@@ -10,7 +10,7 @@
 <body>
 	<div id="signin">
     	<div id="signin_logo">
-    	<img src="image/footer_logo.png" />
+    	<img src="${pageContext.request.contextPath}/image/footer_logo.png" />
     	</div>
         <hr style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="80%" color=#987cb9 SIZE=3>
         <div id="signin_input">

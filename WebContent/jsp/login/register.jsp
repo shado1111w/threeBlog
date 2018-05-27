@@ -10,7 +10,7 @@
 
 <body>
 	<div id="signin">
-    	<div id="signin_logo"><img src="image/footer_logo.png" /></div>
+    	<div id="signin_logo"><img src="${pageContext.request.contextPath}/image/footer_logo.png" /></div>
         <hr style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="80%" color=#987cb9 SIZE=3>
         <div id="signin_input">
         	<form action="servlet/Register" action="" method="post">
@@ -33,7 +33,7 @@
                  
 	        </form>	
             
-            <a href="signin.html" style="font-size:20px; font-weight:bold;color:#000;margin-left:150px;margin-top:50px;;">已有账号？立即登录</a>
+            <a href="${pageContext.request.contextPath}/jsp/login/sign_in.jsp" style="font-size:20px; font-weight:bold;color:#000;margin-left:150px;margin-top:50px;;">已有账号？立即登录</a>
         </div>
     </div>
 </body>
