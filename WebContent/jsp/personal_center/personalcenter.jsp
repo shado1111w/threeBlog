@@ -1,7 +1,23 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="threeblog.entity.User" %>
+<%@ page import="threeblog.service.Service" %>
+<%
+	User user = new User();
+	Service service = new Service();
+	int user_id = 10240;
+	if (session.getAttribute("user_id") == null) {
+		response.setContentType("text/html;charset=utf-8");
+		response.getWriter().print("<script>alert(`会话过期，将重新登录！`)</script>");
+		String content = 0 + ";URL= " +request.getContextPath()+ "/jsp/login/sign_in.jsp";
+		response.setHeader("REFRESH ", content);
+	} else {
+		user_id = Integer.valueOf((String) session.getAttribute("user_id"));
+		user = service.getUserFromId(user_id);
+	}
+%>    
 <!DOCTYPE html>
-
+<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="toTop" content="true">
@@ -50,36 +66,68 @@ $(function() {
 	$(document).ready(function() {
 		$("#bowen").click(function() {
 			$('#othercenter_body') 
-			.load('personalcenter_messages.html');
+			.load('${pageContext.request.contextPath}/jsp/personal_center/personalcenter_messages.jsp');
 			$('#othercenter_down').show();
 			})
 		$("#shoucang").click(function() {
 				$('#othercenter_body')
-				.load('personalcenter_favorite.html');
+				.load('${pageContext.request.contextPath}/jsp/personal_center/personalcenter_favorite.jsp');
 				$('#othercenter_down').show();
 				})
 		$("#guanzhu").click(function() {
 				$('#othercenter_body') 
-				.load('personalcenter_follow.html');
+				.load('${pageContext.request.contextPath}/jsp/personal_center/personalcenter_follow.jsp');
 				$('#othercenter_down').show();
 				})
 		$("#fenshi").click(function() {
 				$('#othercenter_body') 
-				.load('personalcenter_follower.html');
+				.load('${pageContext.request.contextPath}/jsp/personal_center/personalcenter_follower.jsp');
 				$('#othercenter_down').show();
 			})
 		$("#changeinfo").click(function() {
 				$('#othercenter_body') 
-				.load('changeinfo.html');
+				.load('${pageContext.request.contextPath}/jsp/personal_center/changeinfo.jsp');
 				$('#othercenter_down').hide();
 			})
 
 })
 </script>
+<script>
+function myfunction(){
+	$('#othercenter_body') 
+	.load('${pageContext.request.contextPath}/jsp/personal_center/personalcenter_messages.jsp');
+	$('#othercenter_down').show();
+	<%String id = request.getParameter("id");%>
+	var id="<%=id%>";
+	if (id != null) {
+		if (id == "1") {
+			$('#othercenter_body') 
+			.load('${pageContext.request.contextPath}/jsp/personal_center/personalcenter_messages.jsp');
+			$('#othercenter_down').show();
+		} else if (id == "2") {
+			$('#othercenter_body')
+			.load('${pageContext.request.contextPath}/jsp/personal_center/personalcenter_favorite.jsp');
+			$('#othercenter_down').show();
+		} else if (id == "3") {
+			$('#othercenter_body') 
+			.load('${pageContext.request.contextPath}/jsp/personal_center/personalcenter_follow.jsp');
+			$('#othercenter_down').show();
+		} else if (id == "4") {
+			$('#othercenter_body') 
+			.load('${pageContext.request.contextPath}/jsp/personal_center/personalcenter_follower.jsp');
+			$('#othercenter_down').show();
+		}else if (id == "5") {
+			$('#othercenter_body') 
+			.load('${pageContext.request.contextPath}/jsp/personal_center/changeinfo.jsp');
+			$('#othercenter_down').hide();
+		}
+	}
+}
+</script>
 
 </head>
 
-<body>
+<body onload="myfunction()">
 <!--顶端栏begin-->
 <div id="index_head">
   <div id="index_head_logo"> <img src="${pageContext.request.contextPath}/image/logo.png"> </div>
@@ -118,10 +166,10 @@ $(function() {
         	<img src="${pageContext.request.contextPath}/image/setting.png"/>
         </a>
         <ul class="index_tools_setting">
-         	<li><a href="#home">&ensp;修改资料&ensp;</a></li>
-          	<li><a href="#home">&ensp;修改头像&ensp;</a></li>
-            <li><a href="#home">&ensp;更改密码&ensp;</a></li>
-            <li><a href="#home">&ensp;个人中心&ensp;</a></li>
+         	<li><a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp?id=5">&ensp;修改资料&ensp;</a></li>
+          	<li><a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp?id=5">&ensp;修改头像&ensp;</a></li>
+            <li><a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp?id=5">&ensp;更改密码&ensp;</a></li>
+            <li><a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp">&ensp;个人中心&ensp;</a></li>
             <li><a href="#home">&ensp;举报中心&ensp;</a></li>
             <li><a href="#home">&ensp;退出账号&ensp;</a></li>
          </ul>
@@ -136,7 +184,7 @@ $(function() {
     </ul>
   </div>
 </div>
-</div>
+
 
 <!--顶端栏end-->
 <!--内容框begin-->
@@ -145,30 +193,28 @@ $(function() {
     	<!--头部栏begin-->
     	<div id="othercenter_head" style="margin-bottom:30px;">
     		
-          	<img src="${pageContext.request.contextPath}/image/head.png"  style="width:120px; margin-top:30px;margin-left:200px;margin-right:50px; float:left;">				   			
+          	<img src="<%=user.getTouxiang() %>"  style="width:120px;height:120px;border-radius:60px; margin-top:30px;margin-left:200px;margin-right:50px; float:left;">				   			
             <div style="float:left; margin-top:40px; margin-bottom:10px;">
-            	<span style="font-size:36px;">Tom</span><br>		 				
+            	<span style="font-size:36px;"><%=user.getUsername() %></span><br>		 				
                 <span style="font-size:24px;">博文&emsp;|&emsp;关注&emsp;|&emsp;粉丝</span><br>
                 <span style="font-size:24px;">&ensp;10&emsp;</span><span style="font-size:24px;">&emsp;&emsp;333&emsp;&emsp;</span><span style="font-size:24px;">&ensp;500</span>
             </div>
-            <span id="changeinfo" style="border:1px solid #09F; background-color:#09F; border-radius:5px;float:right; margin-top:50px; width:150px; height:40px; margin-right:50px;color:#FFF; font-size:18px; font-weight:bold; margin-left:130px; margin-bottom:50px; text-align:center;padding-top:15px;">修改个人资料</span>
+            <span id="changeinfo" style="cursor:pointer;border:1px solid #09F; background-color:#09F; border-radius:5px;float:right; margin-top:50px; width:150px; height:40px; margin-right:50px;color:#FFF; font-size:18px; font-weight:bold; margin-left:130px; margin-bottom:50px; text-align:center;padding-top:15px;">修改个人资料</span>
             <div style="width:500px; height:100px; margin-left:200px;margin-top:180px;">
               <div style="width:250px; float:left;height:100px;">
               	<span>性别：</span>
-                <span>男</span><br>
+                <span><%=user.getSex() %></span><br>
                 <span>年龄：</span>
-                <span>20</span><br>
+                <span><%=user.getAge() %></span><br>
             	<span>注册时间：</span>
-                <span>2018-05-18</span><br>
+                <span><%=user.getRegister_time() %></span><br>
                 <span>所在地区：</span>
-                <span>广东省韶关市</span>
+                <span><%=user.getProvince() %><%=user.getCity() %></span>
               </div>
               <div >
               	<span>个人简介：</span><br>
-                <span>▷1984<br>
-					  ▷美丽新世界<br>
-					  ▷我们
-                </span>
+                <p><%=user.getIntroduction() %>
+                </p>
               </div>
             </div>
     	</div>
@@ -177,17 +223,17 @@ $(function() {
         <div  id="othercenter_label">
             	<ul>
                 	<li>
-                    	<span id="bowen">&emsp;&ensp;&emsp;我的博文&emsp;&ensp;&emsp;|</span>
+                    	<span id="bowen" style="cursor:pointer">&emsp;&ensp;&emsp;我的博文&emsp;&ensp;&emsp;|</span>
                     </li>
                     
                     <li>
-                    	<span id="shoucang" >&emsp;&ensp;&emsp;我的收藏&emsp;&ensp;&emsp;|</span>
+                    	<span id="shoucang" style="cursor:pointer">&emsp;&ensp;&emsp;我的收藏&emsp;&ensp;&emsp;|</span>
                     </li>
                     <li>
-                    	<span  id="guanzhu">&emsp;&ensp;&emsp;我的关注&emsp;&ensp;&emsp;|</span>
+                    	<span  id="guanzhu" style="cursor:pointer">&emsp;&ensp;&emsp;我的关注&emsp;&ensp;&emsp;|</span>
                     </li>
                     <li>
-                    	<span  id="fenshi">&emsp;&ensp;&emsp;我的粉丝&emsp;&ensp;&emsp;</span>
+                    	<span  id="fenshi" style="cursor:pointer">&emsp;&ensp;&emsp;我的粉丝&emsp;&ensp;&emsp;</span>
                     </li>
                 </ul>
             </div>
@@ -196,41 +242,7 @@ $(function() {
         <!--导航栏end-->
         <!--中间栏begin-->
         <div id="othercenter_body">
-        	<div id="othercenter_info">
-            	<br/>
-        		 <span style="font-size:24px; width:500px;margin-left:40px; font-weight:bold;">█ 我的博文</span>
-                  <a href="#"><span style="font-size:20px; width:100px;margin-right:30px; font-weight:bold; float:right; color:#000;">+写博文</span></a><br/><br/>
-            	<table class="zebra">
-    <thead>
-    <tr>
-        <th >#</th>        
-        <th>标题</th>
-        <th>发布时间</th>
-        <th>操作</th>
-
-    </tr>
-    </thead>
-    <tfoot>
-    <tr>
-        <td>&nbsp;</td>        
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-    </tfoot>    
-    <tbody><tr>
-
-        <td>1</td>        
-        <td><a href="#" target="_blank">巴黎，浪漫奢华好享受~</a></td>
-        <td>2015-05-15</td>
-        <td><a href="http://www.baidu.com" target="_blank"><span>查看&emsp;</span></a><span>删除</span>
-		</td>
-    	</tr>  
-          
-   
-</tbody></table>
-            	
-            </div>
+        	
         </div>
         <!--中间栏end-->
         <!--相册栏begin-->

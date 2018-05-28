@@ -181,7 +181,6 @@ footer img{
      -o-transform: translate(-50%, -50%);   
      transform: translate(-50%, -50%);   
 	width:650px;
-	height:550px;
 	border:1px solid #000; }
 #signin_logo{
 	width:380px;
@@ -191,7 +190,6 @@ footer img{
 	}	
 #signin_input{
 	width:600px;
-	height:400px;
 	margin:5px auto;
 	}
 #signin_zhmm{
@@ -264,7 +262,6 @@ footer img{
 #signin_zcmm1{
 	margin:5px auto;
 	width:500px;
-	height:250px;
 	font-size:25px;
 	margin-top:30px;
 	}

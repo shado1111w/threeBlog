@@ -62,22 +62,15 @@ public class Login extends HttpServlet {
 		
 		boolean b=service.login(phonenum, password);
 		if(b){
-			int id=service.getIdFromPhonenum(phonenum);
-			request.getSession().setAttribute("user_id",Integer.toString(id));
-			User user=service.getUserFromId(id);
-			if(user.getUsername()==null){
-				response.setContentType("text/html;charset=utf-8");
-				response.getWriter().print("<script>alert(`请完善个人信息！`)</script>");
-				String   content=0+ ";URL= "+"../login_jsp/information2.jsp?res=3"; 
-				response.setHeader( "REFRESH ",content);
-			}else{
-				response.sendRedirect(li_url);
-			}
-			
+			int user_id=service.getIdFromPhonenum(phonenum);
+			request.getSession().setAttribute("user_id",Integer.toString(user_id));
+			response.setContentType("text/html;charset=utf-8");
+			String   content=0+ ";URL= "+li_url; 
+			response.setHeader( "REFRESH ",content);
 		}else{
 			response.setContentType("text/html;charset=utf-8");
 			response.getWriter().print("<script>alert(`账号或密码错误，将自动返回登录页面！`)</script>");
-			String   content=3+ ";URL= "+"../jichu/login.jsp"; 
+			String   content=0+ ";URL= "+request.getContextPath()+"/jsp/login/sign_in.jsp"; 
 			response.setHeader( "REFRESH ",content);
 	
 		}

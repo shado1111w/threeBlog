@@ -82,10 +82,10 @@ $(function() {
         	<img src="${pageContext.request.contextPath}/image/setting.png"/>
         </a>
         <ul class="index_tools_setting">
-         	<li><a href="#home">&ensp;修改资料&ensp;</a></li>
-          	<li><a href="#home">&ensp;修改头像&ensp;</a></li>
-            <li><a href="#home">&ensp;更改密码&ensp;</a></li>
-            <li><a href="#home">&ensp;个人中心&ensp;</a></li>
+         	<li><a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp?id=5">&ensp;修改资料&ensp;</a></li>
+          	<li><a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp?id=5">&ensp;修改头像&ensp;</a></li>
+            <li><a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp?id=5">&ensp;更改密码&ensp;</a></li>
+            <li><a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp">&ensp;个人中心&ensp;</a></li>
             <li><a href="#home">&ensp;举报中心&ensp;</a></li>
             <li><a href="#home">&ensp;退出账号&ensp;</a></li>
          </ul>

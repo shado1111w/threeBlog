@@ -1,5 +1,23 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@page import="java.util.ListIterator"%>
+<%@page import="java.util.ArrayList"%>
+<%@ page import="threeblog.entity.Article" %>
+<%@ page import="threeblog.service.Service" %>
+<%
+	int author_id = 10240;
+	if (session.getAttribute("user_id") == null) {
+		response.setContentType("text/html;charset=utf-8");
+		response.getWriter().print("<script>alert(`会话过期，将重新登录！`)</script>");
+		String content = 0 + ";URL= " + "../jichu/login.jsp";
+		response.setHeader("REFRESH ", content);
+	} else {
+		author_id = Integer.valueOf((String) session.getAttribute("user_id"));
+	}
+	ArrayList<Article> articles = new ArrayList<Article>();
+	Service service = new Service();
+	articles = service.getArticlesFromId(author_id);
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -33,16 +51,24 @@
         <td></td>
     </tr>
     </tfoot>    
-    <tbody><tr>
+    <tbody><%
+							if (!articles.isEmpty()) {
+								for (int i = 0; i < articles.size(); i++) {
+									Article article = articles.get(i);
+						%>
+						<tr>
 
-        <td>1</td>        
-        <td><a href="#" target="_blank">巴黎，浪漫奢华好享受~</a></td>
-        <td>2015-05-15</td>
-        <td><a href="http://www.baidu.com" target="_blank"><span>查看&emsp;</span></a><span>删除</span>
+							<td><%=i + 1%></td>
+							<td><%=article.getTitle()%></td>
+							<td><%=article.getPublishdate()%></td>
+							 <td><a href="${pageContext.request.contextPath}/jsp/article/article.jsp?id=<%=article.getId() %>" target="_blank"><span>查看&emsp;</span></a><span>删除</span>
 		</td>
-    	</tr>  
-          
-   
+
+						</tr>
+						<%
+							}
+							}
+						%>
 </tbody></table>
             	
             </div>

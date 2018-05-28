@@ -33,7 +33,7 @@
     </tfoot>    
     <tbody><tr>
 
-        <td>1</td>     -   
+        <td>1</td>   
         <td><a href="#" target="_blank">Marin</a></td>
         <td>2015-05-15</td>
         <td><a href="http://www.baidu.com" target="_blank"><span>查看Ta的个人主页&emsp;</span></a>

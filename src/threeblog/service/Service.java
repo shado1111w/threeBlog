@@ -53,7 +53,7 @@ public class Service {
 		return b;
 	}
 	//注册界面，ajax判断手机号是否已经存在
-	public boolean valiateUserName(String username){
+	public boolean valiatePhonenum(String phonenum){
 		
 		boolean b=false;
 		
@@ -65,7 +65,7 @@ public class Service {
 				String aname=rs.getString("phonenum");
 				System.out.println(aname);
 				
-				if(aname.equals(username)){
+				if(aname.equals(phonenum)){
 					System.out.println("注册失败！");
 					b=true;
 					break tag;
@@ -82,8 +82,8 @@ public class Service {
 	public int regeditUser(User user){
 		int flag;
 		DbConMysql db=new DbConMysql();
-		String sql="insert into t_user(phonenum,password)"
-				+ " values ('"+user.getUsername()+"','"+user.getPassword()+"')";
+		String sql="insert into t_user(phonenum,username,password)"
+				+ " values ('"+user.getPhonenum()+"','"+user.getUsername()+"','"+user.getPassword()+"')";
 		
 		flag=db.insert(sql);
 		
@@ -136,25 +136,19 @@ public class Service {
 			if(user.getTouxiang()!=null){
 				sql="UPDATE t_user SET "
 					+"age='"+user.getAge()+"',"
-					+"username='"+user.getUsername()+"'," 
 					+"sex='"+user.getSex()+"',"
-					+"address='"+user.getAddress()+"',"
+					+"province='"+user.getProvince()+"',"
+					+"city='"+user.getCity()+"',"
 					+"introduction='"+user.getIntroduction()+"',"
-					+"job='"+user.getJob()+"',"
-					+"experience='"+user.getExperience()+"',"
-					+"touxiang='"+user.getTouxiang()+"',"
-					+"usernamepic='"+user.getUsernamepic()
+					+"touxiang='"+user.getTouxiang()
 					+"' WHERE id='"+user.getId()+"'";
 			}else{
 				sql="UPDATE t_user SET "
 					+"age='"+user.getAge()+"',"
-					+"username='"+user.getUsername()+"'," 
 					+"sex='"+user.getSex()+"',"
-					+"address='"+user.getAddress()+"',"
-					+"introduction='"+user.getIntroduction()+"',"
-					+"job='"+user.getJob()+"',"
-					+"experience='"+user.getExperience()+"',"
-					+"usernamepic='"+user.getUsernamepic()
+					+"province='"+user.getProvince()+"',"
+					+"city='"+user.getCity()+"',"
+					+"introduction='"+user.getIntroduction()
 					+"' WHERE id='"+user.getId()+"'";
 			}
 			flag=db.update(sql);
@@ -176,18 +170,18 @@ public class Service {
 					user.setAge(age);
 					String sex=rs.getString("sex");
 					user.setSex(sex);
-					String address=rs.getString("address");
-					user.setAddress(address);
+					String province=rs.getString("province");
+					user.setProvince(province);
+					String city=rs.getString("city");
+					user.setCity(city);
 					String introduction=rs.getString("introduction");
 					user.setIntroduction(introduction);
-					String job=rs.getString("job");
-					user.setJob(job);
 					String touxiang=rs.getString("touxiang");
 					user.setTouxiang(touxiang);
-					String experience=rs.getString("experience");
-					user.setExperience(experience);
-					String usernamepic=rs.getString("usernamepic");
-					user.setUsernamepic(usernamepic);
+					Date register_time=rs.getDate("register_time");
+					user.setRegister_time(register_time);
+					String phonenum=rs.getString("phonenum");
+					user.setPhonenum(phonenum);
 				    break tag;
 				}
 					
@@ -221,7 +215,32 @@ public class Service {
 		String sql="update t_user set album ='"+album+"' where id='"+user_id+"'";
 		db.update(sql);
 	}
-	
+	//注册界面，ajax判断用户名是否已经存在
+	public boolean valiateUsername(String username){
+		
+		boolean b=false;
+		
+		DbConMysql db=new DbConMysql();
+   	 	ResultSet rs=db.getQuery("select * from t_user");
+		try {
+			tag:
+			while(rs.next()){
+				String aname=rs.getString("username");
+				System.out.println(aname);
+				
+				if(aname.equals(username)){
+					System.out.println("注册失败！");
+					b=true;
+					break tag;
+				}
+				
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return b;
+	}
 	
 	//*************************************************************
 	

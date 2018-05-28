@@ -1,5 +1,7 @@
 package threeblog.entity;
 
+import java.sql.Date;
+
 public class User {
 
 	private String username;
@@ -7,26 +9,32 @@ public class User {
 	private int age;
 	private String sex;
 	private String phonenum;
-	private String address;
 	private String introduction;
-	private String job;
 	private String touxiang;
 	private int id;
-	private String experience;
-	private String usernamepic;
+	private Date register_time;
+	private String province;
+	private String city;
 	
-	public String getUsernamepic() {
-		return usernamepic;
+	public String getProvince() {
+		return province;
 	}
-	public void setUsernamepic(String usernamepic) {
-		this.usernamepic = usernamepic;
+	public void setProvince(String province) {
+		this.province = province;
 	}
-	public String getExperience() {
-		return experience;
+	public String getCity() {
+		return city;
 	}
-	public void setExperience(String experience) {
-		this.experience = experience;
+	public void setCity(String city) {
+		this.city = city;
 	}
+	public Date getRegister_time() {
+		return register_time;
+	}
+	public void setRegister_time(Date register_time) {
+		this.register_time = register_time;
+	}
+	
 	public int getId() {
 		return id;
 	}
@@ -45,24 +53,14 @@ public class User {
 	public void setPhonenum(String phonenum) {
 		this.phonenum = phonenum;
 	}
-	public String getAddress() {
-		return address;
-	}
-	public void setAddress(String address) {
-		this.address = address;
-	}
+	
 	public String getIntroduction() {
 		return introduction;
 	}
 	public void setIntroduction(String introduction) {
 		this.introduction = introduction;
 	}
-	public String getJob() {
-		return job;
-	}
-	public void setJob(String job) {
-		this.job = job;
-	}
+	
 	public String getTouxiang() {
 		return touxiang;
 	}

@@ -38,14 +38,21 @@ public class ValiateRanks extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		String result=null;
+		String mobile_code2=null;
 		String mobile_code1=request.getParameter("mobile_code");
-		String mobile_code2=(String)request.getSession().getAttribute("mobile_code");
-		if(mobile_code1.equals(mobile_code2)){
-			 result="{'bol':true}";
+		if(request.getSession().getAttribute("mobile_code")!=null){
+			mobile_code2=(String)request.getSession().getAttribute("mobile_code");
 		}
-        else{  
-       	result="{'bol':false}";
-        }
+		if(mobile_code2==null){
+			result="{'bol':1}";
+		}else{
+			if(mobile_code1.equals(mobile_code2)){
+				 result="{'bol':2}";
+			}
+	        else{  
+	       	result="{'bol':3}";
+	        }
+		}
 		response.setContentType("test/html");  
         response.setCharacterEncoding("UTF-8");  
         response.getWriter().print(result); 

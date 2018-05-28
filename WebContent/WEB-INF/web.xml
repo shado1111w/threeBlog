@@ -189,5 +189,13 @@
     <servlet-name>AddReport</servlet-name>
     <url-pattern>/servlet/AddReport</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>Shiyongguoma</servlet-name>
+    <servlet-class>threeblog.servlet.Shiyongguoma</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Shiyongguoma</servlet-name>
+    <url-pattern>/servlet/Shiyongguoma</url-pattern>
+  </servlet-mapping>
   
 </web-app>

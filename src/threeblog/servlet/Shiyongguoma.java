@@ -13,14 +13,14 @@ import threeblog.service.*;
  * Servlet implementation class zhucheguoma
  * ajax检测手机号是否注册过
  */
-@WebServlet("/zhucheguoma")
-public class Zhucheguoma extends HttpServlet {
+@WebServlet("/Shiyongguoma")
+public class Shiyongguoma extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Zhucheguoma() {
+    public Shiyongguoma() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -41,10 +41,10 @@ public class Zhucheguoma extends HttpServlet {
 		
 		request.setCharacterEncoding("utf-8");
 		String result="";
-		String phonenum=request.getParameter("phone");
+		String username=request.getParameter("username");
 		Service service=new Service();
 		response.setCharacterEncoding("utf-8");
-		if(service.valiatePhonenum(phonenum)){
+		if(service.valiateUsername(username)){
 			 result="{'bol':false}";
 		}
         else{  

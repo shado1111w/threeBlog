@@ -3,6 +3,7 @@ package threeblog.servlet;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.Iterator;
 import java.util.List;
 
@@ -124,9 +125,9 @@ public class Publish extends HttpServlet {
 					author=value;
 				}
 			}else{
-				String filedName=item.getFieldName();
-				System.out.println("filedName:"+filedName);
-				String filename=item.getName();
+				java.util.Date date=new java.util.Date();
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+				String filename = sdf.format(date)+".jpg"; 
 				String t1 = request.getServletContext().getRealPath("./") + "image"; 	
 				String realFile=t1  +File.separator+ filename;
 				System.out.println("realFile:"+realFile);
@@ -178,7 +179,7 @@ public class Publish extends HttpServlet {
 		int id=service.addArticle(article); //将游记插入游记表，并返回该游记id
 		
 		
-		String content=0+ ";URL= "+"../login_jsp/note2.jsp?id="+id; 
+		String content=0+ ";URL= "+request.getContextPath()+"/jsp/article/article.jsp?id="+id; 
 		response.setHeader( "REFRESH ",content);
 		
 	}

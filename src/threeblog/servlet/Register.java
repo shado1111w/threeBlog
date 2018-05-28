@@ -45,9 +45,11 @@ public class Register extends HttpServlet {
 		
 		String username="";
 		String password="";
+		String phonenum="";
 	
 		
 		
+		phonenum=request.getParameter("phonenum");
 		username=request.getParameter("username");
 		System.out.println("手机号:"+username);
 		password=request.getParameter("pass1");
@@ -55,6 +57,7 @@ public class Register extends HttpServlet {
 		
 		User user=new User();
 		user.setUsername(username);
+		user.setPhonenum(phonenum);
 		user.setPassword(password);
 		
 		
@@ -63,12 +66,12 @@ public class Register extends HttpServlet {
 		if(flag==1){
 			response.setContentType("text/html;charset=utf-8");
 			response.getWriter().print("<script>alert(`注册完成，将自动返回登录页面！`)</script>");
-			String   content=3+ ";URL= "+"../jichu/login.jsp"; 
+			String   content=3+ ";URL= "+"../jsp/login/sign_in.jsp"; 
 			response.setHeader( "REFRESH ",content);
 		}else{
 			response.setContentType("text/html;charset=utf-8");
 			response.getWriter().print("<script>alert(`未知错误，请重试！`)</script>");
-			String   content=3+ ";URL= "+"../jichu/register.jsp"; 
+			String   content=3+ ";URL= "+"../jsp/login/register.jsp"; 
 			response.setHeader( "REFRESH ",content);
 		}
 		

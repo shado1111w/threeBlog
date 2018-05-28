@@ -1,5 +1,21 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="threeblog.entity.User" %>
+<%@ page import="threeblog.service.Service" %>
+<%
+	User user = new User();
+	Service service = new Service();
+	int user_id = 10240;
+	if (session.getAttribute("user_id") == null) {
+		response.setContentType("text/html;charset=utf-8");
+		response.getWriter().print("<script>alert(`会话过期，将重新登录！`)</script>");
+		String content = 0 + ";URL= " +request.getContextPath()+ "/jsp/login/sign_in.jsp";
+		response.setHeader("REFRESH ", content);
+	} else {
+		user_id = Integer.valueOf((String) session.getAttribute("user_id"));
+		user = service.getUserFromId(user_id);
+	}
+%>   
 <!DOCTYPE html>
 
 <head>
@@ -79,10 +95,10 @@ $(function() {
         	<img src="${pageContext.request.contextPath}/image/setting.png"/>
         </a>
         <ul class="index_tools_setting">
-         	<li><a href="#home">&ensp;修改资料&ensp;</a></li>
-          	<li><a href="#home">&ensp;修改头像&ensp;</a></li>
-            <li><a href="#home">&ensp;更改密码&ensp;</a></li>
-            <li><a href="#home">&ensp;个人中心&ensp;</a></li>
+         	<li><a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp?id=5">&ensp;修改资料&ensp;</a></li>
+          	<li><a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp?id=5">&ensp;修改头像&ensp;</a></li>
+            <li><a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp?id=5">&ensp;更改密码&ensp;</a></li>
+            <li><a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp">&ensp;个人中心&ensp;</a></li>
             <li><a href="#home">&ensp;举报中心&ensp;</a></li>
             <li><a href="#home">&ensp;退出账号&ensp;</a></li>
          </ul>
