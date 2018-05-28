@@ -159,7 +159,7 @@ $(document)
     	</div>
         <hr style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="80%" color=#987cb9 SIZE=3>
         <div id="signin_input">
-        		<form action="${pageContext.request.contextPath}/servlet/Forget_pwd" action="" method="post">
+        		<form action="${pageContext.request.contextPath}/servlet/Forget_pwd" method="post">
 	        	<div id="signin_xgmm">
 	            	<span>手机号 ：</span>
 	            	<input type="text" id="zh"  name="zh" style="height:23px;width:350px" required><br><br>

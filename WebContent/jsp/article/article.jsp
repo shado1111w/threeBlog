@@ -59,12 +59,12 @@
 
 <!--头部show的js-->
 <script>
-	$(function() {
-		$('#owl-demo').owlCarousel({
-			items : 1,
-			autoPlay : true
-		});
-	});
+$(function(){
+    $('#owl-demo').owlCarousel({
+        items: 1,
+        autoPlay: true
+    });
+});
 </script>
 <!--消息栏显示-->
 <script>
@@ -93,15 +93,15 @@
 		</div>
 		<div id="index_head_menu">
 			<ul>
-				<li><a href="#">首页</a></li>
-				<li><a href="#">博文</a></li>
-				<li><a href="#">画廊</a></li>
-				<li><a href="#">我的</a></li>
+			  <li><a href="${pageContext.request.contextPath}/index.jsp" >首页</a></li>
+		      <li><a href="${pageContext.request.contextPath}/jsp/index/blog.jsp" >博文</a></li>
+		      <li><a href="${pageContext.request.contextPath}/jsp/index/pictures.jsp" >画廊</a></li>
+		      <li><a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp" >我的</a></li>
 			</ul>
 		</div>
 		<div id="index_head_tools">
 			<ul>
-				<li><a href="#"> <img
+				<li><a href="${pageContext.request.contextPath}/jsp/index/search.jsp"> <img
 						src="${pageContext.request.contextPath}/image/search.png"
 						style="float: left;" />
 				</a></li>
@@ -128,12 +128,12 @@
 						src="${pageContext.request.contextPath}/image/setting.png" />
 				</a>
 					<ul class="index_tools_setting">
-						<li><a href="#home">&ensp;修改资料&ensp;</a></li>
-						<li><a href="#home">&ensp;修改头像&ensp;</a></li>
-						<li><a href="#home">&ensp;更改密码&ensp;</a></li>
-						<li><a href="#home">&ensp;个人中心&ensp;</a></li>
-						<li><a href="#home">&ensp;举报中心&ensp;</a></li>
-						<li><a href="#home">&ensp;退出账号&ensp;</a></li>
+						<li><a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp?id=5">&ensp;修改资料&ensp;</a></li>
+			          	<li><a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp?id=5">&ensp;修改头像&ensp;</a></li>
+			            <li><a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp?id=5">&ensp;更改密码&ensp;</a></li>
+			            <li><a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp">&ensp;个人中心&ensp;</a></li>
+			            <li><a href="#home">&ensp;举报中心&ensp;</a></li>
+			            <li><a href="#home">&ensp;退出账号&ensp;</a></li>
 					</ul></li>
 			</ul>
 		</div>
@@ -172,47 +172,47 @@
 
 				<img id="like"
 					src="${pageContext.request.contextPath}/image/unlike.png"
-					style="width: 25px; float: left; margin-left: 520px;" title="喜欢">
+					style="cursor:pointer;width: 25px; float: left; margin-left: 520px;" title="喜欢">
 
 				<!--喜欢图标更换的jq-->
 				<script>
 					$('#like').click(function() {
 
-						if ($('#like').attr('src') == 'image/unlike.png') {
-							$('#like').attr('src', 'image/like.png');
+						if ($('#like').attr('src') == '${pageContext.request.contextPath}/image/unlike.png') {
+							$('#like').attr('src', '${pageContext.request.contextPath}/image/like.png');
 						} else {
-							$('#like').attr('src', 'image/unlike.png');
+							$('#like').attr('src', '${pageContext.request.contextPath}/image/unlike.png');
 						}
 
 					});
 				</script>
 
-				<a href="#"><span
+				<span
 					style="float: left; font-size: 18px; margin-bottom: 10px; color: #666; margin-left: 5px;">喜欢</span><span
-					style="float: left; font-size: 18px; margin-bottom: 10px; color: #666; margin-left: 10px;">xxx</span></a>
+					style="float: left; font-size: 18px; margin-bottom: 10px; color: #666; margin-left: 10px;">xxx</span>
 				<img id="favor"
 					src="${pageContext.request.contextPath}/image/unfavor.png"
-					style="width: 25px; float: left; margin-left: 35px;" title="收藏">
+					style="cursor:pointer;width: 25px; float: left; margin-left: 35px;" title="收藏">
 				<!--收藏图标更换的jq-->
 				<script>
 					$('#favor').click(function() {
 
-						if ($('#favor').attr('src') == 'image/unfavor.png') {
-							$('#favor').attr('src', 'image/favor.png');
+						if ($('#favor').attr('src') == '${pageContext.request.contextPath}/image/unfavor.png') {
+							$('#favor').attr('src', '${pageContext.request.contextPath}/image/favor.png');
 						} else {
-							$('#favor').attr('src', 'image/unfavor.png');
+							$('#favor').attr('src', '${pageContext.request.contextPath}/image/unfavor.png');
 						}
 
 					});
 				</script>
-				<a href="#"><span
+				<span
 					style="float: left; font-size: 18px; margin-bottom: 10px; color: #666;">收藏</span><span
-					style="float: left; font-size: 18px; margin-bottom: 10px; color: #666; margin-left: 10px;">xxx</span></a>
-				<a href="reportcenter_article.html"><img
+					style="float: left; font-size: 18px; margin-bottom: 10px; color: #666; margin-left: 10px;">xxx</span>
+				<img
 					src="${pageContext.request.contextPath}/image/report.png"
-					style="width: 25px; float: left; margin-left: 35px;" title="举报">
+					style="cursor:pointer;width: 25px; float: left; margin-left: 35px;" title="举报">
 					<span
-					style="margin-right: 105px; float: right; font-size: 18px; color: #666;">举报</span></a>
+					style="margin-right: 105px; float: right; font-size: 18px; color: #666;">举报</span>
 			</div>
 			<div id="n_discuss">
 				<!--
@@ -323,8 +323,7 @@
 
 			</div>
 			<!--回复区域 end-->
-			<script type="text/javascript"
-			src="${pageContext.request.contextPath}/js/jquery-1.12.0.min.js"></script>
+			
 		<script type="text/javascript"
 			src="${pageContext.request.contextPath}/js/jquery.flexText.js"></script>
 		<!--textarea高度自适应-->

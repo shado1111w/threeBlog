@@ -17,7 +17,7 @@
 	}
 %> 
 <!DOCTYPE html>
-
+<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="toTop" content="true">
@@ -208,7 +208,7 @@ $(function() {
        	<form action="${pageContext.request.contextPath}/servlet/Publish"
 				enctype="multipart/form-data" method="post">
        <div style="height:0px;">
-        	<input  type="file" id="publish_fm" onchange="change()" accept="image/*">
+        	<input  type="file" id="publish_fm" name="publish_fm" onchange="change()" accept="image/*">
             <img id="img" src="${pageContext.request.contextPath}/image/publish_fm.jpg" style="width:960px;height:270px;float:left;z-index: 9; position:absolute; top:160px;" >
        </div>
        <div style="margin-top:30px;">

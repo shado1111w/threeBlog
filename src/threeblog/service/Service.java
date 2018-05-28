@@ -89,11 +89,35 @@ public class Service {
 		
 		return flag;
 	}
+	//验证密码
+	public boolean valiatePassword(String password,int user_id){
+			
+			boolean b=false;
+			
+			DbConMysql db=new DbConMysql();
+	   	 	ResultSet rs=db.getQuery("select * from t_user where id='"+user_id+"'");
+			try {
+				if(rs.next()){
+					String aname=rs.getString("password");
+					System.out.println(aname);
+					
+					if(aname.equals(password)){
+						System.out.println("注册失败！");
+						b=true;
+					}
+					
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return b;
+		}
 	//修改密码
-	public boolean changePassword(String username,String password){
+	public boolean changePassword(String phonenum,String password){
 		boolean b=false;
 		DbConMysql db=new DbConMysql();
-		String sql="UPDATE t_user SET password='"+password+"' WHERE phonenum='"+username+"'";
+		String sql="UPDATE t_user SET password='"+password+"' WHERE phonenum='"+phonenum+"'";
 		
 		int i=0;
 		i=db.update(sql);
@@ -105,6 +129,22 @@ public class Service {
 			return b;
 		}
 	}
+	//修改密码
+		public boolean modifyPassword(int user_id,String password){
+			boolean b=false;
+			DbConMysql db=new DbConMysql();
+			String sql="UPDATE t_user SET password='"+password+"' WHERE id='"+user_id+"'";
+			
+			int i=0;
+			i=db.update(sql);
+			if(i==0){
+				return b;
+			}
+			else{
+				b=true;
+				return b;
+			}
+		}
 	//通过手机号获取用户唯一id
 	public int getIdFromPhonenum(String phonenum){
 			DbConMysql db=new DbConMysql();
@@ -493,7 +533,7 @@ public class Service {
 				+"' WHERE id='"+article.getId()+"'";
 		db.update(sql);
 	}
-
+	
 	
 	
 	//*************************************************************

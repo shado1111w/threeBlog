@@ -25,14 +25,45 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/main.css" type="text/css"/>
 <script src="${pageContext.request.contextPath}/js/jquery-1.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/city.js"></script>
-
+<script>
+	function resetEx(form){
+		form.reset();
+		(function(){  
+			var pHtmlStr = '';  
+			for(var name in pc){  
+				if(name=="<%=user.getProvince()%>")
+					pHtmlStr = pHtmlStr + '<option value="'+name+'" selected="selected">'+name+'</option>';  
+				else
+					pHtmlStr = pHtmlStr + '<option value="'+name+'">'+name+'</option>';  
+				}  
+			$("#province").html(pHtmlStr); 
+			
+			$("#province").change(function(){  
+					var pname = $("#province option:selected").text();  
+					var pHtmlStr = '';  
+					var cityList = pc[pname];  
+				for(var index in cityList){ 
+					if(cityList[index]=="<%=user.getCity()%>")	
+	   				pHtmlStr = pHtmlStr + '<option value="'+cityList[index]+'" selected="selected">'+cityList[index]+'</option>';  
+	 			else
+	 				pHtmlStr = pHtmlStr + '<option value="'+cityList[index]+'">'+cityList[index]+'</option>';  
+			}  
+			$("#city").html(pHtmlStr);  
+				});  
+			$("#province").change();  
+			
+			$("#city").val(["<%=user.getCity()%>"]);
+			$("#sex").val(["<%=user.getSex()%>"]);
+				})();  
+	}
+</script>
 </head>
 
 <body >
 <!--修改信息begin-->
         	<div id="personalcenter_changeinfo">
             	<h1 style=" font-size:24px; width:920px; margin-left:40px;">█ 我的资料</h1>
-                <form action="${pageContext.request.contextPath}/servlet/ChangeInformation" enctype="multipart/form-data" method="post">
+                <form id="formname" name="formname" action="${pageContext.request.contextPath}/servlet/ChangeInformation" enctype="multipart/form-data" method="post">
                 <div style="float:right; margin-right:100px;">
                 	<input onchange="change()" type="file"  id="changeinfo_head" name="touxiang" accept="image/*">
                 	
@@ -102,16 +133,22 @@
     				(function(){  
         			var pHtmlStr = '';  
         			for(var name in pc){  
-            		pHtmlStr = pHtmlStr + '<option value="'+name+'">'+name+'</option>';  
+        				if(name=="<%=user.getProvince()%>")
+        					pHtmlStr = pHtmlStr + '<option value="'+name+'" selected="selected">'+name+'</option>';  
+        				else
+            				pHtmlStr = pHtmlStr + '<option value="'+name+'">'+name+'</option>';  
       				}  
         			$("#province").html(pHtmlStr); 
-        			$("#province").val(["<%=user.getProvince()%>"]);
+        			
         			$("#province").change(function(){  
             				var pname = $("#province option:selected").text();  
             				var pHtmlStr = '';  
             				var cityList = pc[pname];  
-           			for(var index in cityList){  
-                			pHtmlStr = pHtmlStr + '<option value="'+cityList[index]+'">'+cityList[index]+'</option>';  
+           			for(var index in cityList){ 
+           				if(cityList[index]=="<%=user.getCity()%>")	
+               				pHtmlStr = pHtmlStr + '<option value="'+cityList[index]+'" selected="selected">'+cityList[index]+'</option>';  
+             			else
+             				pHtmlStr = pHtmlStr + '<option value="'+cityList[index]+'">'+cityList[index]+'</option>';  
             		}  
             		$("#city").html(pHtmlStr);  
        				});  
@@ -126,7 +163,7 @@
                 </div>
                 <div style="clear:both; width:960px;">
                 <input type="submit" value="保存" style="background-color:#39f; border:1px solid #39f; font-size:24px; color:#FFF; margin-left:350px; margin-top:50px;"/>
-                <input type="reset" value="取消" style="cursor:pointer;background-color:#999; border:1px solid #ccc; font-size:24px; color:#FFF; margin-left:80px; margin-top:50px;"/>
+                <input type="button" onclick="resetEx(formname)" value="取消" style="cursor:pointer;background-color:#999; border:1px solid #ccc; font-size:24px; color:#FFF; margin-left:80px; margin-top:50px;"/>
                 </div>
                 </form>
             </div>
@@ -135,13 +172,94 @@
             <div id="personalcenter_changepassword">
             	<h1 style=" font-size:24px; width:920px; margin-left:40px;">█ 密码更改</h1>
                 <div style="width:500px; margin:30px auto;">
-                <span style="font-size:20px;margin-left:100px; ">原&ensp;密&ensp;码：</span><input type="text" style="border:1px solid;font-size:20px;"><br><br>
-                <span style="font-size:20px; margin-left:100px;">新&ensp;密&ensp;码：</span><input type="text" style="border:1px solid;font-size:20px;"><br><br>
-                <span style="font-size:20px; margin-left:100px;">确认密码：</span><input type="text" style="border:1px solid;font-size:20px;"><br><br>
+                <form action="${pageContext.request.contextPath}/servlet/ChangePassword" method="post">
+                <span style="font-size:20px;margin-left:100px; ">原&ensp;密&ensp;码：</span><input  id="password" type="password" style="border:1px solid;font-size:20px;"><br><br>
+                <span style="font-size:20px; margin-left:100px;">新&ensp;密&ensp;码：</span><input id="xmm" name="password" type="password" style="border:1px solid;font-size:20px;"><br><br>
+                <span style="font-size:20px; margin-left:100px;">确认密码：</span><input type="password" id="zcsrmm" style="border:1px solid;font-size:20px;"><br><br>
                 <input type="submit" value="保存" style="background-color:#39f; border:1px solid #39f; font-size:24px; color:#FFF; margin-left:200px; margin-top:20px;"/>
-                <input type="submit" value="取消" style="background-color:#999; border:1px solid #ccc; font-size:24px; color:#FFF; margin-left:80px; margin-top:20px;"/>
+                <input type="reset" value="取消" style="background-color:#999; border:1px solid #ccc; font-size:24px; color:#FFF; margin-left:80px; margin-top:20px;"/>
+                </form>
                 </div>
             </div>
+            <script>
+			$(document)
+			.ready(
+					function() {
+						$("#password")
+								.blur(
+										function() {
+										
+											var val = $("#password").val();
+											val = $.trim(val);
+											 if (val != "") {
+												var url = "${pageContext.request.contextPath}/servlet/ValiatePassword";
+												var args = {
+													"password" : val,
+													"time" : new Date()
+												};
+												$.get(url, args,
+														function(data) {
+															var result=eval("("+data+")");
+															if(result.bol){
+																alert("密码正确");
+															}
+															else{
+																alert("密码错误，请重新输入");
+																$("#password").val("");
+																$("#password").focus();
+															}
+												});
+											} 
+											
+										});
+					});
+				
+			</script>
+            <script type="text/javascript">
+			$(document)
+			.ready(
+					function() {
+						
+						$("#zcsrmm")
+								.blur(
+										function() {
+											var pass1 = $("#xmm").val();
+											var pass2 = $("#zcsrmm").val();
+											if(pass1!=""){
+												
+												if(pass1!=pass2){
+													alert("输入密码不一致，请重新输入");
+													$("#xmm").val("");
+													$("#zcsrmm").val("");
+													$("#xmm").focus();
+													
+												}
+												
+											}
+										});
+					});
+			$(document)
+			.ready(
+					function() {
+						$("#xmm")
+								.blur(
+										function() {
+											var pass1 = $("#xmm").val();
+											var pass2 = $("#zcsrmm").val();
+											if(pass2!=""){
+												
+												if(pass1!=pass2){
+													alert("输入密码不一致，请重新输入");
+													$("#xmm").val("");
+													$("#zcsrmm").val("");
+													$("#zcsrmm").focus();
+												}
+												
+											}
+										});
+					});
+			
+		</script>
             <!--修改密码end-->
 </body>
 </html>
