@@ -1,7 +1,23 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="threeblog.entity.User" %>
+<%@ page import="threeblog.service.Service" %>
+<%
+	User user = new User();
+	Service service = new Service();
+	int user_id = 10240;
+	if (session.getAttribute("user_id") == null) {
+		response.setContentType("text/html;charset=utf-8");
+		response.getWriter().print("<script>alert(`会话过期，将重新登录！`)</script>");
+		String content = 0 + ";URL= " +request.getContextPath()+ "/jsp/login/sign_in.jsp";
+		response.setHeader("REFRESH ", content);
+	} else {
+		user_id = Integer.valueOf((String) session.getAttribute("user_id"));
+		user = service.getUserFromId(user_id);
+	}
+%>  
 <!DOCTYPE html>
-
+<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>首页</title>
@@ -39,10 +55,29 @@ $(function() {
         });
 });
 </script>
+<script>
+	$(document).ready(function() {
+		$("#newest").click(function() {
+			$('#blog_passages') 
+			.load('${pageContext.request.contextPath}/jsp/index/newest.jsp');
+			})
+		$("#hotest").click(function() {
+				$('#blog_passages')
+				.load('${pageContext.request.contextPath}/jsp/index/hotest.jsp');
+				})
+		
 
+})
+</script>
+<script>
+	function myfunction(){
+		$('#blog_passages') 
+		.load('${pageContext.request.contextPath}/jsp/index/newest.jsp');
+	}
+</script>
 </head>
 
-<body>
+<body onload="myfunction()">
 <!--顶端栏begin-->
 <div id="index_head">
   <div id="index_head_logo"> <img src="${pageContext.request.contextPath}/image/logo.png"> </div>
@@ -144,108 +179,15 @@ $(function() {
     <div id="index_body_left">
     	<div id="blog_title">
 			<ul>
-        		<li><a href="#">&emsp;最新&emsp;</a></li>
-            	<li><a href="#">&emsp;关注&emsp;</a></li>
+        		<li><a id="newest" href="javascript:;">&emsp;最新&emsp;</a></li>
+            	<li><a id="hotest" href="javascript:;">&emsp;关注&emsp;</a></li>
         	</ul>
         </div>
         <div id="blog_passages">
         	<!--具体N篇文章begin-->
-        	<div class="passages_n">
-        		<div class="passages_pic">
-            		<img  src="${pageContext.request.contextPath}/image/pic1.jpg" style="width:200px;height:150px;">
-                    <span style="font-size:14px;color:#000;margin-left:20px;">陌上行</span><br/>
-                    <span style="font-size:14px;color:#000;margin-left:20px;">2018-05-18</span>
-                </div>
-            	<div class="passages_details">
-                	<h1 style="margin-left:20px;">最爱的，还是这人和烟火</h1>
-                    <p style="margin-left:20px;">关于孤独，到此为止。
-天空很蓝，却很悲伤。 阳光很暖，却很刺眼。 花儿很美，却很碍眼。 世界很好，却不温柔。</p><br/>
-					<span style="margin-left:20px;">阅读：xxx&emsp;|</span>
-                    <span>评论：xxx&emsp;|</span>
-                    <span>喜欢：xxx&emsp;|</span>
-                    <span>收藏：xxx</span>
-            	</div>
-            </div>
-            <div class="passages_n">
-        		<div class="passages_pic">
-            		<img  src="${pageContext.request.contextPath}/image/pic1.jpg" style="width:200px;height:150px;">
-                    <span style="font-size:14px;color:#000;margin-left:20px;">陌上行</span><br/>
-                    <span style="font-size:14px;color:#000;margin-left:20px;">2018-05-18</span>
-                </div>
-            	<div class="passages_details">
-                	<h1 style="margin-left:20px;">最爱的，还是这人和烟火</h1>
-                    <p style="margin-left:20px;">关于孤独，到此为止。
-天空很蓝，却很悲伤。 阳光很暖，却很刺眼。 花儿很美，却很碍眼。 世界很好，却不温柔。</p><br/>
-					<span style="margin-left:20px;">阅读：xxx&emsp;|</span>
-                    <span>评论：xxx&emsp;|</span>
-                    <span>喜欢：xxx&emsp;|</span>
-                    <span>收藏：xxx</span>
-            	</div>
-            </div>
-            <div class="passages_n">
-        		<div class="passages_pic">
-            		<img  src="${pageContext.request.contextPath}/image/pic1.jpg" style="width:200px;height:150px;">
-                    <span style="font-size:14px;color:#000;margin-left:20px;">陌上行</span><br/>
-                    <span style="font-size:14px;color:#000;margin-left:20px;">2018-05-18</span>
-                </div>
-            	<div class="passages_details">
-                	<h1 style="margin-left:20px;">最爱的，还是这人和烟火</h1>
-                    <p style="margin-left:20px;">关于孤独，到此为止。
-天空很蓝，却很悲伤。 阳光很暖，却很刺眼。 花儿很美，却很碍眼。 世界很好，却不温柔。</p><br/>
-					<span style="margin-left:20px;">阅读：xxx&emsp;|</span>
-                    <span>评论：xxx&emsp;|</span>
-                    <span>喜欢：xxx&emsp;|</span>
-                    <span>收藏：xxx</span>
-            	</div>
-            </div>
-            <div class="passages_n">
-        		<div class="passages_pic">
-            		<img  src="${pageContext.request.contextPath}/image/pic1.jpg" style="width:200px;height:150px;">
-                    <span style="font-size:14px;color:#000;margin-left:20px;">陌上行</span><br/>
-                    <span style="font-size:14px;color:#000;margin-left:20px;">2018-05-18</span>
-                </div>
-            	<div class="passages_details">
-                	<h1 style="margin-left:20px;">最爱的，还是这人和烟火</h1>
-                    <p style="margin-left:20px;">关于孤独，到此为止。
-天空很蓝，却很悲伤。 阳光很暖，却很刺眼。 花儿很美，却很碍眼。 世界很好，却不温柔。</p><br/>
-					<span style="margin-left:20px;">阅读：xxx&emsp;|</span>
-                    <span>评论：xxx&emsp;|</span>
-                    <span>喜欢：xxx&emsp;|</span>
-                    <span>收藏：xxx</span>
-            	</div>
-            </div>
-            <div class="passages_n">
-        		<div class="passages_pic">
-            		<img  src="${pageContext.request.contextPath}/image/pic1.jpg" style="width:200px;height:150px;">
-                    <span style="font-size:14px;color:#000;margin-left:20px;">陌上行</span><br/>
-                    <span style="font-size:14px;color:#000;margin-left:20px;">2018-05-18</span>
-                </div>
-            	<div class="passages_details">
-                	<h1 style="margin-left:20px;">最爱的，还是这人和烟火</h1>
-                    <p style="margin-left:20px;">关于孤独，到此为止。
-天空很蓝，却很悲伤。 阳光很暖，却很刺眼。 花儿很美，却很碍眼。 世界很好，却不温柔。</p><br/>
-					<span style="margin-left:20px;">阅读：xxx&emsp;|</span>
-                    <span>评论：xxx&emsp;|</span>
-                    <span>喜欢：xxx&emsp;|</span>
-                    <span>收藏：xxx</span>
-            	</div>
-            </div>
-            <div class="passages_n">
-        		<div class="passages_pic">
-            		<img  src="${pageContext.request.contextPath}/image/pic1.jpg" style="width:200px;height:150px;">
-                    <span style="font-size:14px;color:#000;margin-left:20px;">陌上行</span><br/>
-                    <span style="font-size:14px;color:#000;margin-left:20px;">2018-05-18</span>
-                </div>
-            	<div class="passages_details">
-                	<h1 style="margin-left:20px;">最爱的，还是这人和烟火</h1>
-                    <p style="margin-left:20px;">关于孤独，到此为止。
-天空很蓝，却很悲伤。 阳光很暖，却很刺眼。 花儿很美，却很碍眼。 世界很好，却不温柔。</p><br/>
-					<span style="margin-left:20px;">阅读：xxx&emsp;|</span>
-                    <span>评论：xxx&emsp;|</span>
-                    <span>喜欢：xxx&emsp;|</span>
-                    <span>收藏：xxx</span>
-            	</div>
-            </div>
+        	
+        	
+        	
             <!--文章end-->
         </div>
     </div>

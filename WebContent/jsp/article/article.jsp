@@ -320,7 +320,7 @@ $(function(){
 					src="${pageContext.request.contextPath}/image/report.png"
 					style="width: 25px; float: left; margin-left: 35px;" title="举报"></a>
 					<span
-					style="margin-right: 105px; float: right; font-size: 18px; color: #666;">举报</span>
+					style="margin-right: 135px; float: right; font-size: 18px; color: #666;">举报</span>
 			</div>
 			<div id="n_discuss">
 				<!--

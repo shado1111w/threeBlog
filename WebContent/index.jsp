@@ -244,14 +244,20 @@ $(function(){
 	                    <span style="font-size:14px;color:#000;margin-left:20px;"><%=article.getAuthor() %></span><br/>
 	                    <span style="font-size:14px;color:#000;margin-left:20px;"><%=article.getPublishdate() %></span>
 	                </div>
-	            	<div class="article_details">
-	                	<a style="color:#000" href="${pageContext.request.contextPath}/jsp/article/article.jsp?id=<%=article.getId()%>"><h1 style="margin-left:20px;"><%=article.getTitle() %></h1></a>
-	                    <a style="color:#000" href="${pageContext.request.contextPath}/jsp/article/article.jsp?id=<%=article.getId()%>"><p style="margin-left:20px;"><%=article.getIntroduction() %></p></a><br/>
-						<span style="margin-left:20px;">阅读：<%=article.getClick_num() %>&emsp;|</span>
-	                    <span>评论：xxx&emsp;|</span>
-	                    <span>喜欢：<%=article.getLiked() %>&emsp;|</span>
-	                    <span>收藏：<%=article.getCollected() %></span>
-	            	</div>
+	            	<div class="passages_details">
+                	<div style="width:430px; float:right;height:60px;padding-top:10px;">
+                	<a style="color:#000" href="${pageContext.request.contextPath}/jsp/article/article.jsp?id=<%=article.getId()%>"><span style="margin-left:20px; font-size:24px; font-weight:bold;"><%=article.getTitle() %></span></a>
+                    </div>
+                    <div style="width:430px; margin-left:20px;float:right; height:85px;overflow:hidden; margin-top:10px;">
+                    <a style="color:#000" href="${pageContext.request.contextPath}/jsp/article/article.jsp?id=<%=article.getId()%>"><span><%=article.getIntroduction() %></span></a>
+					</div>
+                    <div style="margin-top:10px; float:right;">
+					<span >阅读：<%=article.getClick_num() %>&emsp;|</span>
+                    <span>评论：xxx&emsp;|</span>
+                    <span>喜欢：<%=article.getLiked() %>&emsp;|</span>
+                    <span style="margin-right:65px;">收藏：<%=article.getCollected() %></span>
+                    </div>
+            	</div>
           	  </div>
 						
 					<%
