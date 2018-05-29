@@ -177,37 +177,145 @@ $(function(){
 				<!--喜欢图标更换的jq-->
 				<script>
 					$('#like').click(function() {
-
+						var like=$("#liked").text();
 						if ($('#like').attr('src') == '${pageContext.request.contextPath}/image/unlike.png') {
-							$('#like').attr('src', '${pageContext.request.contextPath}/image/like.png');
+							var article_id="<%=article.getId()%>";
+							var url = "${pageContext.request.contextPath}/servlet/AddLiked";
+							var args = {
+								"article_id" : article_id,
+								"liked":like,
+								"status":"喜欢",
+								"time" : new Date()
+							};
+							$.get(url, args,
+									function(data) {
+										$('#like').attr('src', '${pageContext.request.contextPath}/image/like.png');
+										var liked=$("#liked").text();
+										liked++;
+										$("#liked").text(liked);
+							});
+							
+							
 						} else {
-							$('#like').attr('src', '${pageContext.request.contextPath}/image/unlike.png');
+							var article_id="<%=article.getId()%>";
+							var url = "${pageContext.request.contextPath}/servlet/AddLiked";
+							var args = {
+								"article_id" : article_id,
+								"liked":like,
+								"status":"不喜欢",
+								"time" : new Date()
+							};
+							$.get(url, args,
+									function(data) {
+										
+										$('#like').attr('src', '${pageContext.request.contextPath}/image/like.png');
+										var liked=$("#liked").text();
+										liked--;
+										$("#liked").text(liked);
+							});
+							
+							
 						}
 
 					});
 				</script>
 
 				<span
-					style="float: left; font-size: 18px; margin-bottom: 10px; color: #666; margin-left: 5px;">喜欢</span><span
-					style="float: left; font-size: 18px; margin-bottom: 10px; color: #666; margin-left: 10px;">xxx</span>
+					style="float: left; font-size: 18px; margin-bottom: 10px; color: #666; margin-left: 5px;">喜欢</span><span id="liked"
+					style="float: left; font-size: 18px; margin-bottom: 10px; color: #666; margin-left: 10px;"><%=article.getLiked() %></span>
+				<% if((service.getCollectFromUser_idArticle_id(user_id, article.getId())).getId()!=0){%>
 				<img id="favor"
+					src="${pageContext.request.contextPath}/image/favor.png"
+					style="cursor:pointer;width: 25px; float: left; margin-left: 35px;" title="收藏">
+					<%}else{ %>
+					<img id="favor"
 					src="${pageContext.request.contextPath}/image/unfavor.png"
 					style="cursor:pointer;width: 25px; float: left; margin-left: 35px;" title="收藏">
+					<%} %>
 				<!--收藏图标更换的jq-->
-				<script>
-					$('#favor').click(function() {
-
-						if ($('#favor').attr('src') == '${pageContext.request.contextPath}/image/unfavor.png') {
-							$('#favor').attr('src', '${pageContext.request.contextPath}/image/favor.png');
-						} else {
-							$('#favor').attr('src', '${pageContext.request.contextPath}/image/unfavor.png');
-						}
-
-					});
-				</script>
+				
 				<span
-					style="float: left; font-size: 18px; margin-bottom: 10px; color: #666;">收藏</span><span
-					style="float: left; font-size: 18px; margin-bottom: 10px; color: #666; margin-left: 10px;">xxx</span>
+					style="float: left; font-size: 18px; margin-bottom: 10px; color: #666;">收藏</span><span id="collected"
+					style="float: left; font-size: 18px; margin-bottom: 10px; color: #666; margin-left: 10px;"><%=article.getCollected() %></span>
+				<script>
+				$('#favor').click(function() {
+					var collect=$("#collected").text();
+					if ($('#favor').attr('src') == '${pageContext.request.contextPath}/image/unfavor.png') {
+						var article_id="<%=article.getId()%>";
+						
+						
+						
+						var url2 = "${pageContext.request.contextPath}/servlet/CollectArticle";
+						var args2 = {
+							"article_id" : article_id,
+							"status":"收藏",
+							"time" : new Date()
+						};
+						$.get(url2, args2,
+								function(data) {
+									var result=eval("("+data+")");
+									if(result.bol==1) {
+										alert("你不需要收藏自己的文章！");
+									}
+									else if(result.bol==2) {
+										alert("收藏成功！");
+										var url1 = "${pageContext.request.contextPath}/servlet/AddCollected";
+										var args1 = {
+											"article_id" : article_id,
+											"collected":collect,
+											"status":"收藏",
+											"time" : new Date()
+										};
+										$.get(url1, args1,
+												function(data) {
+													$('#favor').attr('src', '${pageContext.request.contextPath}/image/favor.png');
+													var collected=$("#collected").text();
+													collected++;
+													$("#collected").text(collected);
+										});
+									}
+									else if(result.bol==3){alert("你已经收藏过了！");}
+						});
+						
+						
+					} else {
+						var article_id="<%=article.getId()%>";
+						
+						
+						var url2 = "${pageContext.request.contextPath}/servlet/CollectArticle";
+						var args2 = {
+							"article_id" : article_id,
+							"status":"取消收藏",
+							"time" : new Date()
+						};
+						$.get(url2, args2,
+								function(data) {
+									var result=eval("("+data+")");
+									if(result.bol==4) {
+										alert("取消收藏成功");
+										var url1 = "${pageContext.request.contextPath}/servlet/AddCollected";
+										var args1 = {
+											"article_id" : article_id,
+											"collected":collect,
+											"status":"不收藏",
+											"time" : new Date()
+										};
+										$.get(url1, args1,
+												function(data) {
+													
+													$('#favor').attr('src', '${pageContext.request.contextPath}/image/favor.png');
+													var collected=$("#collected").text();
+													collected--;
+													$("#collected").text(collected);
+										});
+										
+									}
+						}); 
+						
+					}
+
+				});
+				</script>
 				<img
 					src="${pageContext.request.contextPath}/image/report.png"
 					style="cursor:pointer;width: 25px; float: left; margin-left: 35px;" title="举报">

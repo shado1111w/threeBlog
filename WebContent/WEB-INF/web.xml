@@ -205,13 +205,29 @@
     <servlet-name>ValiatePassword</servlet-name>
     <url-pattern>/servlet/ValiatePassword</url-pattern>
   </servlet-mapping>
-   <servlet>
+  <servlet>
     <servlet-name>ChangePassword</servlet-name>
     <servlet-class>threeblog.servlet.ChangePassword</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>ChangePassword</servlet-name>
     <url-pattern>/servlet/ChangePassword</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>AddLiked</servlet-name>
+    <servlet-class>threeblog.servlet.AddLiked</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AddLiked</servlet-name>
+    <url-pattern>/servlet/AddLiked</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>AddCollected</servlet-name>
+    <servlet-class>threeblog.servlet.AddCollected</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AddCollected</servlet-name>
+    <url-pattern>/servlet/AddCollected</url-pattern>
   </servlet-mapping>
   
   

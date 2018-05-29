@@ -262,13 +262,7 @@ function myfunction(){
           <a href="<%=photos[i] %>" title="Caption for image A"><img src="<%=photos[i] %>" width="280" height="210" style="border:1px solid;  margin:10px;"></a>
       <%} 
       }%>
-	<a href="image/pic1.jpg" title="2018-05-04"><img src="${pageContext.request.contextPath}/image/pic1.jpg" width="280" height="210" style="border:1px solid;  margin:10px;"></a>
-	<a href="image/pic2.jpg" title="2018-05-04"><img src="${pageContext.request.contextPath}/image/pic2.jpg" width="280" height="210" style="border:1px solid;  margin:10px;"></a>
-    <a href="image/pic3.jpg" title="2018-05-04"><img src="${pageContext.request.contextPath}/image/pic3.jpg" width="280" height="210" style="border:1px solid;  margin:10px;"></a>
-    <a href="image/pic4.jpg" title="2018-05-04"><img src="${pageContext.request.contextPath}/image/pic4.jpg" width="280" height="210" style="border:1px solid;  margin:10px;"></a>
-    <a href="image/1.jpg" title="2018-05-04"><img src="${pageContext.request.contextPath}/image/1.jpg" width="280" height="210" style="border:1px solid;  margin:10px;"></a>
-     <a href="image/2.jpg" title="2018-05-04"><img src="${pageContext.request.contextPath}/image/2.jpg" width="280" height="210" style="border:1px solid;  margin:10px;"></a>
-      <a href="image/3.jpg" title="2018-05-04"><img src="${pageContext.request.contextPath}/image/3.jpg" width="280" height="210" style="border:1px solid;  margin:10px;"></a>
+	
 </div>
 <script>
 $('#gallery2').rebox({ selector: 'a' });

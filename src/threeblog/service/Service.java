@@ -393,6 +393,10 @@ public class Service {
 				article.setAuthor_id(author_id);
 				String allpic=rs.getString("allpic");
 				article.setAllpic(allpic);
+				int liked=rs.getInt("liked");
+				article.setLiked(liked);
+				int collected=rs.getInt("collected");
+				article.setCollected(collected);
 				articles.add(article);
 				
 			}
@@ -435,6 +439,10 @@ public class Service {
 				article.setAuthor_id(author_id);
 				String allpic=rs.getString("allpic");
 				article.setAllpic(allpic);
+				int liked=rs.getInt("liked");
+				article.setLiked(liked);
+				int collected=rs.getInt("collected");
+				article.setCollected(collected);
 				articles.add(article);
 				
 			}
@@ -477,6 +485,10 @@ public class Service {
 				article.setAuthor_id(author_id);
 				String allpic=rs.getString("allpic");
 				article.setAllpic(allpic);
+				int liked=rs.getInt("liked");
+				article.setLiked(liked);
+				int collected=rs.getInt("collected");
+				article.setCollected(collected);
 				articles.add(article);
 				
 			}
@@ -517,6 +529,10 @@ public class Service {
 				article.setPublishdate(publishdate);
 				String allpic=rs.getString("allpic");
 				article.setAllpic(allpic);  
+				int liked=rs.getInt("liked");
+				article.setLiked(liked);
+				int collected=rs.getInt("collected");
+				article.setCollected(collected);
 			}
 				
 		} catch (SQLException e) {
@@ -533,7 +549,22 @@ public class Service {
 				+"' WHERE id='"+article.getId()+"'";
 		db.update(sql);
 	}
-	
+	//刷新喜欢数量
+	public void updateArticleLiked(Article article){
+			DbConMysql db=new DbConMysql();
+			String sql="UPDATE t_article SET "
+					+"liked='"+article.getLiked()
+					+"' WHERE id='"+article.getId()+"'";
+			db.update(sql);
+		}
+	//刷新收藏数量
+	public void updateArticleCollected(Article article){
+				DbConMysql db=new DbConMysql();
+				String sql="UPDATE t_article SET "
+						+"collected='"+article.getCollected()
+						+"' WHERE id='"+article.getId()+"'";
+				db.update(sql);
+			}
 	
 	
 	//*************************************************************

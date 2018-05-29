@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="threeblog.entity.User" %>
+<%@ page import="threeblog.entity.*" %>
 <%@ page import="threeblog.service.Service" %>
+<%@page import="java.util.ArrayList"%>
 <%
 	User user = new User();
 	Service service = new Service();
@@ -13,19 +14,22 @@
 		response.setHeader("REFRESH ", content);
 	} else {
 		user_id = Integer.valueOf((String) session.getAttribute("user_id"));
-		user = service.getUserFromId(user_id);
+		user = service.getUserFromId(user_id);	
 	}
+	ArrayList<Article> articles=service.getAllArticlesOrderByClicknumDESC();
 %>   
 <!DOCTYPE html>
-
+<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>首页</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/main.css" type="text/css"/>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/calendar.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/pagination.css" type="text/css" />
 <link href="${pageContext.request.contextPath}/css/owl.carousel.css" rel="stylesheet">
 <script src="${pageContext.request.contextPath}/js/jquery-1.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/owl.carousel.js"></script>
+<script src="${pageContext.request.contextPath}/js/jquery.pagination.js"></script>
 
 <!--头部show的js-->
 <script>
@@ -54,6 +58,34 @@ $(function() {
 });
 </script>
 
+<script>
+	
+
+$(function(){	
+	$('.M-box').pagination({
+		totalData:<%=articles.size()%>,
+	    current:1,
+		showData:5,
+	    jump: false,
+	    coping: true,
+	    homePage: '首页',
+	    endPage: '末页',
+	    prevContent: '上页',
+	    nextContent: '下页',
+	    callback: function (api) {
+	    	var new_content = $("#hiddenresult div.result:eq("+api.getCurrent()+")").clone();
+			$("#index_body_middle_article").empty().append(new_content); //装载对应分页的内容
+			return false;
+	    }
+	},
+	   function (api) {
+	    	var new_content = $("#hiddenresult div.result:eq("+api.getCurrent()+")").clone();
+			$("#index_body_middle_article").empty().append(new_content); //装载对应分页的内容
+	    
+	}); 
+
+});	
+</script>
 </head>
 
 <body>
@@ -179,105 +211,57 @@ $(function() {
     <div id="index_body_middle">
     	<h3 style="padding-top:20px;">█ 热门</h3>
     	<div id="index_body_middle_article">
-        	<!--具体N篇文章begin-->
-        	<div class="article_n">
-        		<div class="article_pic">
-            		<img  src="${pageContext.request.contextPath}/image/pic1.jpg" title="灯塔" style="width:200px;height:150px;">
-                    <span style="font-size:14px;color:#000;margin-left:20px;">陌上行</span><br/>
-                    <span style="font-size:14px;color:#000;margin-left:20px;">2018-05-18</span>
-                </div>
-            	<div class="article_details">
-                	<h1 style="margin-left:20px;">最爱的，还是这人和烟火</h1>
-                    <p style="margin-left:20px;">关于孤独，到此为止。
-天空很蓝，却很悲伤。 阳光很暖，却很刺眼。 花儿很美，却很碍眼。 世界很好，却不温柔。</p><br/>
-					<span style="margin-left:20px;">阅读：xxx&emsp;|</span>
-                    <span>评论：xxx&emsp;|</span>
-                    <span>喜欢：xxx&emsp;|</span>
-                    <span>收藏：xxx</span>
-            	</div>
-            </div>
-            <div class="article_n">
-        		<div class="article_pic">
-            		<img  src="${pageContext.request.contextPath}/image/pic1.jpg" style="width:200px;height:150px;">
-                    <span style="font-size:14px;color:#000;margin-left:20px;">陌上行</span><br/>
-                    <span style="font-size:14px;color:#000;margin-left:20px;">2018-05-18</span>
-                </div>
-            	<div class="article_details">
-                	<h1 style="margin-left:20px;">最爱的，还是这人和烟火</h1>
-                    <p style="margin-left:20px;">关于孤独，到此为止。
-天空很蓝，却很悲伤。 阳光很暖，却很刺眼。 花儿很美，却很碍眼。 世界很好，却不温柔。</p><br/>
-					<span style="margin-left:20px;">阅读：xxx&emsp;|</span>
-                    <span>评论：xxx&emsp;|</span>
-                    <span>喜欢：xxx&emsp;|</span>
-                    <span>收藏：xxx</span>
-            	</div>
-            </div>
-            <div class="article_n">
-        		<div class="article_pic">
-            		<img  src="${pageContext.request.contextPath}/image/pic1.jpg" style="width:200px;height:150px;">
-                    <span style="font-size:14px;color:#000;margin-left:20px;">陌上行</span><br/>
-                    <span style="font-size:14px;color:#000;margin-left:20px;">2018-05-18</span>
-                </div>
-            	<div class="article_details">
-                	<h1 style="margin-left:20px;">最爱的，还是这人和烟火</h1>
-                    <p style="margin-left:20px;">关于孤独，到此为止。
-天空很蓝，却很悲伤。 阳光很暖，却很刺眼。 花儿很美，却很碍眼。 世界很好，却不温柔。</p><br/>
-					<span style="margin-left:20px;">阅读：xxx&emsp;|</span>
-                    <span>评论：xxx&emsp;|</span>
-                    <span>喜欢：xxx&emsp;|</span>
-                    <span>收藏：xxx</span>
-            	</div>
-            </div>
-            <div class="article_n">
-        		<div class="article_pic">
-            		<img  src="${pageContext.request.contextPath}/image/pic1.jpg" style="width:200px;height:150px;">
-                    <span style="font-size:14px;color:#000;margin-left:20px;">陌上行</span><br/>
-                    <span style="font-size:14px;color:#000;margin-left:20px;">2018-05-18</span>
-                </div>
-            	<div class="article_details">
-                	<h1 style="margin-left:20px;">最爱的，还是这人和烟火</h1>
-                    <p style="margin-left:20px;">关于孤独，到此为止。
-天空很蓝，却很悲伤。 阳光很暖，却很刺眼。 花儿很美，却很碍眼。 世界很好，却不温柔。</p><br/>
-					<span style="margin-left:20px;">阅读：xxx&emsp;|</span>
-                    <span>评论：xxx&emsp;|</span>
-                    <span>喜欢：xxx&emsp;|</span>
-                    <span>收藏：xxx</span>
-            	</div>
-            </div>
-            <div class="article_n">
-        		<div class="article_pic">
-            		<img  src="${pageContext.request.contextPath}/image/pic1.jpg" style="width:200px;height:150px;">
-                    <span style="font-size:14px;color:#000;margin-left:20px;">陌上行</span><br/>
-                    <span style="font-size:14px;color:#000;margin-left:20px;">2018-05-18</span>
-                </div>
-            	<div class="article_details">
-                	<h1 style="margin-left:20px;">最爱的，还是这人和烟火</h1>
-                    <p style="margin-left:20px;">关于孤独，到此为止。
-天空很蓝，却很悲伤。 阳光很暖，却很刺眼。 花儿很美，却很碍眼。 世界很好，却不温柔。</p><br/>
-					<span style="margin-left:20px;">阅读：xxx&emsp;|</span>
-                    <span>评论：xxx&emsp;|</span>
-                    <span>喜欢：xxx&emsp;|</span>
-                    <span>收藏：xxx</span>
-            	</div>
-            </div>
-            <div class="article_n">
-        		<div class="article_pic">
-            		<img  src="${pageContext.request.contextPath}/image/pic1.jpg" style="width:200px;height:150px;">
-                    <span style="font-size:14px;color:#000;margin-left:20px;">陌上行</span><br/>
-                    <span style="font-size:14px;color:#000;margin-left:20px;">2018-05-18</span>
-                </div>
-            	<div class="article_details">
-                	<h1 style="margin-left:20px;">最爱的，还是这人和烟火</h1>
-                    <p style="margin-left:20px;">关于孤独，到此为止。
-天空很蓝，却很悲伤。 阳光很暖，却很刺眼。 花儿很美，却很碍眼。 世界很好，却不温柔。</p><br/>
-					<span style="margin-left:20px;">阅读：xxx&emsp;|</span>
-                    <span>评论：xxx&emsp;|</span>
-                    <span>喜欢：xxx&emsp;|</span>
-                    <span>收藏：xxx</span>
-            	</div>
-            </div>
+        	<!--具体N篇文章begin-->    
+           
             <!--文章end-->
         </div>
+        
+        <div id="hiddenresult" style="display: none;">
+			<!-- 列表元素 -->
+			<div class="result"></div>
+			<%
+			int num=articles.size();
+			int time=num/4;
+			if(num%4>0) time+=1;
+			int j=0;
+	    	for(int i=0;i<time;i++){
+    		%>
+			<div class="result">
+				<ul style="padding:0;">
+					<%
+					int k=0;
+					while(j<articles.size()&&k<5){
+						Article article=articles.get(j);
+		    			int author_id=article.getAuthor_id();
+		    			User author=service.getUserFromId(author_id);
+		
+					%>
+					
+				<div class="article_n">
+	        		<div class="article_pic">
+	            		<img  src="<%=article.getPic() %>" style="width:200px;height:150px;">
+	                    <span style="font-size:14px;color:#000;margin-left:20px;"><%=article.getAuthor() %></span><br/>
+	                    <span style="font-size:14px;color:#000;margin-left:20px;"><%=article.getPublishdate() %></span>
+	                </div>
+	            	<div class="article_details">
+	                	<h1 style="margin-left:20px;"><%=article.getTitle() %></h1>
+	                    <p style="margin-left:20px;"><%=article.getIntroduction() %></p><br/>
+						<span style="margin-left:20px;">阅读：<%=article.getClick_num() %>&emsp;|</span>
+	                    <span>评论：xxx&emsp;|</span>
+	                    <span>喜欢：<%=article.getLiked() %>&emsp;|</span>
+	                    <span>收藏：<%=article.getCollected() %></span>
+	            	</div>
+          	  </div>
+						
+					<%
+						j++;k++;}
+					%>
+				</ul>
+			</div>
+
+			<%} %>
+		</div>
+        <div class="m-style M-box" ></div>
     </div>
     <!--内容中部end-->
 </div>

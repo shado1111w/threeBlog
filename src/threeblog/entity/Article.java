@@ -15,7 +15,21 @@ public class Article {
 	private Date publishdate;
 	private String lable;
 	private String allpic;
+	private int liked;
+	private int collected;
 	
+	public int getCollected() {
+		return collected;
+	}
+	public void setCollected(int collected) {
+		this.collected = collected;
+	}
+	public int getLiked() {
+		return liked;
+	}
+	public void setLiked(int liked) {
+		this.liked = liked;
+	}
 	public String getAllpic() {
 		return allpic;
 	}

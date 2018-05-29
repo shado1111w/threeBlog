@@ -134,7 +134,7 @@ public class Publish extends HttpServlet {
 				File saveFile = new File(realFile);
 				try {
                     item.write(saveFile);// 把上传的内容写到一个文件中
-                    pub_fengmian="/travelNote/image/"+filename;
+                    pub_fengmian="/threeBlog/image/"+filename;
                 } catch (Exception e) {
                    //e.printStackTrace(); 
                    //String error=e.getMessage();

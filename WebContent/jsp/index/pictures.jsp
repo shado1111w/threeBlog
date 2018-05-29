@@ -1,5 +1,22 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="threeblog.entity.*" %>
+<%@ page import="threeblog.service.Service" %>
+<%@page import="java.util.ArrayList"%>
+<%
+	User user = new User();
+	Service service = new Service();
+	int user_id = 10240;
+	if (session.getAttribute("user_id") == null) {
+		response.setContentType("text/html;charset=utf-8");
+		response.getWriter().print("<script>alert(`会话过期，将重新登录！`)</script>");
+		String content = 0 + ";URL= " +request.getContextPath()+ "/jsp/login/sign_in.jsp";
+		response.setHeader("REFRESH ", content);
+	} else {
+		user_id = Integer.valueOf((String) session.getAttribute("user_id"));
+		user = service.getUserFromId(user_id);
+	}
+%>  
 <!DOCTYPE html>
 
 <head>
@@ -147,23 +164,16 @@ $(function() {
     	
 		<div class="content">
 			<div class="chroma-gallery mygallery">
-				<img src="${pageContext.request.contextPath}/images/thumbs/1.jpg" alt="Pic 1" data-largesrc="${pageContext.request.contextPath}/images/1.jpg">
-				<img src="${pageContext.request.contextPath}/images/thumbs/2.jpg" alt="Pic 2" data-largesrc="${pageContext.request.contextPath}/images/2.jpg">
-				<img src="${pageContext.request.contextPath}/images/thumbs/3.jpg" alt="Pic 3" data-largesrc="${pageContext.request.contextPath}/images/3.jpg">
-				<img src="${pageContext.request.contextPath}/images/thumbs/4.jpg" alt="Pic 4" data-largesrc="${pageContext.request.contextPath}/images/4.jpg">
-				<img src="${pageContext.request.contextPath}/images/thumbs/5.jpg" alt="Pic 5" data-largesrc="${pageContext.request.contextPath}/images/5.jpg">
-				<img src="${pageContext.request.contextPath}/images/thumbs/6.jpg" alt="Pic 6" data-largesrc="${pageContext.request.contextPath}/images/6.jpg">
-				<img src="${pageContext.request.contextPath}/images/thumbs/7.jpg" alt="Pic 7" data-largesrc="${pageContext.request.contextPath}/images/7.jpg">
-				<img src="${pageContext.request.contextPath}/images/thumbs/8.jpg" alt="Pic 8" data-largesrc="${pageContext.request.contextPath}/images/8.jpg">
-				<img src="${pageContext.request.contextPath}/images/thumbs/9.jpg" alt="Pic 9" data-largesrc="${pageContext.request.contextPath}/images/9.jpg">
-				<img src="${pageContext.request.contextPath}/images/thumbs/10.jpg" alt="Pic 10" data-largesrc="${pageContext.request.contextPath}/images/10.jpg">
-                <img src="${pageContext.request.contextPath}/images/thumbs/pic1.jpg" alt="Pic 10" data-largesrc="${pageContext.request.contextPath}/images/pic1.jpg">
-                <img src="${pageContext.request.contextPath}/images/thumbs/pic2.jpg" alt="Pic 10" data-largesrc="${pageContext.request.contextPath}/images/pic2.jpg">
-                <img src="${pageContext.request.contextPath}/images/thumbs/pic3.jpg" alt="Pic 10" data-largesrc="${pageContext.request.contextPath}/images/pic3.jpg">
-                <img src="${pageContext.request.contextPath}/images/thumbs/pic4.jpg" alt="Pic 10" data-largesrc="${pageContext.request.contextPath}/images/pic4.jpg">
-                <img src="${pageContext.request.contextPath}/images/thumbs/mao.jpg" alt="Pic 10" data-largesrc="${pageContext.request.contextPath}/images/mao.jpg">
-                 <img src="${pageContext.request.contextPath}/images/thumbs/mao3.jpg" alt="Pic 10" data-largesrc="${pageContext.request.contextPath}/images/mao3.jpg">
-                  <img src="${pageContext.request.contextPath}/images/thumbs/mao2.jpg" alt="Pic 10" data-largesrc="${pageContext.request.contextPath}/images/mao2.jpg">
+				<%
+					ArrayList<Article> articles = service.getAllArticles();
+					for (int i = 0; i < articles.size(); i++) {
+						Article article = articles.get(i);
+						int author_id = article.getAuthor_id();
+						User author = service.getUserFromId(author_id);
+						String fengmian=article.getPic();
+				%>
+				<img src="<%=fengmian %>" alt="<%=article.getAuthor() %><br> <%=article.getPublishdate() %><br>" data-largesrc="<%=fengmian %>">
+				<%} %>
 			</div>
 		</div>
 	
