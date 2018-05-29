@@ -1,5 +1,23 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="threeblog.entity.User" %>
+<%@ page import="threeblog.service.Service" %>
+<%
+	User user = new User();
+	Service service = new Service();
+	int user_id = 10240;
+	if (session.getAttribute("user_id") == null) {
+		response.setContentType("text/html;charset=utf-8");
+		response.getWriter().print("<script>alert(`会话过期，将重新登录！`)</script>");
+		String content = 0 + ";URL= " +request.getContextPath()+ "/jsp/login/sign_in.jsp";
+		response.setHeader("REFRESH ", content);
+	} else {
+		user_id = Integer.valueOf((String) session.getAttribute("user_id"));
+		user = service.getUserFromId(user_id);
+	}
+	String album= service.getAlbumFromUser_id(user_id);
+	String[] photos=album.split("#");
+%>   
 <!DOCTYPE html>
 
 <head>
@@ -80,7 +98,35 @@ $(function() {
 
 })
 </script>
+<script>
 
+$(document)
+.ready(
+		function() {	
+			for (var i=0; i<<%=photos.length%>; i++){  
+				$("[id=current_"+i+"]").bind("click", {index: i}, clickHandler);  
+		    }  
+		  
+		    function clickHandler(event) {  
+		        var i= event.data.index;  
+		        var photo=$("#current_"+i).attr("data");
+		        
+		        var url2="${pageContext.request.contextPath}/servlet/DeletePhoto";
+		        var args={
+		        		"photo" : photo,
+						"time" : new Date()
+		        }
+		        $.ajaxSettings.async = false; 
+		        $.get(url2, args,
+						function(data) {
+		        	$("#current"+i).remove();
+				}); 
+		       
+		        $.ajaxSettings.async = true; 
+		    }  
+		});
+
+</script>
 </head>
 
 <body>
@@ -89,16 +135,16 @@ $(function() {
   <div id="index_head_logo"> <img src="${pageContext.request.contextPath}/image/logo.png"> </div>
   <div id="index_head_menu">
     <ul>
-      <li><a href="#" >首页</a></li>
-      <li><a href="#" >博文</a></li>
-      <li><a href="#" >画廊</a></li>
-      <li><a href="#" >我的</a></li>
+    <li><a href="${pageContext.request.contextPath}/index.jsp" >首页</a></li>
+      <li><a href="${pageContext.request.contextPath}/jsp/index/blog.jsp" >博文</a></li>
+      <li><a href="${pageContext.request.contextPath}/jsp/index/pictures.jsp" >画廊</a></li>
+      <li><a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp" >我的</a></li>
     </ul>
   </div>
   <div id="index_head_tools"> 
   <ul>
   	<li>
-    	<a href="#">
+    	<a href="${pageContext.request.contextPath}/jsp/index/search.jsp">
         	<img  src="${pageContext.request.contextPath}/image/search.png" style="float:left;" />
        	</a> 
     </li>
@@ -122,10 +168,10 @@ $(function() {
         	<img src="${pageContext.request.contextPath}/image/setting.png"/>
         </a>
         <ul class="index_tools_setting">
-         	<li><a href="#home">&ensp;修改资料&ensp;</a></li>
-          	<li><a href="#home">&ensp;修改头像&ensp;</a></li>
-            <li><a href="#home">&ensp;更改密码&ensp;</a></li>
-            <li><a href="#home">&ensp;个人中心&ensp;</a></li>
+         		<li><a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp?id=5">&ensp;修改资料&ensp;</a></li>
+          	<li><a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp?id=5">&ensp;修改头像&ensp;</a></li>
+            <li><a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp?id=5">&ensp;更改密码&ensp;</a></li>
+            <li><a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp">&ensp;个人中心&ensp;</a></li>
             <li><a href="#home">&ensp;举报中心&ensp;</a></li>
             <li><a href="#home">&ensp;退出账号&ensp;</a></li>
          </ul>
@@ -157,59 +203,51 @@ $(function() {
     		</div>
     <script src="${pageContext.request.contextPath}/js/tinyImgUpload.js"></script> 
     <script>
-/*document.documentElement.style.fontSize = document.documentElement.clientWidth*0.1+'px';*/
-
-var options = {
-    path: '/',
-    onSuccess: function (res) {
-        console.log(res);
-    },
-    onFailure: function (res) {
-        console.log(res);
-    }
-}
-
-var upload = tinyImgUpload('#upload', options);
-document.getElementsByClassName('submit')[0].onclick = function (e) {
-    upload();
-}
-</script> 
+	/*document.documentElement.style.fontSize = document.documentElement.clientWidth*0.1+'px';*/
+	
+	var options = {
+		path: '${pageContext.request.contextPath}/servlet/AddPhoto',
+	    onSuccess: function (res) {
+	        console.log(res);
+	        location.reload();
+	    },
+	    onFailure: function (res) {
+	        console.log(res);
+	    }
+	}
+	
+	var upload = tinyImgUpload('#upload', options);
+	document.getElementsByClassName('submit')[0].onclick = function (e) {
+	    upload();
+	}
+	</script> 
     </div>
     <hr style="FILTER: alpha(opacity=100,finishopacity=0,style=3);    " width="90%" color=#999 SIZE=3>
     <div>
     <h1 style=" font-size:18px; width:960px; margin-left:40px;">&emsp;&emsp;删除图片</h1>
     <div>
         <ul>
-          <li style="list-style:none;">
-            <div style="width:280px;height:280px; float:left;margin:10px;"><img src="${pageContext.request.contextPath}/#" style="border:1px solid; width:280px;height:210px; ">
-              <button style="margin:0 100px;border:1px solid;font-size:24px; background-color:#FFF;">删除</button>
+           <%
+        	
+        	if (photos[0] != ""){
+        	%>
+        	<li id="current<%=0%>" style="list-style:none;" >
+            <div style="width:250px;height:300px; float:left;"><img src="<%=photos[0] %>" style="border:1px solid; width:220px;height:220px; margin:10px;">
+              <button id="current_<%=0 %>" data="<%=photos[0] %>#" style="margin:0 80px;border:1px solid;font-size:24px; background-color:#FFF;">删除</button>
+            </div>
+       	   </li>
+        	<% 
+        	for(int i=1;i<photos.length;i++){
+        %>
+          <li id="current<%=i%>" style="list-style:none;" >
+            <div style="width:250px;height:300px; float:left;"><img src="<%=photos[i] %>" style="border:1px solid; width:220px;height:220px; margin:10px;">
+              <button id="current_<%=i %>" data="#<%=photos[i] %>#" style="margin:0 80px;border:1px solid;font-size:24px; background-color:#FFF;">删除</button>
             </div>
           </li>
-           <li style="list-style:none;">
-            <div style="width:280px;height:280px; float:left;margin:10px;"><img src="${pageContext.request.contextPath}/#" style="border:1px solid; width:280px;height:210px; ">
-              <button style="margin:0 100px;border:1px solid;font-size:24px; background-color:#FFF;">删除</button>
-            </div>
-          </li>
-           <li style="list-style:none;">
-            <div style="width:280px;height:280px; float:left; margin:10px;"><img src="${pageContext.request.contextPath}/#" style="border:1px solid; width:280px;height:210px;">
-              <button style="margin:0 100px;border:1px solid;font-size:24px; background-color:#FFF;">删除</button>
-            </div>
-          </li>
-           <li style="list-style:none;">
-            <div style="width:280px;height:280px; float:left;margin:10px;"><img src="${pageContext.request.contextPath}/#" style="border:1px solid; width:280px;height:210px; ">
-              <button style="margin:0 100px;border:1px solid;font-size:24px; background-color:#FFF;">删除</button>
-            </div>
-          </li>
-           <li style="list-style:none;">
-            <div style="width:280px;height:280px; float:left;margin:10px;"><img src="${pageContext.request.contextPath}/#" style="border:1px solid; width:280px;height:210px; ">
-              <button style="margin:0 100px;border:1px solid;font-size:24px; background-color:#FFF;">删除</button>
-            </div>
-          </li>
-           <li style="list-style:none;">
-            <div style="width:280px;height:280px; float:left; margin:10px;"><img src="${pageContext.request.contextPath}/#" style="border:1px solid; width:280px;height:210px;">
-              <button style="margin:0 100px;border:1px solid;font-size:24px; background-color:#FFF;">删除</button>
-            </div>
-          </li> 
+      <%} 
+      }%>
+           
+           
         </ul>
       </div>
     

@@ -43,6 +43,7 @@ public class DeletePhoto extends HttpServlet {
 		Service service=new Service();
 		String album=service.getAlbumFromUser_id(id);
 		album=album.replace(photo, "#");
+		if(album.indexOf("#")==0) album=album.substring(1);
 		service.updateAlbumByUser_idAlbum(id, album);
 	}
 

@@ -72,7 +72,7 @@ public class AddPhoto extends HttpServlet {
 			File saveFile = new File(realFile);
 			try {
                 item.write(saveFile);// 把上传的内容写到一个文件中
-                String tString="/travelNote/image/"+filename+"#";
+                String tString="/threeBlog/image/"+filename+"#";
                 album=album+tString;
             } catch (Exception e) {
                //e.printStackTrace(); 

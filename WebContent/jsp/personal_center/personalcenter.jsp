@@ -248,11 +248,20 @@ function myfunction(){
         <!--相册栏begin-->
     <div id="othercenter_down"><br>
       <span style="font-size:24px; width:500px;margin-left:40px; font-weight:bold;">█ 我的图片</span>
-      <a href="upload_photoalbum.html"><span style="float:right; margin-right:100px; border:1px solid #39c; background-color:#39c
+      <a href="${pageContext.request.contextPath}/jsp/personal_center/upload_photoalbum.jsp"><span style="float:right; margin-right:100px; border:1px solid #39c; background-color:#39c
       ; color:#FFF; width:200px; font-size:20px; text-align:center; border-radius:5px;">上传/修改图片</span></a>
       <div style="width:960px; margin-left:30px;">
       <!-- 代码 开始 -->
 <div id="gallery2" class="gallery">
+		<%
+        	String album= service.getAlbumFromUser_id(user_id);
+        	String[] photos=album.split("#");
+        	if (photos[0] != ""){
+        	for(int i=0;i<photos.length;i++){
+        %>
+          <a href="<%=photos[i] %>" title="Caption for image A"><img src="<%=photos[i] %>" width="280" height="210" style="border:1px solid;  margin:10px;"></a>
+      <%} 
+      }%>
 	<a href="image/pic1.jpg" title="2018-05-04"><img src="${pageContext.request.contextPath}/image/pic1.jpg" width="280" height="210" style="border:1px solid;  margin:10px;"></a>
 	<a href="image/pic2.jpg" title="2018-05-04"><img src="${pageContext.request.contextPath}/image/pic2.jpg" width="280" height="210" style="border:1px solid;  margin:10px;"></a>
     <a href="image/pic3.jpg" title="2018-05-04"><img src="${pageContext.request.contextPath}/image/pic3.jpg" width="280" height="210" style="border:1px solid;  margin:10px;"></a>
