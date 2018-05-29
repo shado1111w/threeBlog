@@ -7,11 +7,15 @@
 <meta name="toTop" content="true">
 <title>发表博文</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/main.css" type="text/css"/>
+
 <link href="${pageContext.request.contextPath}/css/owl.carousel.css" rel="stylesheet">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/jquery-rebox.css"/>
 <script src="${pageContext.request.contextPath}/js/jquery-1.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/owl.carousel.js"></script>
+
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/city.js"></script>  
+
+<link rel="stylesheet" href="css/jquery-rebox.css"/>
+
 <script src="${pageContext.request.contextPath}/js/jquery-rebox.js"></script>
 
 <!--头部show的js-->
@@ -41,52 +45,34 @@ $(function() {
 });
 </script>
 
- <!--导航栏切换-->
+ <!--举报栏切换-->
 <script>
 	$(document).ready(function() {
-		$("#message_pinglun").click(function() {
-			$('#messagecenter_reviews') 
-			.load('${pageContext.request.contextPath}/jsp/message_center/messagecenter_reviews.jsp');
-			
+		$("#myreport").click(function() {
+			$('#report_details') 
+			.load('${pageContext.request.contextPath}/jsp/report_center/reportcenter_myreport.jsp');
 			})
-		$("#message_follow").click(function() {
-				$('#messagecenter_reviews')
-				.load('${pageContext.request.contextPath}/jsp/message_center/messagecenter_follow.jsp');
-				
+		$("#myillegal").click(function() {
+				$('#report_details')
+				.load('${pageContext.request.contextPath}/jsp/report_center/reportcenter_myillegal.jsp');
 				})
-		$("#message_favorite").click(function() {
-				$('#messagecenter_reviews') 
-				.load('${pageContext.request.contextPath}/jsp/message_center/messagecenter_favorite.jsp');
-				
-				})
-		$("#message_zan").click(function() {
-				$('#messagecenter_reviews') 
-				.load('${pageContext.request.contextPath}/jsp/message_center/messagecenter_zan.jsp');
-				
-			})
-		
+
 })
 </script>
 <script>
 function myfunction(){
-	$('#messagecenter_reviews') 
-	.load('${pageContext.request.contextPath}/jsp/message_center/messagecenter_reviews.jsp');
+	$('#report_details') 
+	.load('${pageContext.request.contextPath}/jsp/report_center/reportcenter_myreport.jsp');
 	<%String id = request.getParameter("id");%>
 	var id="<%=id%>";
 	if (id != null) {
 		if (id == "1") {
-			$('#messagecenter_reviews') 
-			.load('${pageContext.request.contextPath}/jsp/message_center/messagecenter_reviews.jsp');
+			$('#report_details') 
+			.load('${pageContext.request.contextPath}/jsp/report_center/reportcenter_myreport.jsp');
 		} else if (id == "2") {
-			$('#messagecenter_reviews')
-			.load('${pageContext.request.contextPath}/jsp/message_center/messagecenter_follow.jsp');
-		} else if (id == "3") {
-			$('#messagecenter_reviews') 
-			.load('${pageContext.request.contextPath}/jsp/message_center/messagecenter_favorite.jsp');
-		} else if (id == "4") {
-			$('#messagecenter_reviews') 
-			.load('${pageContext.request.contextPath}/jsp/message_center/messagecenter_zan.jsp');
-		}
+			$('#report_details')
+			.load('${pageContext.request.contextPath}/jsp/report_center/reportcenter_myillegal.jsp');
+		} 
 	}
 }
 </script>
@@ -149,46 +135,20 @@ function myfunction(){
     </ul>
   </div>
 </div>
-</div>
 
 <!--顶端栏end-->
 <!--内容框begin-->
 <div id="index_all">
-	<div id="messagecenter_all">
-    	<h1 style=" font-size:24px; width:960px; margin-left:40px;">█ 消息中心</h1>
-        <!--导航栏begin-->
-        <div  id="messagecenter_label">
-            	<ul>
-                	<li>
-                    <div style=" cursor:pointer;position:relative;">
-                    	<span id="message_pinglun">&emsp;&ensp;&emsp;评论消息&emsp;&ensp;&emsp;|</span><span  style="min-width: 20px;line-height:20px; text-align: center; position: absolute; background-color: #f00;  border-radius:15px; font-size:15px;color:#fff;width:10px;right:25px; top:5px; z-index:200;" >0</span></div>
-                    </li>
-                    
-                    <li>
-                    <div style=" cursor:pointer;position:relative;">
-                    	<span id="message_follow" >&emsp;&ensp;&emsp;关注消息&emsp;&ensp;&emsp;|</span><span  style="min-width: 20px;line-height:20px; text-align: center; position: absolute; background-color: #f00;  border-radius:15px; font-size:15px;color:#fff;width:10px;right:25px; top:5px; z-index:200;" >0</span>
-                    </div>
-                    </li>
-                    <li>
-                    <div style="  cursor:pointer;position:relative;">
-                    	<span  id="message_favorite">&emsp;&ensp;&emsp;收藏消息&emsp;&ensp;&emsp;|</span><span  style="min-width: 20px;line-height:20px; text-align: center; position: absolute; background-color: #f00;  border-radius:15px; font-size:15px;color:#fff;width:10px;right:25px; top:5px; z-index:200;" >0</span>
-                     </div>
-                    </li>
-                    <li>
-                    <div style="  cursor:pointer;position:relative;">
-                    	<span  id="message_zan">&emsp;&ensp;&emsp;点赞消息&emsp;&ensp;&emsp;</span><span  style="min-width: 20px;line-height:20px; text-align: center; position: absolute; background-color: #f00;  border-radius:15px; font-size:15px;color:#fff;width:10px;right:25px; top:5px; z-index:200;" >0</span>
-                    </div>
-                    </li>
-                </ul>
-            </div>
-           
-            <hr style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="100%" color=#999 SIZE=3>
-        <!--导航栏end-->
-         <!--评论消息begin--> 
-         <div id="messagecenter_reviews">
-         	
-         </div>
-    <!--评论消息end--> 
+	<div id="reportcenter_all">
+    	<h1 style=" font-size:24px; width:960px; margin-left:40px;">█ 举报中心</h1>
+            <div id="report_body"> &emsp;&emsp;&emsp; <span id="myreport" style="font-size:24px; font-weight:bold; margin-left:30px; width:150px; cursor:pointer;">我的举报&emsp;|</span><span id="myillegal" style="font-size:24px; font-weight:bold; margin-left:30px; width:250px; cursor:pointer;">我的违规</span>
+      <div id="report_details" style="border:2px;border-style:solid;width:960px;margin-top:20px;background-color:#FFF;">
+       
+            	
+        
+      </div>
+      
+    </div>  
     </div>
 </div>
 <!--内容框end-->

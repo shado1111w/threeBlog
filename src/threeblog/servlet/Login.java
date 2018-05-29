@@ -6,6 +6,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import threeblog.entity.User;
 import threeblog.service.Service;
@@ -64,6 +65,9 @@ public class Login extends HttpServlet {
 		if(b){
 			int user_id=service.getIdFromPhonenum(phonenum);
 			request.getSession().setAttribute("user_id",Integer.toString(user_id));
+			//HttpSession session=request.getSession();
+			//String sessionid=session.getId();
+			//request.getSession().setAttribute("sessionid", sessionid);
 			response.setContentType("text/html;charset=utf-8");
 			String   content=0+ ";URL= "+li_url; 
 			response.setHeader( "REFRESH ",content);

@@ -153,10 +153,10 @@ $(function(){
 	<div id="index_all">
 		<!--左侧栏begin-->
 		<div id="article_left">
-			<h2 style="width: 820px; font-weight: bold; margin-left: 70px;">我们是时间的旅行者</h2>
-			<img src="<%=author.getTouxiang()%>"
-				style="width: 40px; height: 40px; border-radius: 20px; float: left; margin-left: 70px;" />
-			<span style="float: left; margin-top: 10px; margin-left: 5px;"><%=author.getUsername()%></span>
+			<h2 style="width: 820px; font-weight: bold; margin-left: 70px;"><%=article.getTitle() %></h2>
+			<a href="${pageContext.request.contextPath}/jsp/other_center/otherscenter.jsp?id=<%=author.getId()%>"><img src="<%=author.getTouxiang()%>"
+				style="width: 40px; height: 40px; border-radius: 20px; float: left; margin-left: 70px;" /></a>
+			<a style="color:#000" href="${pageContext.request.contextPath}/jsp/other_center/otherscenter.jsp?id=<%=author.getId()%>"><span style="float: left; margin-top: 10px; margin-left: 5px;"><%=author.getUsername()%></span></a>
 			<span style="float: left; margin-top: 10px; margin-left: 20px;"><%=article.getPublishdate()%></span>
 			<span style="float: left; margin-top: 10px; margin-left: 20px;"><%=article.getLable()%></span>
 			<span style="float: left; margin-top: 10px; margin-left: 20px;">阅读&ensp;<%=article.getClick_num()%></span><br>
@@ -316,9 +316,9 @@ $(function(){
 
 				});
 				</script>
-				<img
+				<a href="${pageContext.request.contextPath }/jsp/report_center/reportcenter_article.jsp?article_id=<%=article.getId()%>"><img
 					src="${pageContext.request.contextPath}/image/report.png"
-					style="cursor:pointer;width: 25px; float: left; margin-left: 35px;" title="举报">
+					style="width: 25px; float: left; margin-left: 35px;" title="举报"></a>
 					<span
 					style="margin-right: 105px; float: right; font-size: 18px; color: #666;">举报</span>
 			</div>
@@ -361,7 +361,7 @@ $(function(){
 								<div class="pl-text clearfix">
 									<!--用户名-->
 									<a href="${pageContext.request.contextPath}/login_jsp/otherscenter.jsp?id=<%=comment.getAuthor_id()%>" class="comment-size-name"
-										data="<%=comment.getId()%>"><%=comment_author.getUsername()%>: </a>
+										data="<%=comment.getId()%>"><%=comment_author.getUsername()%> : </a>
 									<!--评论内容 -->
 									<span class="my-pl-con"><%=comment.getText()%></span>
 								</div>
@@ -391,7 +391,7 @@ $(function(){
 
 									<div class="all-pl-con">
 										<div class="pl-text hfpl-text clearfix">
-											<a href="${pageContext.request.contextPath}/login_jsp/otherscenter.jsp?id=<%=answer.getAuthor_id()%>" class="comment-size-name" data="<%=answer.getId()%>"><%=answer_author.getUsername() %>: </a> <span class="my-pl-con"> &nbsp;<%=answer.getText() %>
+											<a href="${pageContext.request.contextPath}/login_jsp/otherscenter.jsp?id=<%=answer.getAuthor_id()%>" class="comment-size-name" data="<%=answer.getId()%>"><%=answer_author.getUsername() %> : </a> <span class="my-pl-con"> &nbsp;<%=answer.getText() %>
 											</span>
 										</div>
 										<div class="date-dz">
@@ -599,7 +599,8 @@ $(function(){
 										
 										}
 										var username="<%=user.getUsername()%>"+" : ";
-			
+										
+										
 										if(oHfName==username){
 											alert("想对自己说什么话，憋在心里就好了");
 											oThis

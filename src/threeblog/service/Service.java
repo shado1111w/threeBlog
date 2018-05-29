@@ -82,8 +82,8 @@ public class Service {
 	public int regeditUser(User user){
 		int flag;
 		DbConMysql db=new DbConMysql();
-		String sql="insert into t_user(phonenum,username,password)"
-				+ " values ('"+user.getPhonenum()+"','"+user.getUsername()+"','"+user.getPassword()+"')";
+		String sql="insert into t_user(phonenum,username,password,register_time)"
+				+ " values ('"+user.getPhonenum()+"','"+user.getUsername()+"','"+user.getPassword()+"','"+user.getRegister_time()+"')";
 		
 		flag=db.insert(sql);
 		
@@ -281,6 +281,23 @@ public class Service {
 		}
 		return b;
 	}
+	//获取所有用户数量
+	public int getAllUserNum(){
+		int allUserNum=0;
+		DbConMysql db=new DbConMysql();
+		String sql="select * from t_user";
+		ResultSet rs=db.getQuery(sql);
+		try{
+			while(rs.next()){
+				allUserNum++;
+			}
+		}catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return allUserNum;
+	}
+	
 	
 	//*************************************************************
 	
@@ -565,7 +582,25 @@ public class Service {
 						+"' WHERE id='"+article.getId()+"'";
 				db.update(sql);
 			}
-	
+	//通过用户唯一id获取其发表的所有文章的数量
+	public int getMyArticleNum(int author_id){
+			
+			int myArticleNum=0;
+			DbConMysql db=new DbConMysql();
+			String sql="select * from t_Article where author_id='"+String.valueOf(author_id)+"'";
+			ResultSet rs=db.getQuery(sql);
+			try {
+				while(rs.next()){
+					myArticleNum++;
+					
+				}
+					
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return myArticleNum;
+		}
 	
 	//*************************************************************
 	

@@ -194,7 +194,7 @@ $(document)
 	            	<span>手 机 号 ：</span>
 	            	<input type="text" id="zh" name="phonenum" style="height:23px;width:325px;margin-left:8px;" required ><br><br>
 	            	<span>用 户 名 ：</span>
-	            	<input type="text" id="username" name="username" style="height:23px;width:325px;margin-left:8px;" placeholder="注册后不可修改！" required ><br><br>
+	            	<input type="text" id="username" name="username" style="height:23px;width:325px;margin-left:8px;" placeholder="注册后不可修改!!" required ><br><br>
 	                <span>验 证 码 ：</span> 
 	                <input type="text" id="yzm" name="ranks" style="height:23px;width:235px;margin-left:8px;" required> 
 	                  <a href="javascript:;" method="post"

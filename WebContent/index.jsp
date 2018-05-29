@@ -17,6 +17,7 @@
 		user = service.getUserFromId(user_id);	
 	}
 	ArrayList<Article> articles=service.getAllArticlesOrderByClicknumDESC();
+	int allUserNum=service.getAllUserNum();
 %>   
 <!DOCTYPE html>
 <html>
@@ -108,17 +109,17 @@ $(function(){
        	</a> 
     </li>
     <li>
-    	<a href="#">
+    	<a href="javascript:;">
         	<div style="float:left; position:relative;">
     			<img src="${pageContext.request.contextPath}/image/message.png"/>
                 	<span  style="min-width: 20px;line-height:20px; text-align: center; position: absolute; background-color: #f00;  border-radius:15px; font-size:15px;color:#fff;width:10px;right:10px; top:15px; z-index:200;" >0</span>
              </div>
          </a> 
          <ul class="index_tools_messages">
-         	<li><a href="#home">评论消息</a><span  style="min-width: 20px;line-height:20px; text-align: center; position: absolute; background-color: #f00;  border-radius:15px; font-size:15px;color:#fff;width:10px;right:5px; top:20px; z-index:200;" >0</span></li>
-          	<li><a href="#home">关注消息</a><span  style="min-width: 20px;line-height:20px; text-align: center; position: absolute; background-color: #f00;  border-radius:15px; font-size:15px;color:#fff;width:10px;right:5px; top:80px; z-index:200;" >0</span></li>
-            <li><a href="#home">收藏消息</a><span  style="min-width: 20px;line-height:20px; text-align: center; position: absolute; background-color: #f00;  border-radius:15px; font-size:15px;color:#fff;width:10px;right:5px; top:140px; z-index:200;" >0</span></li>
-            <li><a href="#home">点赞消息</a><span  style="min-width: 20px;line-height:20px; text-align: center; position: absolute; background-color: #f00;  border-radius:15px; font-size:15px;color:#fff;width:10px;right:5px; top:200px; z-index:200;" >0</span></li>
+         	<li><a href="${pageContext.request.contextPath}/jsp/message_center/messagecenter.jsp">评论消息</a><span  style="min-width: 20px;line-height:20px; text-align: center; position: absolute; background-color: #f00;  border-radius:15px; font-size:15px;color:#fff;width:10px;right:5px; top:20px; z-index:200;" >0</span></li>
+          	<li><a href="${pageContext.request.contextPath}/jsp/message_center/messagecenter.jsp?id=2">关注消息</a><span  style="min-width: 20px;line-height:20px; text-align: center; position: absolute; background-color: #f00;  border-radius:15px; font-size:15px;color:#fff;width:10px;right:5px; top:80px; z-index:200;" >0</span></li>
+            <li><a href="${pageContext.request.contextPath}/jsp/message_center/messagecenter.jsp?id=3">收藏消息</a><span  style="min-width: 20px;line-height:20px; text-align: center; position: absolute; background-color: #f00;  border-radius:15px; font-size:15px;color:#fff;width:10px;right:5px; top:140px; z-index:200;" >0</span></li>
+            <li><a href="${pageContext.request.contextPath}/jsp/message_center/messagecenter.jsp?id=4">点赞消息</a><span  style="min-width: 20px;line-height:20px; text-align: center; position: absolute; background-color: #f00;  border-radius:15px; font-size:15px;color:#fff;width:10px;right:5px; top:200px; z-index:200;" >0</span></li>
             <li><a href="#home">举报消息</a><span  style="min-width: 20px;line-height:20px; text-align: center; position: absolute; background-color: #f00;  border-radius:15px; font-size:15px;color:#fff;width:10px;right:5px; top:265px; z-index:200;" >0</span></li>
          </ul>
     </li>
@@ -131,7 +132,7 @@ $(function(){
           	<li><a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp?id=5">&ensp;修改头像&ensp;</a></li>
             <li><a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp?id=5">&ensp;更改密码&ensp;</a></li>
             <li><a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp">&ensp;个人中心&ensp;</a></li>
-            <li><a href="#home">&ensp;举报中心&ensp;</a></li>
+            <li><a href="${pageContext.request.contextPath}/jsp/report_center/reportcenter.jsp">&ensp;举报中心&ensp;</a></li>
             <li><a href="#home">&ensp;退出账号&ensp;</a></li>
          </ul>
     </li>
@@ -154,7 +155,7 @@ $(function(){
         	<h2 style="font-size:28px;margin:20px 10px;color:#FFF;">记录生活，分享快乐。</h2>
             <span style="font-size:28px;margin:25px 15px;color:#FFF;">Life is short,</span><br/>
             <span style="font-size:28px;margin:25px 15px;color:#FFF;">have some pride.</span><br/><br/>
-            <span style="color:#FFF;margin-left:15px;">已经有xxx位朋友</span><br/>
+            <span style="color:#FFF;margin-left:15px;">已经有<%=allUserNum %>位朋友</span><br/>
              <span style="color:#FFF;margin-left:15px;">在这里</span><br/>
               <span style="color:#FFF;margin-left:15px;">留下他们生活的剪影</span>
     	</div>
@@ -184,7 +185,7 @@ $(function(){
             	<h3 style="margin-left:20px;padding-top:20px;">█ 指路牌</h3>
                 <a href="${pageContext.request.contextPath}/jsp/index/blog.jsp"><span style="margin-left:20px;color:#000;">博客文章欣赏</span></a><br/><br/>
                 <a href="${pageContext.request.contextPath}/jsp/index/pictures.jsp"><span style="margin-left:20px;margin-top:20px;color:#000;">博客图片画廊</span></a><br /><br/>
-                <a href="#"><span style="margin-left:20px;margin-top:20px;color:#000;">博客举报中心入口</span></a>
+                <a href="${pageContext.request.contextPath}/jsp/report_center/reportcenter.jsp"><span style="margin-left:20px;margin-top:20px;color:#000;">博客举报中心入口</span></a>
             </div>
         </div>
         
@@ -244,8 +245,8 @@ $(function(){
 	                    <span style="font-size:14px;color:#000;margin-left:20px;"><%=article.getPublishdate() %></span>
 	                </div>
 	            	<div class="article_details">
-	                	<h1 style="margin-left:20px;"><%=article.getTitle() %></h1>
-	                    <p style="margin-left:20px;"><%=article.getIntroduction() %></p><br/>
+	                	<a style="color:#000" href="${pageContext.request.contextPath}/jsp/article/article.jsp?id=<%=article.getId()%>"><h1 style="margin-left:20px;"><%=article.getTitle() %></h1></a>
+	                    <a style="color:#000" href="${pageContext.request.contextPath}/jsp/article/article.jsp?id=<%=article.getId()%>"><p style="margin-left:20px;"><%=article.getIntroduction() %></p></a><br/>
 						<span style="margin-left:20px;">阅读：<%=article.getClick_num() %>&emsp;|</span>
 	                    <span>评论：xxx&emsp;|</span>
 	                    <span>喜欢：<%=article.getLiked() %>&emsp;|</span>

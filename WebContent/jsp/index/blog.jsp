@@ -106,7 +106,7 @@ $(function() {
     <div id="index_body_right">
     	<div id="index_body_enter">
         	<div id="index_body_enter_write">
-            	<a href="#"><img src="${pageContext.request.contextPath}/image/write.png" style="float:left;">
+            	<a href="${pageContext.request.contextPath}/jsp/article/publish.jsp"><img src="${pageContext.request.contextPath}/image/write.png" style="float:left;">
                 <div style="margin-top:10px;width:260px;height:30px;float:left;">
                 	<span style="font-size:18px;font-weight:bold;color:#000;">写博文</span>&emsp;
                     <span style="font-size:18px;font-weight:bold;color:#999;">|&emsp;记录你生活的剪影</span>

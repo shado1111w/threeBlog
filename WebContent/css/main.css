@@ -718,3 +718,26 @@ table,table tr th, table tr td {
 	width:960px;
 	text-align:center;
 	}
+	
+#managecenter_all{
+	background-color:#FFF;
+	margin-top:100px;
+	float:left;
+	margin-left:70px;
+	width:960px;
+	}
+#managecenter_label{
+	width:960px;
+	height:40px;
+	clear:both; 
+	margin-top:50px;}
+#managecenter_label span{
+	font-size:24px;
+	color:#666;}
+#managecenter_label li:hover{
+	
+	background-color:#FC9;}
+#managecenter_label ul li{
+	height:40px;
+	list-style:none;
+	float:left;}

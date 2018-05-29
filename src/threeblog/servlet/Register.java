@@ -1,6 +1,8 @@
 package threeblog.servlet;
 
 import java.io.IOException;
+import java.util.Date;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -59,7 +61,9 @@ public class Register extends HttpServlet {
 		user.setUsername(username);
 		user.setPhonenum(phonenum);
 		user.setPassword(password);
-		
+		Date now =new Date();
+		java.sql.Date register_time=new java.sql.Date(now.getTime());
+		user.setRegister_time(register_time);
 		
 		Service service=new Service();
 		int flag=service.regeditUser(user);
