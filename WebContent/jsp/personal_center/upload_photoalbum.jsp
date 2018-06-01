@@ -292,7 +292,7 @@ $(document)
      </div>
   <span style="color:#FFF; font-size:36px;float:left; margin-top:15px;"> |</span>
   <div id="index_head_signin">
-    <ul>
+    
      <%if(login_flag){ %>
     <a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp" style=" float:left;background-color:#FFF; width:55px;height:55px;margin:10px; position:relative;padding-top:5px; padding-left:5px;"><img src="<%=user.getTouxiang() %>"  style="width:50px;height:50px;"/></a><a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp"><span style="width:90px;height:48px;overflow:hidden;float:left;margin-top:20px; font-size:18px; color:#FFF;"><%=user.getUsername() %></span></a>
     <%}else{ %>
@@ -301,7 +301,7 @@ $(document)
       <li><a href="${pageContext.request.contextPath}/jsp/login/sign_in.jsp">登录</a></li>
     </ul>
     <%} %>
-    </ul>
+
   </div>
 </div>
 </div>
