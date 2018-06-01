@@ -1,27 +1,28 @@
 package threeblog.servlet;
 
 import java.io.IOException;
+import java.sql.Date;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import threeblog.entity.Article;
-import threeblog.entity.Collect;
+import threeblog.entity.Follow;
 import threeblog.service.Service;
 
 /**
- * Servlet implementation class DeleteCollect
+ * Servlet implementation class AddFollow
  */
-@WebServlet("/DeleteCollect")
-public class DeleteCollect extends HttpServlet {
+@WebServlet("/AddFollow")
+public class AddFollow extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public DeleteCollect() {
+    public AddFollow() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -39,15 +40,20 @@ public class DeleteCollect extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		int collect_id=Integer.valueOf(request.getParameter("collect_id"));
+		int following_id=Integer.valueOf(request.getParameter("following_id"));
+		int follower_id=Integer.valueOf(request.getParameter("follower_id"));
+		String status=request.getParameter("status");
+		java.util.Date now=new java.util.Date();
+		Date follow_date=new java.sql.Date(now.getTime());
+		Follow follow=new Follow();
+		follow.setFollowing_id(following_id);
+		follow.setFollower_id(follower_id);
+		follow.setFollow_date(follow_date);
 		Service service=new Service();
-		Collect collect=service.getCollectFromId(collect_id);
-		Article article=service.getArticleFromId(collect.getArticle_id());
-		int newCollected=article.getCollected();
-		newCollected--;
-		article.setCollected(newCollected);
-		service.updateArticleCollected(article);
-		service.deleteCollectRecord(collect_id);
+		if(status.equals("¹Ø×¢"))
+			service.addFollowRecord(follow);
+		else
+			service.deleteFollowRecord(follow);
 	}
 
 }

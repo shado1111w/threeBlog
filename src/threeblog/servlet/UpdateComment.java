@@ -7,21 +7,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import threeblog.entity.Article;
-import threeblog.entity.Collect;
+import threeblog.entity.Comment;
+import threeblog.entity.Report;
 import threeblog.service.Service;
 
 /**
- * Servlet implementation class DeleteCollect
+ * Servlet implementation class UpdateComment
  */
-@WebServlet("/DeleteCollect")
-public class DeleteCollect extends HttpServlet {
+@WebServlet("/UpdateComment")
+public class UpdateComment extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public DeleteCollect() {
+    public UpdateComment() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -39,15 +39,14 @@ public class DeleteCollect extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		int collect_id=Integer.valueOf(request.getParameter("collect_id"));
+		int content_id=Integer.valueOf(request.getParameter("content_id"));
+		String status=request.getParameter("status");
 		Service service=new Service();
-		Collect collect=service.getCollectFromId(collect_id);
-		Article article=service.getArticleFromId(collect.getArticle_id());
-		int newCollected=article.getCollected();
-		newCollected--;
-		article.setCollected(newCollected);
-		service.updateArticleCollected(article);
-		service.deleteCollectRecord(collect_id);
+		Comment comment=new Comment();
+		comment.setId(content_id);
+		comment.setStatus(status);
+		
+		service.updateCommentStatus(comment);
 	}
 
 }

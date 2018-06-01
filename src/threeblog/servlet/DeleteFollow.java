@@ -7,21 +7,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import threeblog.entity.Article;
-import threeblog.entity.Collect;
-import threeblog.service.Service;
+import threeblog.entity.Follow;
+import threeblog.service.*;
 
 /**
- * Servlet implementation class DeleteCollect
+ * Servlet implementation class DeleteFollow
  */
-@WebServlet("/DeleteCollect")
-public class DeleteCollect extends HttpServlet {
+@WebServlet("/DeleteFollow")
+public class DeleteFollow extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public DeleteCollect() {
+    public DeleteFollow() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -39,15 +38,13 @@ public class DeleteCollect extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		int collect_id=Integer.valueOf(request.getParameter("collect_id"));
+		int following_id=Integer.valueOf(request.getParameter("following_id"));
+		int follower_id=Integer.valueOf(request.getParameter("follower_id"));
+		Follow follow=new Follow();
+		follow.setFollowing_id(following_id);
+		follow.setFollower_id(follower_id);
 		Service service=new Service();
-		Collect collect=service.getCollectFromId(collect_id);
-		Article article=service.getArticleFromId(collect.getArticle_id());
-		int newCollected=article.getCollected();
-		newCollected--;
-		article.setCollected(newCollected);
-		service.updateArticleCollected(article);
-		service.deleteCollectRecord(collect_id);
+		service.deleteFollowRecord(follow);
 	}
 
 }

@@ -4,18 +4,7 @@
 <%@ page import="threeblog.service.Service" %>
 <%@page import="java.util.ArrayList"%>
 <%
-	User user = new User();
 	Service service = new Service();
-	int user_id = 10240;
-	if (session.getAttribute("user_id") == null) {
-		response.setContentType("text/html;charset=utf-8");
-		response.getWriter().print("<script>alert(`会话过期，将重新登录！`)</script>");
-		String content = 0 + ";URL= " +request.getContextPath()+ "/jsp/login/sign_in.jsp";
-		response.setHeader("REFRESH ", content);
-	} else {
-		user_id = Integer.valueOf((String) session.getAttribute("user_id"));
-		user = service.getUserFromId(user_id);	
-	}
 	ArrayList<Article> articles=service.getAllArticles();
 %>  
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -86,7 +75,7 @@ $(function(){
 				<div class="article_n">
 	        		<div class="article_pic">
 	            		<img  src="<%=article.getPic() %>" style="width:200px;height:150px;">
-	                    <span style="font-size:14px;color:#000;margin-left:20px;"><%=article.getAuthor() %></span><br/>
+	                    <a href="${pageContext.request.contextPath }/jsp/other_center/otherscenter.jsp?id=<%=author.getId() %>"><span style="font-size:14px;color:#000;margin-left:20px;"><%=article.getAuthor() %></span></a><br/>
 	                    <span style="font-size:14px;color:#000;margin-left:20px;"><%=article.getPublishdate() %></span>
 	                </div>
 	            	<div class="passages_details">
@@ -98,7 +87,7 @@ $(function(){
 					</div>
                     <div style="margin-top:10px; float:right;">
 					<span >阅读：<%=article.getClick_num() %>&emsp;|</span>
-                    <span>评论：xxx&emsp;|</span>
+                    <span>评论：<%=article.getComment_num() %>&emsp;|</span>
                     <span>喜欢：<%=article.getLiked() %>&emsp;|</span>
                     <span style="margin-right:65px;">收藏：<%=article.getCollected() %></span>
                     </div>

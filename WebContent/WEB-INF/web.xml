@@ -150,12 +150,12 @@
     <url-pattern>/servlet/AddZanToAnswer</url-pattern>
   </servlet-mapping>
   <servlet>
-    <servlet-name>DeleteMessage</servlet-name>
-    <servlet-class>threeblog.servlet.DeleteMessage</servlet-class>
+    <servlet-name>UpdateMessage</servlet-name>
+    <servlet-class>threeblog.servlet.UpdateMessage</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>DeleteMessage</servlet-name>
-    <url-pattern>/servlet/DeleteMessage</url-pattern>
+    <servlet-name>UpdateMessage</servlet-name>
+    <url-pattern>/servlet/UpdateMessage</url-pattern>
   </servlet-mapping>
   <servlet>
     <servlet-name>AddPhoto</servlet-name>
@@ -229,6 +229,85 @@
     <servlet-name>AddCollected</servlet-name>
     <url-pattern>/servlet/AddCollected</url-pattern>
   </servlet-mapping>
-  
+  <servlet>
+    <servlet-name>AddFollow</servlet-name>
+    <servlet-class>threeblog.servlet.AddFollow</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AddFollow</servlet-name>
+    <url-pattern>/servlet/AddFollow</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>DeleteFollow</servlet-name>
+    <servlet-class>threeblog.servlet.DeleteFollow</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DeleteFollow</servlet-name>
+    <url-pattern>/servlet/DeleteFollow</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>UpdateFollow</servlet-name>
+    <servlet-class>threeblog.servlet.UpdateFollow</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UpdateFollow</servlet-name>
+    <url-pattern>/servlet/UpdateFollow</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>UpdateCollect</servlet-name>
+    <servlet-class>threeblog.servlet.UpdateCollect</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UpdateCollect</servlet-name>
+    <url-pattern>/servlet/UpdateCollect</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>UpdateZan</servlet-name>
+    <servlet-class>threeblog.servlet.UpdateZan</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UpdateZan</servlet-name>
+    <url-pattern>/servlet/UpdateZan</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>UpdateReport</servlet-name>
+    <servlet-class>threeblog.servlet.UpdateReport</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UpdateReport</servlet-name>
+    <url-pattern>/servlet/UpdateReport</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>UpdateArticle</servlet-name>
+    <servlet-class>threeblog.servlet.UpdateArticle</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UpdateArticle</servlet-name>
+    <url-pattern>/servlet/UpdateArticle</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>UpdateComment</servlet-name>
+    <servlet-class>threeblog.servlet.UpdateComment</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UpdateComment</servlet-name>
+    <url-pattern>/servlet/UpdateComment</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>UpdateAnswer</servlet-name>
+    <servlet-class>threeblog.servlet.UpdateAnswer</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UpdateAnswer</servlet-name>
+    <url-pattern>/servlet/UpdateAnswer</url-pattern>
+  </servlet-mapping>
+   <servlet>
+    <servlet-name>UpdateUser</servlet-name>
+    <servlet-class>threeblog.servlet.UpdateUser</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UpdateUser</servlet-name>
+    <url-pattern>/servlet/UpdateUser</url-pattern>
+  </servlet-mapping>
   
 </web-app>

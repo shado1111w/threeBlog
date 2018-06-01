@@ -7,6 +7,20 @@ public class Collect {
 	private int user_id;
 	private int article_id;
 	private Date collectdate;
+	private int author_id;
+	private String status;
+	public int getAuthor_id() {
+		return author_id;
+	}
+	public void setAuthor_id(int author_id) {
+		this.author_id = author_id;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
 	public Date getCollectdate() {
 		return collectdate;
 	}

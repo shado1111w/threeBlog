@@ -5,18 +5,12 @@
 <%@ page import="threeblog.entity.Article" %>
 <%@ page import="threeblog.service.Service" %>
 <%
-	int author_id = 10240;
-	if (session.getAttribute("user_id") == null) {
-		response.setContentType("text/html;charset=utf-8");
-		response.getWriter().print("<script>alert(`会话过期，将重新登录！`)</script>");
-		String content = 0 + ";URL= " + "../jichu/login.jsp";
-		response.setHeader("REFRESH ", content);
-	} else {
-		author_id = Integer.valueOf((String) session.getAttribute("user_id"));
-	}
+	int user_id = 10240;
+	user_id = Integer.valueOf((String) session.getAttribute("user_id"));
+
 	ArrayList<Article> articles = new ArrayList<Article>();
 	Service service = new Service();
-	articles = service.getArticlesFromId(author_id);
+	articles = service.getArticlesFromId(user_id);
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -32,7 +26,7 @@
         	<div id="othercenter_info">
             	<br/>
         		 <span style="font-size:24px; width:500px;margin-left:40px; font-weight:bold;">█ 我的博文</span>
-                  <a href="#"><span style="font-size:20px; width:100px;margin-right:30px; font-weight:bold; float:right; color:#000;">+写博文</span></a><br/><br/>
+                  <a href="${pageContext.request.contextPath}/jsp/article/publish.jsp"><span style="font-size:20px; width:100px;margin-right:30px; font-weight:bold; float:right; color:#000;">+写博文</span></a><br/><br/>
             	<table class="zebra">
     <thead>
     <tr>
@@ -61,7 +55,7 @@
 							<td><%=i + 1%></td>
 							<td><%=article.getTitle()%></td>
 							<td><%=article.getPublishdate()%></td>
-							 <td><a href="${pageContext.request.contextPath}/jsp/article/article.jsp?id=<%=article.getId() %>" target="_blank"><span>查看&emsp;</span></a><span>删除</span>
+							 <td><a href="${pageContext.request.contextPath}/jsp/article/article.jsp?id=<%=article.getId() %>" target="_blank"><span>查看&emsp;</span></a>
 		</td>
 
 						</tr>

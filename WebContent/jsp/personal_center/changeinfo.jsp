@@ -57,6 +57,32 @@
 				})();  
 	}
 </script>
+
+<script type="text/javascript">
+	$(document)
+	.ready(
+			function() {
+				
+				$("#age")
+						.blur(
+								function() {
+									var age = $("#age").val();
+									if(age!=""){
+										if(age<=0||age>150){
+											
+										
+												alert("这不可能是人类的年龄！");
+												$("#age").val("");
+												$("#age").focus();
+									
+											
+										}
+									}
+								});
+			});
+
+	
+</script>
 </head>
 
 <body >
@@ -125,7 +151,7 @@
                 </select>   <br><br>
                 <span style="font-size:20px; margin-left:100px;">年&ensp;&ensp;&ensp;&ensp;龄：</span>
                 
-                <input type="text" value="<%=user.getAge()%>"id="age" name="age" style=" border:1x solid #000;"><br><br>
+                <input type="text" value="<%=user.getAge()%>" id="age" name="age" style=" border:1x solid #000;" required><br><br>
                 <span style="font-size:20px; margin-left:100px;">所在地区：</span>
                	<select id="province" name="province" ></select>  
 				<select id="city" name="city"></select>
@@ -159,7 +185,7 @@
    					})();  
 				</script>
 				<br><br>
-                <span style="font-size:20px; margin-left:100px;">个人简介：</span><br><textarea id="introduction" name="introduction" style=" margin-left:200px;width:250px; height:170px; resize:none;" placeholder="一句话介绍你自己！"><%=user.getIntroduction() %></textarea>
+                <span style="font-size:20px; margin-left:100px;">个人简介：</span><br><textarea id="introduction" name="introduction" style=" margin-left:200px;width:250px; height:170px; resize:none;" placeholder="一句话介绍你自己！" required><%=user.getIntroduction() %></textarea>
                 </div>
                 <div style="clear:both; width:960px;">
                 <input type="submit" value="保存" style="background-color:#39f; border:1px solid #39f; font-size:24px; color:#FFF; margin-left:350px; margin-top:50px;"/>
@@ -173,9 +199,9 @@
             	<h1 style=" font-size:24px; width:920px; margin-left:40px;">█ 密码更改</h1>
                 <div style="width:500px; margin:30px auto;">
                 <form action="${pageContext.request.contextPath}/servlet/ChangePassword" method="post">
-                <span style="font-size:20px;margin-left:100px; ">原&ensp;密&ensp;码：</span><input  id="password" type="password" style="border:1px solid;font-size:20px;"><br><br>
-                <span style="font-size:20px; margin-left:100px;">新&ensp;密&ensp;码：</span><input id="xmm" name="password" type="password" style="border:1px solid;font-size:20px;"><br><br>
-                <span style="font-size:20px; margin-left:100px;">确认密码：</span><input type="password" id="zcsrmm" style="border:1px solid;font-size:20px;"><br><br>
+                <span style="font-size:20px;margin-left:100px; ">原&ensp;密&ensp;码：</span><input  id="password" type="password" style="border:1px solid;font-size:20px;" required><br><br>
+                <span style="font-size:20px; margin-left:100px;">新&ensp;密&ensp;码：</span><input id="xmm" name="password" type="password" style="border:1px solid;font-size:20px;" required><br><br>
+                <span style="font-size:20px; margin-left:100px;">确认密码：</span><input type="password" id="zcsrmm" style="border:1px solid;font-size:20px;" required><br><br>
                 <input type="submit" value="保存" style="background-color:#39f; border:1px solid #39f; font-size:24px; color:#FFF; margin-left:200px; margin-top:20px;"/>
                 <input type="reset" value="取消" style="background-color:#999; border:1px solid #ccc; font-size:24px; color:#FFF; margin-left:80px; margin-top:20px;"/>
                 </form>

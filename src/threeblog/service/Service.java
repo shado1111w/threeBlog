@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
+import org.eclipse.jdt.internal.compiler.ast.ReturnStatement;
 
 import threeblog.db.*;
 import threeblog.entity.*;
@@ -297,10 +298,168 @@ public class Service {
 		}
 		return allUserNum;
 	}
+	//更新登录时间
+	public void updateLastLoginTime(int user_id,Date last_login_time){
+		DbConMysql db=new DbConMysql();
+		String sql="update t_user set last_login_time='"+last_login_time+"'where id='"+user_id+"'";
+		db.update(sql);
+		
+	}
+	//返回今天注册的用户
+	public int getRegisterNum1(){
+		int num=0;
+		DbConMysql db=new DbConMysql();
+		java.util.Date now=new java.util.Date();
+		Date now_time=new Date(now.getTime());
+		String sql="select * from t_user where DATEDIFF('"+now_time+"',register_time) <='1'";
+		ResultSet rs=db.getQuery(sql);
+		try{
+			while(rs.next()){
+				num++;
+			}
+		}catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return num;
+	}
 	
+	//返回7天内注册的用户
+	public int getRegisterNum2(){
+			int num=0;
+			DbConMysql db=new DbConMysql();
+			java.util.Date now=new java.util.Date();
+			Date now_time=new Date(now.getTime());
+			String sql="select * from t_user where DATEDIFF('"+now_time+"',register_time)<='7'";
+			ResultSet rs=db.getQuery(sql);
+			try{
+				while(rs.next()){
+					num++;
+				}
+			}catch (SQLException e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+			return num;
+		}
+	//返回30天内注册的用户
+	public int getRegisterNum3(){
+		int num=0;
+		DbConMysql db=new DbConMysql();
+		java.util.Date now=new java.util.Date();
+		Date now_time=new Date(now.getTime());
+		String sql="select * from t_user where DATEDIFF('"+now_time+"',register_time)<='30'";
+		ResultSet rs=db.getQuery(sql);
+		try{
+			while(rs.next()){
+				num++;
+			}
+		}catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return num;
+	}
+	//返回今天登录的用户
+	public int getRegisterNum4(){
+		int num=0;
+		DbConMysql db=new DbConMysql();
+		java.util.Date now=new java.util.Date();
+		Date now_time=new Date(now.getTime());
+		String sql="select * from t_user where DATEDIFF('"+now_time+"',last_login_time) <='1'";
+		ResultSet rs=db.getQuery(sql);
+		try{
+			while(rs.next()){
+				num++;
+			}
+		}catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return num;
+	}	
+	//返回7天内登录的用户
+	public int getRegisterNum5(){
+				int num=0;
+				DbConMysql db=new DbConMysql();
+				java.util.Date now=new java.util.Date();
+				Date now_time=new Date(now.getTime());
+				String sql="select * from t_user where DATEDIFF('"+now_time+"',last_login_time) <='7'";
+				ResultSet rs=db.getQuery(sql);
+				try{
+					while(rs.next()){
+						num++;
+					}
+				}catch (SQLException e) {
+					// TODO: handle exception
+					e.printStackTrace();
+				}
+				return num;
+			}	
+	//返回30天内登录的用户
+	public int getRegisterNum6(){
+		int num=0;
+		DbConMysql db=new DbConMysql();
+		java.util.Date now=new java.util.Date();
+		Date now_time=new Date(now.getTime());
+		String sql="select * from t_user where DATEDIFF('"+now_time+"',last_login_time) <='30'";
+		ResultSet rs=db.getQuery(sql);
+		try{
+			while(rs.next()){
+				num++;
+			}
+		}catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return num;
+	}	
 	
+	//是否被限制登录
+	public boolean isBan(int user_id){
+		boolean flag=false;
+		DbConMysql db=new DbConMysql();
+		java.util.Date now=new java.util.Date();
+		Date now_time=new Date(now.getTime());
+		String sql="select * from t_user where DATEDIFF(ban_time,'"+now_time+"') >='0' and id='"+user_id+"'";
+		ResultSet rs=db.getQuery(sql);
+		try{
+			if(rs.next()){
+				flag=true;
+			}
+		}catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return flag;
+	}
+
+	//返回被限制登录时间
+	
+	public Date getBan_time(int user_id){
+		Date ban_time=null;
+		DbConMysql db=new DbConMysql();
+		String sql="select * from t_user where id='"+user_id+"'";
+		ResultSet rs=db.getQuery(sql);
+		try{
+			if(rs.next()){
+				ban_time=rs.getDate("ban_time");
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		return ban_time;
+	}
 	//*************************************************************
 	
+	public boolean updateUserBan_time(String username,Date ban_time){
+		boolean flag=false;
+		DbConMysql db=new DbConMysql();
+		String sql="update t_user set ban_time='"+ban_time+"'where username='"+username+"'";
+		if(db.update(sql)>0)
+			flag=true;
+		return flag;
+	}
 	
 	
 	//2.对文章表进行的操作 *************************************************
@@ -368,6 +527,12 @@ public class Service {
 					article.setAuthor_id(author_id);
 					String allpic=rs.getString("allpic");
 					article.setAllpic(allpic);
+					int liked=rs.getInt("liked");
+					article.setLiked(liked);
+					int collected=rs.getInt("collected");
+					article.setCollected(collected);
+					int comment_num=rs.getInt("comment_num");
+					article.setComment_num(comment_num);
 					articles.add(article);
 					
 				}
@@ -378,7 +543,7 @@ public class Service {
 			}
 			return articles;
 		}
-	//获取所有文章
+	//获取所有文章（随机排序）
 	public ArrayList<Article> getAllArticles(){
 		ArrayList<Article> articles=new ArrayList<Article>();
 		
@@ -414,6 +579,8 @@ public class Service {
 				article.setLiked(liked);
 				int collected=rs.getInt("collected");
 				article.setCollected(collected);
+				int comment_num=rs.getInt("comment_num");
+				article.setComment_num(comment_num);
 				articles.add(article);
 				
 			}
@@ -460,6 +627,8 @@ public class Service {
 				article.setLiked(liked);
 				int collected=rs.getInt("collected");
 				article.setCollected(collected);
+				int comment_num=rs.getInt("comment_num");
+				article.setComment_num(comment_num);
 				articles.add(article);
 				
 			}
@@ -506,6 +675,8 @@ public class Service {
 				article.setLiked(liked);
 				int collected=rs.getInt("collected");
 				article.setCollected(collected);
+				int comment_num=rs.getInt("comment_num");
+				article.setComment_num(comment_num);
 				articles.add(article);
 				
 			}
@@ -550,6 +721,10 @@ public class Service {
 				article.setLiked(liked);
 				int collected=rs.getInt("collected");
 				article.setCollected(collected);
+				int comment_num=rs.getInt("comment_num");
+				String status=rs.getString("status");
+				article.setStatus(status);
+				article.setComment_num(comment_num);
 			}
 				
 		} catch (SQLException e) {
@@ -582,6 +757,14 @@ public class Service {
 						+"' WHERE id='"+article.getId()+"'";
 				db.update(sql);
 			}
+	//刷新评论数量
+	public void updateArticleComment_num(Article article){
+					DbConMysql db=new DbConMysql();
+					String sql="UPDATE t_article SET "
+							+"comment_num='"+article.getComment_num()
+							+"' WHERE id='"+article.getId()+"'";
+					db.update(sql);
+				}
 	//通过用户唯一id获取其发表的所有文章的数量
 	public int getMyArticleNum(int author_id){
 			
@@ -601,6 +784,43 @@ public class Service {
 			}
 			return myArticleNum;
 		}
+	//通过文章id获取它的上一篇文章的id
+	public int getLastArticle_id(int now_article_id,int author_id){
+		int last_article_id=-1;
+		DbConMysql db=new DbConMysql();
+		String sql="select * from t_article where id<'"+now_article_id+"'and author_id='"+author_id+"'order by id DESC limit 1";
+		ResultSet rs=db.getQuery(sql);
+		try{
+			if(rs.next()){
+				last_article_id=rs.getInt(1);
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		return last_article_id;
+	}
+	//通过文章id获取它的下一篇文章的id
+	public int getNextArticle_id(int now_article_id,int author_id){
+		int next_article_id=-1;
+		DbConMysql db=new DbConMysql();
+		String sql="select * from t_article where id>'"+now_article_id+"'and author_id='"+author_id+"'limit 1";
+		ResultSet rs=db.getQuery(sql);
+		try{
+			if(rs.next()){
+				next_article_id=rs.getInt(1);
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		return next_article_id;
+	}
+	//更新评论状态
+	public void updateArticleStatus(Article article){
+		DbConMysql db=new DbConMysql();
+		String sql="update t_article set status='"+article.getStatus()+"'where id='"+article.getId()+"'";
+		db.update(sql);
+		
+	}
 	
 	//*************************************************************
 	
@@ -689,6 +909,8 @@ public class Service {
 					comment.setAdd_time(add_time);
 					int zan=rs.getInt("zan");
 					comment.setZan(zan);
+					String status=rs.getString("status");
+					comment.setStatus(status);
 					comments.add(comment);
 				}
 			}catch (SQLException e) {
@@ -697,7 +919,13 @@ public class Service {
 			}
 		return comments;
 	}
-	
+	//更新评论状态
+	public void updateCommentStatus(Comment comment){
+		DbConMysql db=new DbConMysql();
+		String sql="update t_comment set status='"+comment.getStatus()+"'where id='"+comment.getId()+"'";
+		db.update(sql);
+		
+	}
 	
 	//*************************************************************
 	
@@ -751,6 +979,8 @@ public class Service {
 						answer.setAdd_time(add_time);
 						int zan=rs.getInt("zan");
 						answer.setZan(zan);
+						String status=rs.getString("status");
+						answer.setStatus(status);
 						answers.add(answer);	
 					}
 				}catch (SQLException e) {
@@ -793,7 +1023,13 @@ public class Service {
 					+"' WHERE id='"+answer.getId()+"'";
 			db.update(sql);
 		}
-	
+	//更新评论状态
+	public void updateAnswerStatus(Answer answer){
+		DbConMysql db=new DbConMysql();
+		String sql="update t_answer set status='"+answer.getStatus()+"'where id='"+answer.getId()+"'";
+		db.update(sql);
+		
+	}
 	
 	
 	//*************************************************************
@@ -808,8 +1044,8 @@ public class Service {
 	public int addCollectRecord(Collect collect){
 		int flag;
 		DbConMysql db=new DbConMysql();
-		String sql="insert into t_collect(user_id,article_id,collectdate)"
-				+ " values ('"+collect.getUser_id()+"','"+collect.getArticle_id()+"','"+collect.getCollectdate() +"')";
+		String sql="insert into t_collect(user_id,article_id,collectdate,author_id)"
+				+ " values ('"+collect.getUser_id()+"','"+collect.getArticle_id()+"','"+collect.getCollectdate()+"','"+collect.getAuthor_id() +"')";
 		
 		flag=db.insert(sql);
 		
@@ -881,7 +1117,75 @@ public class Service {
 		}
 		return collect;
 	}
-		
+	//通过id获取收藏
+	public Collect getCollectFromId(int collect_id){
+		DbConMysql db=new DbConMysql();
+		String sql="select * from t_collect where id='"+collect_id+"'";
+		ResultSet rs=db.getQuery(sql);
+		Collect collect=new Collect();
+		try{
+			if(rs.next()){
+				collect.setId(collect_id);
+				int article_id=rs.getInt("article_id");
+				collect.setArticle_id(article_id);
+				int user_id=rs.getInt("user_id");
+				collect.setUser_id(user_id);
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		return collect;
+	}
+	//通过被收藏用户id获取所有收藏
+	public ArrayList<Collect> getCollectFromAuthor_id(int author_id){
+		DbConMysql db=new DbConMysql();
+		String sql="select * from t_collect where author_id='"+author_id+"'";
+		ResultSet rs=db.getQuery(sql);
+		ArrayList<Collect> collects=new ArrayList<Collect>();
+		try{
+			while(rs.next()){
+				Collect collect=new Collect();
+				collect.setAuthor_id(author_id);
+				int id=rs.getInt("id");
+				collect.setId(id);
+				int article_id=rs.getInt("article_id");
+				collect.setArticle_id(article_id);
+				Date collectdate=rs.getDate("collectdate");
+				collect.setCollectdate(collectdate);
+				int user_id=rs.getInt("user_id");
+				collect.setUser_id(user_id);
+				String status=rs.getString("status");
+				collect.setStatus(status);
+				collects.add(collect);
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		return collects;
+	}
+	//通过用户id获取收藏消息
+	public int getCollectNumFromAuthor_id(int author_id){
+		int num=0;
+		DbConMysql db=new DbConMysql();
+		String sql="select * from t_collect where author_id='"+author_id+"'and status='未读'";
+		ResultSet rs=db.getQuery(sql);
+		try{
+			while(rs.next()){
+				num++;
+			}
+		}catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return num;
+	}
+	//更新收藏消息状态
+	public void updateCollectStatus(Collect collect){
+		DbConMysql db=new DbConMysql();
+		String sql="update t_collect set status='"+collect.getStatus()+"'where id='"+collect.getId()+"'";
+		db.update(sql);
+	}
+	
 	
 	//*************************************************************
 	
@@ -932,6 +1236,8 @@ public class Service {
 				message.setText2(text2);
 				Timestamp add_time=rs.getTimestamp("add_time");
 				message.setAdd_time(add_time);
+				String status=rs.getString("status");
+				message.setStatus(status);
 				messages.add(message);
 			}
 				
@@ -946,7 +1252,7 @@ public class Service {
 	public int getMessagesNumFromReceiver_id(int receiver_id){
 		int n=0;
 		DbConMysql db=new DbConMysql();
-		String sql="select * from t_message where receiver_id='"+receiver_id+"'";
+		String sql="select * from t_message where receiver_id='"+receiver_id+"'and status='未读'";
 		ResultSet rs=db.getQuery(sql);
 		try{
 			while(rs.next()){
@@ -965,6 +1271,13 @@ public class Service {
 		DbConMysql db=new DbConMysql();
 		String sql="delete from t_message where id='"+message_id+"'";
 		db.delete(sql);
+		
+	}
+	//更新消息状态
+	public void updateMessageStatus(Message message){
+		DbConMysql db=new DbConMysql();
+		String sql="update t_message set status='"+message.getStatus()+"'where id='"+message.getId()+"'";
+		db.update(sql);
 		
 	}
 	
@@ -1030,14 +1343,17 @@ public class Service {
 	public int addReport(Report report){
 		int n;
 		DbConMysql db=new DbConMysql();
-		String sql="insert into t_report(username,type,content,simple_reason,all_reason,url)"
+		String sql="insert into t_report(username,type,content,simple_reason,all_reason,url,author_id,user_id,content_id)"
 				+ " values ('" 
 				+report.getUsername()+ "','" 
 				+report.getType()+ "','" 
 				+report.getContent()+ "','"
 				+report.getSimple_reason()+ "','"
 				+report.getAll_reason()+ "','"
-				+report.getUrl()
+				+report.getUrl()+"','"
+				+report.getAuthor_id()+"','"
+				+report.getUser_id()+"','"
+				+report.getContent_id()
 				+ "')" ;
 		n=db.insert(sql);
 		return n;
@@ -1064,6 +1380,12 @@ public class Service {
 				report.setAll_reason(all_reason);
 				String url=rs.getString("url");
 				report.setUrl(url);
+				int author_id=rs.getInt("author_id");
+				report.setAuthor_id(author_id);
+				int user_id=rs.getInt("user_id");
+				report.setUser_id(user_id);
+				int content_id=rs.getInt("content_id");
+				report.setContent_id(content_id);
 				reports.add(report);
 			}
 		}catch (SQLException e) {
@@ -1072,10 +1394,464 @@ public class Service {
 		}
 		return reports;
 	}
+	//根据举报作者id返回举报信息
+	public ArrayList<Report> getReportFromAuthor_id(int author_id){
+		DbConMysql db=new DbConMysql();
+		ArrayList<Report> reports=new ArrayList<>();
+		String sql="select * from t_report where author_id='"+author_id+"' order by status DESC";
+		ResultSet rs=db.getQuery(sql);
+		try{
+			while(rs.next()){
+				Report report=new Report();
+				int id=rs.getInt("id");
+				report.setId(id);
+				String username=rs.getString("username");
+				report.setUsername(username);
+				report.setAuthor_id(author_id);
+				String content=rs.getString("content");
+				report.setContent(content);
+				String simple_reason=rs.getString("simple_reason");
+				report.setSimple_reason(simple_reason);
+				String all_reason=rs.getString("all_reason");
+				report.setAll_reason(all_reason);
+				String url=rs.getString("url");
+				report.setUrl(url);
+				String type=rs.getString("type");
+				report.setType(type);
+				int user_id=rs.getInt("user_id");
+				report.setUser_id(user_id);
+				int content_id=rs.getInt("content_id");
+				report.setContent_id(content_id);
+				String status=rs.getString("status");
+				report.setStatus(status);
+				String status2=rs.getString("status2");
+				report.setStatus2(status2);
+				String status3=rs.getString("status3");
+				report.setStatus3(status3);
+				String feedback_reason=rs.getString("feedback_reason");
+				report.setFeedback_reason(feedback_reason);
+				reports.add(report);
+			}
+		}catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return reports;
+	}
+	//根据举报状态返回举报消息数量
+	public int getReportNum(){
+		int num=0;
+		DbConMysql db=new DbConMysql();
+		String sql="select * from t_report where status='未处理'";
+		ResultSet rs=db.getQuery(sql);
+		try{
+			while(rs.next()){
+				num++;
+			}
+		}catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return num;
+	}
+	//返回所有举报消息
+	public ArrayList<Report> getReport(){
+		ArrayList<Report> reports=new ArrayList<>();
+		DbConMysql db=new DbConMysql();
+		String sql="select * from t_report";
+		ResultSet rs=db.getQuery(sql);
+		try{
+			while(rs.next()){
+				Report report=new Report();
+				int id=rs.getInt("id");
+				report.setId(id);
+				String username=rs.getString("username");
+				report.setUsername(username);
+				String type=rs.getString("type");
+				report.setType(type);
+				String content=rs.getString("content");
+				report.setContent(content);
+				String simple_reason=rs.getString("simple_reason");
+				report.setSimple_reason(simple_reason);
+				String all_reason=rs.getString("all_reason");
+				report.setAll_reason(all_reason);
+				String url=rs.getString("url");
+				report.setUrl(url);
+				int author_id=rs.getInt("author_id");
+				report.setAuthor_id(author_id);
+				int user_id=rs.getInt("user_id");
+				report.setUser_id(user_id);
+				String status=rs.getString("status");
+				report.setStatus(status);
+				String status2=rs.getString("status2");
+				report.setStatus2(status2);
+				int content_id=rs.getInt("content_id");
+				report.setContent_id(content_id);
+				String status3=rs.getString("status3");
+				report.setStatus3(status3);
+				String feedback_reason=rs.getString("feedback_reason");
+				report.setFeedback_reason(feedback_reason);
+				reports.add(report);
+				
+			}
+		}catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return reports;
+	}
+	//更新举报消息状态
+	public void updateReportStatus(Report report){
+		DbConMysql db=new DbConMysql();
+		String sql="";
+		if(report.getStatus3()!=null&&report.getFeedback_reason()!=null)
+			sql="update t_report set status3='"+report.getStatus3()+"',feedback_reason='"+report.getFeedback_reason()+"'where id='"+report.getId()+"'";
+		else if(report.getStatus3()!=null)
+			sql="update t_report set status3='"+report.getStatus3()+"'where id='"+report.getId()+"'";
+		else 
+			sql="update t_report set status='"+report.getStatus()+"', status2='"+report.getStatus2()+"'where id='"+report.getId()+"'";
+			
+		db.update(sql);
+		
+	}
+	
+	//根据举报作者id返回举报信息
+	public ArrayList<Report> getReportFromUser_id(int user_id){
+		DbConMysql db=new DbConMysql();
+		ArrayList<Report> reports=new ArrayList<>();
+		String sql="select * from t_report where author_id='"+user_id+"' order by status DESC";
+		ResultSet rs=db.getQuery(sql);
+		try{
+			while(rs.next()){
+				Report report=new Report();
+				int id=rs.getInt("id");
+				report.setId(id);
+				String username=rs.getString("username");
+				report.setUsername(username);
+				String content=rs.getString("content");
+				report.setContent(content);
+				String simple_reason=rs.getString("simple_reason");
+				report.setSimple_reason(simple_reason);
+				String all_reason=rs.getString("all_reason");
+				report.setAll_reason(all_reason);
+				String url=rs.getString("url");
+				report.setUrl(url);
+				String type=rs.getString("type");
+				report.setType(type);
+				int content_id=rs.getInt("content_id");
+				report.setContent_id(content_id);
+				String status=rs.getString("status");
+				report.setStatus(status);
+				String status2=rs.getString("status2");
+				report.setStatus2(status2);
+				int author_id=rs.getInt("author_id");
+				report.setAuthor_id(author_id);
+				report.setUser_id(user_id);
+				String status3=rs.getString("status3");
+				report.setStatus3(status3);
+				String feedback_reason=rs.getString("feedback_reason");
+				report.setFeedback_reason(feedback_reason);
+				reports.add(report);
+			}
+		}catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return reports;
+	}
+	//根据举报表id返回举报
+	public Report getReportFromId(int report_id){
+		Report report=new Report();
+		DbConMysql db=new DbConMysql();
+		String sql="select * from t_report where id='"+report_id+"'";
+		ResultSet rs=db.getQuery(sql);
+		try{
+			if(rs.next()){
+				report.setId(report_id);
+				String username=rs.getString("username");
+				report.setUsername(username);
+				String type=rs.getString("type");
+				report.setType(type);
+				String content=rs.getString("content");
+				report.setContent(content);
+				String simple_reason=rs.getString("simple_reason");
+				report.setSimple_reason(simple_reason);
+				String all_reason=rs.getString("all_reason");
+				report.setAll_reason(all_reason);
+				String url=rs.getString("url");
+				report.setUrl(url);
+				int author_id=rs.getInt("author_id");
+				report.setAuthor_id(author_id);
+				int user_id=rs.getInt("user_id");
+				report.setUser_id(user_id);
+				String status=rs.getString("status");
+				report.setStatus(status);
+				String status2=rs.getString("status2");
+				report.setStatus2(status2);
+				int content_id=rs.getInt("content_id");
+				report.setContent_id(content_id);
+				String status3=rs.getString("status3");
+				report.setStatus3(status3);
+				String feedback_reason=rs.getString("feedback_reason");
+				report.setFeedback_reason(feedback_reason);
+			}
+		}catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return report;
+	}
+	
+	//根据反馈状态返回举报消息数量
+		public int getReportNumFromStatus3(){
+			int num=0;
+			DbConMysql db=new DbConMysql();
+			String sql="select * from t_report where status='已处理' and status3='反馈等待审核'";
+			ResultSet rs=db.getQuery(sql);
+			try{
+				while(rs.next()){
+					num++;
+				}
+			}catch (SQLException e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+			return num;
+		}
+	
+	//*************************************************************	
+
+	
+	//9.对关注表进行操作*************************************************
+	
+	
+	
+	//添加关注记录
+	public int addFollowRecord(Follow follow){
+		int flag;
+		DbConMysql db=new DbConMysql();
+		String sql="insert into t_follow(following_id,follower_id,followdate)"
+				+ " values ('"+follow.getFollowing_id()+"','"+follow.getFollower_id()+"','"+follow.getFollow_date() +"')";
+		
+		flag=db.insert(sql);
+		
+		return flag;
+	}
+	//删除关注记录
+	public void deleteFollowRecord(Follow follow){
+		
+		DbConMysql db=new DbConMysql();
+		String sql="DELETE FROM t_follow where following_id='"
+				+follow.getFollowing_id()+"' and follower_id='"+follow.getFollower_id()+"'";
+		
+		db.delete(sql);
+
+	}
+	//根据关注者id和被关注者id查询记录
+	public boolean getFollowRecord(int following_id,int follower_id){
+		boolean flag=false;
+		DbConMysql db=new DbConMysql();
+		String sql="select * from t_follow where following_id='"+following_id+"'and follower_id='"+follower_id+"'";
+		ResultSet rs=db.getQuery(sql);
+		try{
+			if(rs.next()){
+				flag=true;
+			}
+		}catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return flag;
+	}
+	//根据关注者id返回所有关注
+	public ArrayList<Follow> getFollowFromFollowing_id(int following_id){
+		ArrayList<Follow> follows=new ArrayList<>();
+		DbConMysql db=new DbConMysql();
+		String sql="select * from t_follow where following_id='"+following_id+"'";
+		ResultSet rs=db.getQuery(sql);
+		try{
+			while(rs.next()){
+				Follow follow=new Follow();
+				follow.setFollowing_id(following_id);
+				int follower_id=rs.getInt("follower_id");
+				follow.setFollower_id(follower_id);
+				int id=rs.getInt("id");
+				follow.setId(id);
+				Date follow_date=rs.getDate("followdate");
+				follow.setFollow_date(follow_date);
+				follows.add(follow);		
+			}
+		}catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return follows;
+		
+	}
+	//根据被关注者id返回所有关注
+	public ArrayList<Follow> getFollowFromFollower_id(int follower_id){
+			ArrayList<Follow> follows=new ArrayList<>();
+			DbConMysql db=new DbConMysql();
+			String sql="select * from t_follow where follower_id='"+follower_id+"'";
+			ResultSet rs=db.getQuery(sql);
+			try{
+				while(rs.next()){
+					Follow follow=new Follow();
+					follow.setFollower_id(follower_id);
+					int following_id=rs.getInt("following_id");
+					follow.setFollowing_id(following_id);
+					int id=rs.getInt("id");
+					follow.setId(id);
+					Date follow_date=rs.getDate("followdate");
+					follow.setFollow_date(follow_date);
+					String status=rs.getString("status");
+					follow.setStatus(status);
+					follows.add(follow);		
+				}
+			}catch (SQLException e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+			return follows;
+			
+		}
+	//根据关注着id返回所有关注数量
+	public int getFollowNumFromFollowing_id(int following_id){
+		int followNum=0;
+		DbConMysql db=new DbConMysql();
+		String sql="select * from t_follow where following_id='"+following_id+"'";
+		ResultSet rs=db.getQuery(sql);
+		try{
+			while(rs.next()){
+				followNum++;
+			}
+		}catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return followNum;
+		
+	}
+	//根据被关注者id返回所有关注数量
+	public int getFollowNumFromFollower_id(int follower_id){
+			int followNum=0;
+			DbConMysql db=new DbConMysql();
+			String sql="select * from t_follow where follower_id='"+follower_id+"'";
+			ResultSet rs=db.getQuery(sql);
+			try{
+				while(rs.next()){
+					followNum++;	
+				}
+			}catch (SQLException e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+			return followNum;
+			
+		}
+	//根据被关注者id返回未读消息数量
+	public int getFollowNumFromFollower_idStatus(int follower_id){
+			int followNum=0;
+			DbConMysql db=new DbConMysql();
+			String sql="select * from t_follow where follower_id='"+follower_id+"'and status='未读'";
+			ResultSet rs=db.getQuery(sql);
+			try{
+				while(rs.next()){
+					followNum++;	
+				}
+			}catch (SQLException e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+			return followNum;
+			
+		}
+	//更新关注消息状态
+	public void updateFollowStatus(Follow follow){
+		DbConMysql db=new DbConMysql();
+		String sql="update t_follow set status ='"+follow.getStatus()+"'where id='"+follow.getId()+"'";
+		db.update(sql);
+		
+	}
 	
 	
 	
 	//*************************************************************	
 
+	
+	
+	//10.对点赞消息表进行操作*************************************************
+	
+	//添加点赞信息
+	public int addZanMessage(Zan zan){
+		int flag;
+		DbConMysql db=new DbConMysql();
+		String sql="insert into t_zan(type,receiver_id,sender_id,article_id,text,add_time)"
+				+" values ('"+zan.getType()+"','"+zan.getReceiver_id()+"','"+zan.getSender_id()+"','"+zan.getArticle_id()
+				+"','"+zan.getText()+"','"+zan.getAdd_time() +"')";
+		flag=db.insert(sql);
+		return flag;
+	}
+	//根据被点赞者id获取未读点赞消息
+	public int getZanNumFromReceiver_id(int receiver_id){
+		int num=0;
+		DbConMysql db=new DbConMysql();
+		String sql="select * from t_zan where receiver_id='"+receiver_id+"'and status='未读'";
+		ResultSet rs=db.getQuery(sql);
+		try{
+			while(rs.next()){
+				num++;
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		return num;
+	}
+	//根据被点赞者id获取所有点赞
+	public ArrayList<Zan> getZanFromReceiver_id(int receiver_id){
+		ArrayList<Zan> zans=new ArrayList<>();
+		DbConMysql db=new DbConMysql();
+		String sql="select * from t_zan where receiver_id='"+receiver_id+"'";
+		ResultSet rs=db.getQuery(sql);
+		try{
+			while(rs.next()){
+				Zan zan=new Zan();
+				zan.setReceiver_id(receiver_id);
+				int id=rs.getInt("id");
+				zan.setId(id);
+				String type=rs.getString("type");
+				zan.setType(type);
+				int sender_id=rs.getInt("sender_id");
+				zan.setSender_id(sender_id);
+				int article_id=rs.getInt("article_id");
+				zan.setArticle_id(article_id);
+				String text=rs.getString("text");
+				zan.setText(text);
+				Timestamp add_time=rs.getTimestamp("add_time");
+				zan.setAdd_time(add_time);
+				String status=rs.getString("status");
+				zan.setStatus(status);
+				zans.add(zan);
+			}
+		}catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return zans;
+		
+	}
+	//更新点赞消息状态
+	public void updateZanStatus(Zan zan){
+		DbConMysql db=new DbConMysql();
+		String sql="update t_zan set status ='"+zan.getStatus()+"'where id='"+zan.getId()+"'";
+		db.update(sql);
+		
+	}
+	
+	
+	
+	
+	
+	//*************************************************************	
 }
 

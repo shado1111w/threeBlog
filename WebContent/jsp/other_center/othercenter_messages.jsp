@@ -5,15 +5,7 @@
 <%@ page import="threeblog.entity.Article" %>
 <%@ page import="threeblog.service.Service" %>
 <%
-	int author_id = 10240;
-	if (session.getAttribute("user_id") == null) {
-		response.setContentType("text/html;charset=utf-8");
-		response.getWriter().print("<script>alert(`会话过期，将重新登录！`)</script>");
-		String content = 0 + ";URL= " + "../jichu/login.jsp";
-		response.setHeader("REFRESH ", content);
-	} else {
-		author_id = Integer.valueOf((String) session.getAttribute("user_id"));
-	}
+	
 	ArrayList<Article> articles = new ArrayList<Article>();
 	Service service = new Service();
 	int other_id=Integer.valueOf(request.getParameter("id"));

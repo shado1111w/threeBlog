@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import threeblog.entity.Answer;
+import threeblog.entity.Article;
 import threeblog.entity.Comment;
 import threeblog.entity.Message;
 import threeblog.service.Service;
@@ -53,10 +54,8 @@ public class AddAnswer extends HttpServlet {
 		
 		//获取当前服务器时间
 		java.util.Date d=new java.util.Date();
-        System.out.println(d);  
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String dateNowStr = sdf.format(d);  
-        System.out.println("格式化后的日期：" + dateNowStr);
 		Timestamp add_time=Timestamp.valueOf(dateNowStr);
 		
 		Answer answer=new Answer();
@@ -66,6 +65,11 @@ public class AddAnswer extends HttpServlet {
 		answer.setComment_id(comment_id);
 		Service service=new Service();
 		
+		
+		//增加文章评论数量
+		Article article=service.getArticleFromId(article_id);
+		article.setComment_num(article.getComment_num()+1);
+		service.updateArticleComment_num(article);
 	
 		int answer_id=service.addAnswer(answer);
 		//情况1：comment_id与answer_id重叠且相等

@@ -28,7 +28,7 @@ a{ text-decoration:none;}
     overflow:hidden;
     margin-top: 5px;
 }
-.comment-show-con-img >img{
+.comment-show-con-img >a >img{
     width: 100%;
     height: 100%;
 }

@@ -1,5 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="threeblog.entity.*" %>
+<%@ page import="threeblog.service.Service" %>
+<%@page import="java.util.ArrayList"%>
+<%
+	int user_id = 10240;
+	user_id = Integer.valueOf((String) session.getAttribute("user_id"));
+	Service service=new Service();
+	ArrayList<Follow> follows = service.getFollowFromFollower_id(user_id);
+%>   
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -31,15 +40,22 @@
         <td></td>
     </tr>
     </tfoot>    
-    <tbody><tr>
+    <tbody>
+     <%
+    if(!follows.isEmpty()){
+    	for(int i=0;i<follows.size();i++){
+    		Follow follow=follows.get(i);
+    		User following=service.getUserFromId(follow.getFollowing_id());
+    %>
+    <tr>
 
-        <td>1</td>   
-        <td><a href="#" target="_blank">Marin</a></td>
-        <td>2015-05-15</td>
-        <td><a href="http://www.baidu.com" target="_blank"><span>查看Ta的个人主页&emsp;</span></a>
+        <td><%=i+1 %></td>   
+        <td><%=following.getUsername() %></td>
+        <td><%=follow.getFollow_date() %></td>
+        <td><a href="${pageContext.request.contextPath}/jsp/other_center/otherscenter.jsp?id=<%=follow.getFollowing_id() %>" target="_blank"><span>查看Ta的个人主页&emsp;</span></a>
         </td>
     </tr>  
-          
+       <%}} %>   
    
 </tbody></table>
             	

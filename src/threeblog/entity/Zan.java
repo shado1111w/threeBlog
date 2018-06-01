@@ -2,22 +2,15 @@ package threeblog.entity;
 
 import java.sql.Timestamp;
 
-public class Message {
-	int id;
-	String type;
-	int receiver_id;
-	int answer_id;
-	int article_id;
-	String text1;
-	String text2;
-	Timestamp add_time;
-	String status;
-	public String getStatus() {
-		return status;
-	}
-	public void setStatus(String status) {
-		this.status = status;
-	}
+public class Zan {
+	private int id;
+	private String type;
+	private int receiver_id;
+	private int sender_id;
+	private int article_id;
+	private String text;
+	private Timestamp add_time;
+	private String status;
 	public int getId() {
 		return id;
 	}
@@ -36,11 +29,11 @@ public class Message {
 	public void setReceiver_id(int receiver_id) {
 		this.receiver_id = receiver_id;
 	}
-	public int getAnswer_id() {
-		return answer_id;
+	public int getSender_id() {
+		return sender_id;
 	}
-	public void setAnswer_id(int answer_id) {
-		this.answer_id = answer_id;
+	public void setSender_id(int sender_id) {
+		this.sender_id = sender_id;
 	}
 	public int getArticle_id() {
 		return article_id;
@@ -48,22 +41,22 @@ public class Message {
 	public void setArticle_id(int article_id) {
 		this.article_id = article_id;
 	}
-	public String getText1() {
-		return text1;
+	public String getText() {
+		return text;
 	}
-	public void setText1(String text1) {
-		this.text1 = text1;
-	}
-	public String getText2() {
-		return text2;
-	}
-	public void setText2(String text2) {
-		this.text2 = text2;
+	public void setText(String text) {
+		this.text = text;
 	}
 	public Timestamp getAdd_time() {
 		return add_time;
 	}
 	public void setAdd_time(Timestamp add_time) {
 		this.add_time = add_time;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
 	}
 }

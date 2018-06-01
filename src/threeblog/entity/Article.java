@@ -17,7 +17,21 @@ public class Article {
 	private String allpic;
 	private int liked;
 	private int collected;
+	private int comment_num;
+	private String status;
 	
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public int getComment_num() {
+		return comment_num;
+	}
+	public void setComment_num(int comment_num) {
+		this.comment_num = comment_num;
+	}
 	public int getCollected() {
 		return collected;
 	}

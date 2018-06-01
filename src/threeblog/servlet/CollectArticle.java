@@ -47,6 +47,7 @@ public class CollectArticle extends HttpServlet {
 		int user_id=Integer.valueOf((String)request.getSession().getAttribute("user_id"));
 		int article_id=Integer.valueOf(request.getParameter("article_id"));
 		String status=request.getParameter("status");
+		int author_id=Integer.valueOf(request.getParameter("author_id"));
 		String result="";
 		Service service=new Service();
 		Article article=service.getArticleFromId(article_id);
@@ -56,6 +57,7 @@ public class CollectArticle extends HttpServlet {
 		collect.setArticle_id(article_id);
 		collect.setUser_id(user_id);
 		collect.setCollectdate(collectdate);
+		collect.setAuthor_id(author_id);
 		
 		if(user_id==article.getAuthor_id()){
 			//情况1：收藏了自己的文章

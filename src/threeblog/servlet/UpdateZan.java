@@ -7,21 +7,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import threeblog.entity.Article;
-import threeblog.entity.Collect;
+import threeblog.entity.Follow;
+import threeblog.entity.Zan;
 import threeblog.service.Service;
 
 /**
- * Servlet implementation class DeleteCollect
+ * Servlet implementation class UpdateZan
  */
-@WebServlet("/DeleteCollect")
-public class DeleteCollect extends HttpServlet {
+@WebServlet("/UpdateZan")
+public class UpdateZan extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public DeleteCollect() {
+    public UpdateZan() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -39,15 +39,13 @@ public class DeleteCollect extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		int collect_id=Integer.valueOf(request.getParameter("collect_id"));
+		int zan_id=Integer.valueOf(request.getParameter("zan_id"));
+		String status=request.getParameter("status");
 		Service service=new Service();
-		Collect collect=service.getCollectFromId(collect_id);
-		Article article=service.getArticleFromId(collect.getArticle_id());
-		int newCollected=article.getCollected();
-		newCollected--;
-		article.setCollected(newCollected);
-		service.updateArticleCollected(article);
-		service.deleteCollectRecord(collect_id);
+		Zan zan=new Zan();
+		zan.setId(zan_id);
+		zan.setStatus(status);
+		service.updateZanStatus(zan);
 	}
 
 }

@@ -5,17 +5,35 @@
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.ArrayList"%>
 <%
+	boolean login_flag=false;
 	User user = new User();
 	Service service = new Service();
 	int user_id = 10240;
 	if (session.getAttribute("user_id") == null) {
-		response.setContentType("text/html;charset=utf-8");
-		response.getWriter().print("<script>alert(`会话过期，将重新登录！`)</script>");
-		String content = 0 + ";URL= " + request.getContextPath() + "/jsp/login/sign_in.jsp";
-		response.setHeader("REFRESH ", content);
+		String phonenum="";
+		String password="";
+		Cookie[] cookies=request.getCookies();
+		if(cookies!=null&&cookies.length>0){
+			for(Cookie c:cookies){
+				if(c.getName().equals("phonenum1")){
+					phonenum=c.getValue();
+					login_flag=true;
+				}
+				if(c.getName().equals("password1")){
+					password=c.getValue();
+				}			
+			}	
+		}
+		if(login_flag){
+			response.setContentType("text/html;charset=utf-8");
+			String content = 0 + ";URL= " +request.getContextPath()+ "/servlet/Login?zh="+phonenum+"&mm="+password+"&li_url="+request.getRequestURL();
+			response.setHeader("REFRESH ", content);
+		}
+		
 	} else {
 		user_id = Integer.valueOf((String) session.getAttribute("user_id"));
-		user = service.getUserFromId(user_id);
+		user = service.getUserFromId(user_id);	
+		login_flag=true;
 	}
 	request.setCharacterEncoding("utf-8");
 	int article_id = 10240;
@@ -29,6 +47,21 @@
 	click_num++;
 	article.setClick_num(click_num);
 	service.updateArticleClicknum(article);
+	int feedback_num=0;
+	feedback_num=service.getReportNumFromStatus3();
+	int comment_num=0;
+	int follow_num=0;
+	int collect_num=0;
+	int zan_num=0;
+	int all_num=0;
+	int report_num=0;
+	comment_num=service.getMessagesNumFromReceiver_id(user_id); 
+	follow_num=service.getFollowNumFromFollower_idStatus(user_id);
+	collect_num=service.getCollectNumFromAuthor_id(user_id);
+	zan_num=service.getZanNumFromReceiver_id(user_id);
+	report_num=service.getReportNum();
+	all_num=comment_num+follow_num+collect_num+zan_num;
+	
 %>
 <!DOCTYPE html>
 <html>
@@ -96,7 +129,11 @@ $(function(){
 			  <li><a href="${pageContext.request.contextPath}/index.jsp" >首页</a></li>
 		      <li><a href="${pageContext.request.contextPath}/jsp/index/blog.jsp" >博文</a></li>
 		      <li><a href="${pageContext.request.contextPath}/jsp/index/pictures.jsp" >画廊</a></li>
-		      <li><a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp" >我的</a></li>
+		      <%if(login_flag){ %>
+      <li><a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp" >我的</a></li>
+      <%}else{ %>
+      <li style="visibility:hidden"><a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp" >我的</a></li>
+      <%} %>
 			</ul>
 		</div>
 		<div id="index_head_tools">
@@ -105,46 +142,126 @@ $(function(){
 						src="${pageContext.request.contextPath}/image/search.png"
 						style="float: left;" />
 				</a></li>
-				<li><a href="#">
-						<div style="float: left; position: relative;">
-							<img src="${pageContext.request.contextPath}/image/message.png" />
-							<span
-								style="min-width: 20px; line-height: 20px; text-align: center; position: absolute; background-color: #f00; border-radius: 15px; font-size: 15px; color: #fff; width: 10px; right: 10px; top: 15px; z-index: 200;">0</span>
-						</div>
-				</a>
-					<ul class="index_tools_messages">
-						<li><a href="#home">评论消息</a><span
-							style="min-width: 20px; line-height: 20px; text-align: center; position: absolute; background-color: #f00; border-radius: 15px; font-size: 15px; color: #fff; width: 10px; right: 5px; top: 20px; z-index: 200;">0</span></li>
-						<li><a href="#home">关注消息</a><span
-							style="min-width: 20px; line-height: 20px; text-align: center; position: absolute; background-color: #f00; border-radius: 15px; font-size: 15px; color: #fff; width: 10px; right: 5px; top: 80px; z-index: 200;">0</span></li>
-						<li><a href="#home">收藏消息</a><span
-							style="min-width: 20px; line-height: 20px; text-align: center; position: absolute; background-color: #f00; border-radius: 15px; font-size: 15px; color: #fff; width: 10px; right: 5px; top: 140px; z-index: 200;">0</span></li>
-						<li><a href="#home">点赞消息</a><span
-							style="min-width: 20px; line-height: 20px; text-align: center; position: absolute; background-color: #f00; border-radius: 15px; font-size: 15px; color: #fff; width: 10px; right: 5px; top: 200px; z-index: 200;">0</span></li>
-						<li><a href="#home">举报消息</a><span
-							style="min-width: 20px; line-height: 20px; text-align: center; position: absolute; background-color: #f00; border-radius: 15px; font-size: 15px; color: #fff; width: 10px; right: 5px; top: 265px; z-index: 200;">0</span></li>
-					</ul></li>
-				<li><a href="#"> <img
-						src="${pageContext.request.contextPath}/image/setting.png" />
-				</a>
-					<ul class="index_tools_setting">
-						<li><a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp?id=5">&ensp;修改资料&ensp;</a></li>
-			          	<li><a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp?id=5">&ensp;修改头像&ensp;</a></li>
-			            <li><a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp?id=5">&ensp;更改密码&ensp;</a></li>
-			            <li><a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp">&ensp;个人中心&ensp;</a></li>
-			            <li><a href="#home">&ensp;举报中心&ensp;</a></li>
-			            <li><a href="#home">&ensp;退出账号&ensp;</a></li>
-					</ul></li>
+				
+
+		
+
+				 <%if(login_flag&&user_id==3){ %>
+    <li>
+    	<a href="javascript:;">
+        	<div style="float:left; position:relative;">
+    			<img src="${pageContext.request.contextPath}/image/message.png"/>
+                	<span  style="min-width: 20px;line-height:20px; text-align: center; position: absolute; background-color: #f00;  border-radius:15px; font-size:15px;color:#fff;width:10px;right:10px; top:15px; z-index:200;" ><%=all_num+report_num+feedback_num %></span>
+             </div>
+         </a> 
+         
+         <ul class="index_tools_messages">
+         	<li><a href="${pageContext.request.contextPath}/jsp/message_center/messagecenter.jsp">评论消息</a><span  style="min-width: 20px;line-height:20px; text-align: center; position: absolute; background-color: #f00;  border-radius:15px; font-size:15px;color:#fff;width:10px;right:5px; top:20px; z-index:200;" ><%=comment_num %></span></li>
+          	<li><a href="${pageContext.request.contextPath}/jsp/message_center/messagecenter.jsp?id=2">关注消息</a><span  style="min-width: 20px;line-height:20px; text-align: center; position: absolute; background-color: #f00;  border-radius:15px; font-size:15px;color:#fff;width:10px;right:5px; top:80px; z-index:200;" ><%=follow_num %></span></li>
+            <li><a href="${pageContext.request.contextPath}/jsp/message_center/messagecenter.jsp?id=3">收藏消息</a><span  style="min-width: 20px;line-height:20px; text-align: center; position: absolute; background-color: #f00;  border-radius:15px; font-size:15px;color:#fff;width:10px;right:5px; top:140px; z-index:200;" ><%=collect_num %></span></li>
+            <li><a href="${pageContext.request.contextPath}/jsp/message_center/messagecenter.jsp?id=4">点赞消息</a><span  style="min-width: 20px;line-height:20px; text-align: center; position: absolute; background-color: #f00;  border-radius:15px; font-size:15px;color:#fff;width:10px;right:5px; top:200px; z-index:200;" ><%=zan_num %></span></li>
+            <li><a href="${pageContext.request.contextPath}/jsp/manage_center/managecenter.jsp">举报消息</a><span  style="min-width: 20px;line-height:20px; text-align: center; position: absolute; background-color: #f00;  border-radius:15px; font-size:15px;color:#fff;width:10px;right:5px; top:265px; z-index:200;" ><%=report_num+feedback_num %></span></li>
+         </ul>
+       
+    </li>
+      <%}else if(login_flag){
+    %>
+    <li>
+    	<a href="javascript:;">
+        	<div style="float:left; position:relative;">
+    			<img src="${pageContext.request.contextPath}/image/message.png"/>
+                	<span  style="min-width: 20px;line-height:20px; text-align: center; position: absolute; background-color: #f00;  border-radius:15px; font-size:15px;color:#fff;width:10px;right:10px; top:15px; z-index:200;" ><%=all_num %></span>
+             </div>
+         </a> 
+         
+         <ul class="index_tools_messages">
+         	<li><a href="${pageContext.request.contextPath}/jsp/message_center/messagecenter.jsp">评论消息</a><span  style="min-width: 20px;line-height:20px; text-align: center; position: absolute; background-color: #f00;  border-radius:15px; font-size:15px;color:#fff;width:10px;right:5px; top:20px; z-index:200;" ><%=comment_num %></span></li>
+          	<li><a href="${pageContext.request.contextPath}/jsp/message_center/messagecenter.jsp?id=2">关注消息</a><span  style="min-width: 20px;line-height:20px; text-align: center; position: absolute; background-color: #f00;  border-radius:15px; font-size:15px;color:#fff;width:10px;right:5px; top:80px; z-index:200;" ><%=follow_num %></span></li>
+            <li><a href="${pageContext.request.contextPath}/jsp/message_center/messagecenter.jsp?id=3">收藏消息</a><span  style="min-width: 20px;line-height:20px; text-align: center; position: absolute; background-color: #f00;  border-radius:15px; font-size:15px;color:#fff;width:10px;right:5px; top:140px; z-index:200;" ><%=collect_num %></span></li>
+            <li><a href="${pageContext.request.contextPath}/jsp/message_center/messagecenter.jsp?id=4">点赞消息</a><span  style="min-width: 20px;line-height:20px; text-align: center; position: absolute; background-color: #f00;  border-radius:15px; font-size:15px;color:#fff;width:10px;right:5px; top:200px; z-index:200;" ><%=zan_num %></span></li>
+         </ul>
+       
+    </li>
+    
+    <%
+      }else{ %>
+         <li style="visibility:hidden">
+    	<a href="javascript:;">
+        	<div style="float:left; position:relative;">
+    			<img src="${pageContext.request.contextPath}/image/message.png"/>
+                	<span  style="min-width: 20px;line-height:20px; text-align: center; position: absolute; background-color: #f00;  border-radius:15px; font-size:15px;color:#fff;width:10px;right:10px; top:15px; z-index:200;" >0</span>
+             </div>
+         </a> 
+         
+         <ul class="index_tools_messages">
+         	<li><a href="${pageContext.request.contextPath}/jsp/message_center/messagecenter.jsp">评论消息</a><span  style="min-width: 20px;line-height:20px; text-align: center; position: absolute; background-color: #f00;  border-radius:15px; font-size:15px;color:#fff;width:10px;right:5px; top:20px; z-index:200;" >0</span></li>
+          	<li><a href="${pageContext.request.contextPath}/jsp/message_center/messagecenter.jsp?id=2">关注消息</a><span  style="min-width: 20px;line-height:20px; text-align: center; position: absolute; background-color: #f00;  border-radius:15px; font-size:15px;color:#fff;width:10px;right:5px; top:80px; z-index:200;" >0</span></li>
+            <li><a href="${pageContext.request.contextPath}/jsp/message_center/messagecenter.jsp?id=3">收藏消息</a><span  style="min-width: 20px;line-height:20px; text-align: center; position: absolute; background-color: #f00;  border-radius:15px; font-size:15px;color:#fff;width:10px;right:5px; top:140px; z-index:200;" >0</span></li>
+            <li><a href="${pageContext.request.contextPath}/jsp/message_center/messagecenter.jsp?id=4">点赞消息</a><span  style="min-width: 20px;line-height:20px; text-align: center; position: absolute; background-color: #f00;  border-radius:15px; font-size:15px;color:#fff;width:10px;right:5px; top:200px; z-index:200;" >0</span></li>
+            <li><a href="${pageContext.request.contextPath}/jsp/manage_center/managecenter.jsp">举报消息</a><span  style="min-width: 20px;line-height:20px; text-align: center; position: absolute; background-color: #f00;  border-radius:15px; font-size:15px;color:#fff;width:10px;right:5px; top:265px; z-index:200;" >0</span></li>
+         </ul>
+       
+    </li>
+     <%} %>
+	 <%if(login_flag&&user_id==3){ %>
+    <li>
+    	<a href="javascript:;">
+        	<img src="${pageContext.request.contextPath}/image/setting.png"/>
+        </a>
+        <ul class="index_tools_setting">
+         	<li><a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp?id=5">&ensp;修改资料&ensp;</a></li>
+          	<li><a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp?id=5">&ensp;修改头像&ensp;</a></li>
+            <li><a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp?id=5">&ensp;更改密码&ensp;</a></li>
+            <li><a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp">&ensp;个人中心&ensp;</a></li>
+            <li><a href="${pageContext.request.contextPath}/jsp/manage_center/managecenter.jsp">&ensp;管理中心&ensp;</a></li>
+            <li><a href="${pageContext.request.contextPath}/jsp/login/sign_out.jsp">&ensp;退出账号&ensp;</a></li>
+         </ul>
+    </li>
+    <%}else if(login_flag){ %>
+    <li>
+    	<a href="javascript:;">
+        	<img src="${pageContext.request.contextPath}/image/setting.png"/>
+        </a>
+        <ul class="index_tools_setting">
+         	<li><a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp?id=5">&ensp;修改资料&ensp;</a></li>
+          	<li><a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp?id=5">&ensp;修改头像&ensp;</a></li>
+            <li><a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp?id=5">&ensp;更改密码&ensp;</a></li>
+            <li><a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp">&ensp;个人中心&ensp;</a></li>
+            <li><a href="${pageContext.request.contextPath}/jsp/report_center/reportcenter.jsp">&ensp;举报中心&ensp;</a></li>
+            <li><a href="${pageContext.request.contextPath}/jsp/login/sign_out.jsp">&ensp;退出账号&ensp;</a></li>
+         </ul>
+    </li>
+    
+    <%}else{ %>
+     <li style="visibility:hidden">
+    	<a href="javascript:;">
+        	<img src="${pageContext.request.contextPath}/image/setting.png"/>
+        </a>
+        <ul class="index_tools_setting">
+         	<li><a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp?id=5">&ensp;修改资料&ensp;</a></li>
+          	<li><a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp?id=5">&ensp;修改头像&ensp;</a></li>
+            <li><a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp?id=5">&ensp;更改密码&ensp;</a></li>
+            <li><a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp">&ensp;个人中心&ensp;</a></li>
+            <li><a href="${pageContext.request.contextPath}/jsp/manage_center/managecenter.jsp">&ensp;管理中心&ensp;</a></li>
+            <li><a href="${pageContext.request.contextPath}/jsp/report_center/reportcenter.jsp">&ensp;举报中心&ensp;</a></li>
+            <li><a href="${pageContext.request.contextPath}/jsp/login/sign_out.jsp">&ensp;退出账号&ensp;</a></li>
+         </ul>
+    </li>
+    <%} %>
 			</ul>
 		</div>
 		<span
 			style="color: #FFF; font-size: 36px; float: left; margin-top: 15px;">
 			|</span>
 		<div id="index_head_signin">
-			<ul>
-				<li><a href="register.html">注册</a></li>
-				<li><a href="signin.html">登录</a></li>
-			</ul>
+			 <%if(login_flag){ %>
+		    <a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp" style=" float:left;background-color:#FFF; width:55px;height:55px;margin:10px; position:relative;padding-top:5px; padding-left:5px;"><img src="<%=user.getTouxiang() %>"  style="width:50px;height:50px;"/></a><a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp"><span style="width:90px;height:48px;overflow:hidden;float:left;margin-top:20px; font-size:18px; color:#FFF;"><%=user.getUsername() %></span></a>
+		    <%}else{ %>
+		    <ul>
+		      <li><a href="${pageContext.request.contextPath}/jsp/login/register.jsp">注册</a></li>
+		      <li><a href="${pageContext.request.contextPath}/jsp/login/sign_in.jsp">登录</a></li>
+		    </ul>
+		    <%} %>
 		</div>
 	</div>
 
@@ -160,12 +277,32 @@ $(function(){
 			<span style="float: left; margin-top: 10px; margin-left: 20px;"><%=article.getPublishdate()%></span>
 			<span style="float: left; margin-top: 10px; margin-left: 20px;"><%=article.getLable()%></span>
 			<span style="float: left; margin-top: 10px; margin-left: 20px;">阅读&ensp;<%=article.getClick_num()%></span><br>
+			<%if(article.getStatus().equals("正常")){ %>
 			<div style="margin-left: 70px; margin-top: 30px; width: 820px;"><%=article.getText()%>
 			</div>
+			<%}else{ %>
+			<div style="margin-left: 70px; margin-top: 30px; width: 820px;"> <p>该文章涉嫌违规内容，已被屏蔽！！</p>
+			</div>
+			<%} %>
+			<%
+				int last_article_id=service.getLastArticle_id(article_id,author_id);
+				int next_article_id=service.getNextArticle_id(article_id,author_id);
+			%>
+			
 			<div style="margin-top: 50px;">
-				<a href="#" style="float: left; color: #666; margin-left: 70px;">◁上一篇
-					所有的你</a> <a href="#"
+				<%if(last_article_id!=-1){ %>
+				<a href="${pageContext.request.contextPath }/jsp/article/article.jsp?id=<%=last_article_id %>" style="float: left; color: #666; margin-left: 70px;">◁上一篇 <%=service.getArticleFromId(last_article_id).getTitle() %></a> 
+				<%}else{ %>
+				<a href="javascript:;"
+					style="float: left; color: #666; margin-left: 70px;">▷上一篇 没有了</a>
+				<%} %>
+				<%if(next_article_id!=-1){ %>	
+				<a href="${pageContext.request.contextPath }/jsp/article/article.jsp?id=<%=next_article_id %>"
+					style="float: right; color: #666; margin-right: 70px;">▷下一篇 <%=service.getArticleFromId(next_article_id).getTitle() %></a><br>
+				<%}else{ %>
+				<a href="javascript:;"
 					style="float: right; color: #666; margin-right: 70px;">▷下一篇 没有了</a><br>
+				<%} %>
 			</div>
 
 			<div style="margin-top: 50px; height: 50px;">
@@ -173,16 +310,20 @@ $(function(){
 				<img id="like"
 					src="${pageContext.request.contextPath}/image/unlike.png"
 					style="cursor:pointer;width: 25px; float: left; margin-left: 520px;" title="喜欢">
-
+				<%if(login_flag){ %>
 				<!--喜欢图标更换的jq-->
 				<script>
 					$('#like').click(function() {
 						var like=$("#liked").text();
 						if ($('#like').attr('src') == '${pageContext.request.contextPath}/image/unlike.png') {
 							var article_id="<%=article.getId()%>";
+							var receiver_id="<%=author_id%>";
+							var sender_id="<%=user_id%>";
 							var url = "${pageContext.request.contextPath}/servlet/AddLiked";
 							var args = {
 								"article_id" : article_id,
+								"receiver_id":receiver_id,
+								"sender_id":sender_id,
 								"liked":like,
 								"status":"喜欢",
 								"time" : new Date()
@@ -201,6 +342,8 @@ $(function(){
 							var url = "${pageContext.request.contextPath}/servlet/AddLiked";
 							var args = {
 								"article_id" : article_id,
+								"receiver_id":receiver_id,
+								"sender_id":sender_id,
 								"liked":like,
 								"status":"不喜欢",
 								"time" : new Date()
@@ -219,7 +362,13 @@ $(function(){
 
 					});
 				</script>
-
+				<%}else{ %>
+				<script>
+					$('#like').click(function() {
+						window.location.href='${pageContext.request.contextPath}/jsp/login/sign_in.jsp';
+					});
+				</script>
+				<%} %>
 				<span
 					style="float: left; font-size: 18px; margin-bottom: 10px; color: #666; margin-left: 5px;">喜欢</span><span id="liked"
 					style="float: left; font-size: 18px; margin-bottom: 10px; color: #666; margin-left: 10px;"><%=article.getLiked() %></span>
@@ -237,17 +386,19 @@ $(function(){
 				<span
 					style="float: left; font-size: 18px; margin-bottom: 10px; color: #666;">收藏</span><span id="collected"
 					style="float: left; font-size: 18px; margin-bottom: 10px; color: #666; margin-left: 10px;"><%=article.getCollected() %></span>
+				<%if(login_flag){ %>
 				<script>
 				$('#favor').click(function() {
 					var collect=$("#collected").text();
 					if ($('#favor').attr('src') == '${pageContext.request.contextPath}/image/unfavor.png') {
 						var article_id="<%=article.getId()%>";
-						
+						var author_id="<%=author_id%>";	
 						
 						
 						var url2 = "${pageContext.request.contextPath}/servlet/CollectArticle";
 						var args2 = {
 							"article_id" : article_id,
+							"author_id":author_id,
 							"status":"收藏",
 							"time" : new Date()
 						};
@@ -316,11 +467,24 @@ $(function(){
 
 				});
 				</script>
-				<a href="${pageContext.request.contextPath }/jsp/report_center/reportcenter_article.jsp?article_id=<%=article.getId()%>"><img
+				<%}else{ %>
+				<script>
+					$('#favor').click(function() {
+						window.location.href='${pageContext.request.contextPath}/jsp/login/sign_in.jsp';
+					});
+				</script>
+				<%} %>
+				<%if(login_flag){ %>
+				<a href="${pageContext.request.contextPath }/jsp/report_center/reportcenter_article.jsp?article_id=<%=article_id%>"><img
 					src="${pageContext.request.contextPath}/image/report.png"
 					style="width: 25px; float: left; margin-left: 35px;" title="举报"></a>
+					<%}else{ %>
+						<a href="${pageContext.request.contextPath }/jsp/login/sign_in.jsp"><img
+					src="${pageContext.request.contextPath}/image/report.png"
+					style="width: 25px; float: left; margin-left: 35px;" title="举报"></a>
+					<%} %>
 					<span
-					style="margin-right: 135px; float: right; font-size: 18px; color: #666;">举报</span>
+					style="margin-right: 115px; float: right; font-size: 18px; color: #666;">举报</span>
 			</div>
 			<div id="n_discuss">
 				<!--
@@ -355,19 +519,26 @@ $(function(){
 						<div class="comment-show-con clearfix">
 							<!--这是头像div-->
 							<div class="comment-show-con-img pull-left">
+							<a href="${pageContext.request.contextPath}/jsp/other_center/otherscenter.jsp?id=<%=comment.getAuthor_id()%>">
 								<img src="<%=comment_author.getTouxiang()%>" alt="">
+							</a>
 							</div>
 							<div class="comment-show-con-list pull-left clearfix">
 								<div class="pl-text clearfix">
 									<!--用户名-->
-									<a href="${pageContext.request.contextPath}/login_jsp/otherscenter.jsp?id=<%=comment.getAuthor_id()%>" class="comment-size-name"
+									<a href="${pageContext.request.contextPath}/jsp/other_center/otherscenter.jsp?id=<%=comment.getAuthor_id()%>" class="comment-size-name"
 										data="<%=comment.getId()%>"><%=comment_author.getUsername()%> : </a>
 									<!--评论内容 -->
+									<%if(comment.getStatus().equals("正常")){ %>	
 									<span class="my-pl-con"><%=comment.getText()%></span>
+									<%}else{ %>
+									<span class="my-pl-con">该评论涉嫌违规内容，已被屏蔽！！</span>
+									<%} %>
 								</div>
 								<div class="date-dz">
 									<span class="date-dz-left pull-left comment-time"><%=df.format(comment.getAdd_time())%></span>
 									<div class="date-dz-right pull-right comment-pl-block">
+										<a href="javascript:;" class="removeBlock">举报</a>
 										<a href="javascript:;" class="date-dz-pl pl-hf pull-left">回复</a>
 										<span class="pull-left date-dz-line">|</span>
 										<!--赞-->
@@ -391,12 +562,18 @@ $(function(){
 
 									<div class="all-pl-con">
 										<div class="pl-text hfpl-text clearfix">
-											<a href="${pageContext.request.contextPath}/login_jsp/otherscenter.jsp?id=<%=answer.getAuthor_id()%>" class="comment-size-name" data="<%=answer.getId()%>"><%=answer_author.getUsername() %> : </a> <span class="my-pl-con"> &nbsp;<%=answer.getText() %>
-											</span>
+											<a href="${pageContext.request.contextPath}/jsp/other_center/otherscenter.jsp?id=<%=answer.getAuthor_id()%>" class="comment-size-name" data="<%=answer.getId()%>"><%=answer_author.getUsername() %> : </a> 
+											
+											<%if(answer.getStatus().equals("正常")){ %>
+											<span class="my-pl-con"> &nbsp;<%=answer.getText() %></span>
+											<%}else{ %>
+											<span class="my-pl-con"> &nbsp;该回复涉嫌违规内容，已被屏蔽！！</span>
+											<%} %>
 										</div>
 										<div class="date-dz">
 											<span class="date-dz-left pull-left comment-time"><%=df.format(answer.getAdd_time() )%></span>
 											<div class="date-dz-right pull-right comment-pl-block">
+												<a href="javascript:;" class="removeBlock">举报</a>
 												<a href="javascript:;"
 													class="date-dz-pl pl-hf hf-con-block pull-left">回复</a> <span
 													class="pull-left date-dz-line">|</span> <a
@@ -450,6 +627,7 @@ $(function(){
 					}
 				</script>
 		<!--点击评论创建评论条-->
+		<%if(login_flag){ %>
 		<script type="text/javascript">
 					$('.commentAll')
 							.on(
@@ -486,13 +664,13 @@ $(function(){
 														console.log(comment_id);
 														var add_time=result.add_time;
 														console.log(add_time);
-												     	oHtml = '<div class="comment-show-con clearfix"><div class="comment-show-con-img pull-left" ><img src="<%=user.getTouxiang()%>"  alt=""></div> <div class="comment-show-con-list pull-left clearfix"><div class="pl-text clearfix"> <a href="${pageContext.request.contextPath}/login_jsp/otherscenter.jsp?id=<%=user_id%>" class="comment-size-name" data="'
+												     	oHtml = '<div class="comment-show-con clearfix"><div class="comment-show-con-img pull-left" ><a href="${pageContext.request.contextPath}/jsp/other_center/otherscenter.jsp?id=<%=user_id%>"><img src="<%=user.getTouxiang()%>"</a>  alt=""></div> <div class="comment-show-con-list pull-left clearfix"><div class="pl-text clearfix"> <a href="${pageContext.request.contextPath}/jsp/other_center/otherscenter.jsp?id=<%=user_id%>" class="comment-size-name" data="'
 															+comment_id+
 														'"><%=user.getUsername()%> : </a> <span class="my-pl-con">&nbsp;'
 															+ oSize
 															+ '</span> </div> <div class="date-dz"> <span class="date-dz-left pull-left comment-time">'
 															+ add_time
-															+ '</span> <div class="date-dz-right pull-right comment-pl-block"> <a href="javascript:;" class="date-dz-pl pl-hf hf-con-block pull-left">回复</a> <span class="pull-left date-dz-line">|</span> <a href="javascript:;" class="date-dz-z pull-left"><i class="date-dz-z-click-red"></i>赞 (<i class="z-num">0</i>)</a> </div> </div><div class="hf-list-con"></div></div> </div>';
+															+ '</span> <div class="date-dz-right pull-right comment-pl-block"><a href="javascript:;" class="removeBlock">举报</a> <a href="javascript:;" class="date-dz-pl pl-hf hf-con-block pull-left">回复</a> <span class="pull-left date-dz-line">|</span> <a href="javascript:;" class="date-dz-z pull-left"><i class="date-dz-z-click-red"></i>赞 (<i class="z-num">0</i>)</a> </div> </div><div class="hf-list-con"></div></div> </div>';
 														
 												     
 											}); 
@@ -514,7 +692,17 @@ $(function(){
 										}
 									});
 				</script>
-
+				<%}else{ %>
+				<script type="text/javascript">
+					$('.commentAll')
+							.on(
+									'click',
+									'.plBtn',
+									function() {
+										window.location.href='${pageContext.request.contextPath}/jsp/login/sign_in.jsp';
+									});
+				</script>
+				<%} %>
 
 
 		<!--点击回复动态创建回复块-->
@@ -542,6 +730,7 @@ $(function(){
 		    });
 				</script>
 		<!--评论回复块创建-->
+		<%if(login_flag){ %>
 		<script type="text/javascript">
 					$('.comment-show')
 							.on(
@@ -686,13 +875,13 @@ $(function(){
 																			console.log(answer_id);
 																			var add_time=result.add_time;
 																			console.log(add_time);
-																			oHtml= '<div class="all-pl-con"><div class="pl-text hfpl-text clearfix"><a href="${pageContext.request.contextPath}/login_jsp/otherscenter.jsp?id=<%=user_id%>" class="comment-size-name" data="'
+																			oHtml= '<div class="all-pl-con"><div class="pl-text hfpl-text clearfix"><a href="${pageContext.request.contextPath}/jsp/other_center/otherscenter.jsp?id=<%=user_id%>" class="comment-size-name" data="'
 																				+answer_id+
 																				'"><%=user.getUsername()%> : </a><span class="my-pl-con">'
 																				+ oAt
 																				+ '</span></div><div class="date-dz"> <span class="date-dz-left pull-left comment-time">'
 																				+ add_time
-																				+ '</span> <div class="date-dz-right pull-right comment-pl-block"> <a href="javascript:;" class="date-dz-pl pl-hf hf-con-block pull-left">回复</a> <span class="pull-left date-dz-line">|</span> <a href="javascript:;" class="date-dz-z pull-left"><i class="date-dz-z-click-red"></i>赞 (<i class="z-num">0</i>)</a> </div> </div></div>';
+																				+ '</span> <div class="date-dz-right pull-right comment-pl-block"> <a href="javascript:;" class="removeBlock">举报</a><a href="javascript:;" class="date-dz-pl pl-hf hf-con-block pull-left">回复</a> <span class="pull-left date-dz-line">|</span> <a href="javascript:;" class="date-dz-z pull-left"><i class="date-dz-z-click-red"></i>赞 (<i class="z-num">0</i>)</a> </div> </div></div>';
 																			
 																	     
 																}); 
@@ -737,19 +926,41 @@ $(function(){
 										}
 									});
 				</script>
+				<%}else{ %>
+				<script type="text/javascript">
+					$('.comment-show')
+							.on(
+									'click',
+									'.hf-pl',
+									function() {
+										window.location.href='${pageContext.request.contextPath}/jsp/login/sign_in.jsp';
+									});
+				</script>
+				<%} %>
 		<!--删除评论块  已屏蔽-->
 		<script type="text/javascript">
-					/* $('.commentAll').on('click','.removeBlock',function(){
-					    var oT = $(this).parents('.date-dz-right').parents('.date-dz').parents('.all-pl-con');
-					    if(oT.siblings('.all-pl-con').length >= 1){
-					        oT.remove();
-					    }else {
-					        $(this).parents('.date-dz-right').parents('.date-dz').parents('.all-pl-con').parents('.hf-list-con').css('display','none')
-					        oT.remove();
-					    }
-					    $(this).parents('.date-dz-right').parents('.date-dz').parents('.comment-show-con-list').parents('.comment-show-con').remove();
+					 $('.commentAll').on('click','.removeBlock',function(){
+						 	var alltext=$(this)
+							.parents('.date-dz-right').parents(
+							'.date-dz').siblings(
+							'.pl-text').html();
+						 	var article_id="<%=article_id%>";
+							var comment_id = $(this)
+							.parents('.date-dz-right').parents(
+							'.date-dz').siblings(
+							'.pl-text').find(
+							'.comment-size-name').attr("data");
+							if(alltext.indexOf("@")==-1){	
+								<!--举报的是评论 -->
+								window.location.href='${pageContext.request.contextPath}/jsp/report_center/reportcenter_comment.jsp?article_id='+article_id+"&comment_id="+comment_id;
+	
+							}else{
+								<!--举报的是回复 -->
+								window.location.href='${pageContext.request.contextPath}/jsp/report_center/reportcenter_answer.jsp?article_id='+article_id+"&answer_id="+comment_id;
+							
+							}
 
-					}) */
+					}) 
 				</script>
 		<!--点赞-->
 		<script type="text/javascript">
@@ -758,14 +969,17 @@ $(function(){
 							'.date-dz-z',
 							function() {
 								var zNum = $(this).find('.z-num').html();
+								var status;
 								if ($(this).is('.date-dz-z-click')) {
 									zNum--;
+									status="取消点赞";
 									$(this).removeClass('date-dz-z-click red');
 									$(this).find('.z-num').html(zNum);
 									$(this).find('.date-dz-z-click-red')
 											.removeClass('red');
 								} else {
 									zNum++;
+									status="点赞";
 									$(this).addClass('date-dz-z-click');
 									$(this).find('.z-num').html(zNum);
 									$(this).find('.date-dz-z-click-red')
@@ -776,21 +990,21 @@ $(function(){
 								.parents('.date-dz-right').parents(
 								'.date-dz').siblings(
 								'.pl-text').html();
-								console.log("alltext:");
-								console.log(alltext);
 								var comment_id = $(this)
 								.parents('.date-dz-right').parents(
 								'.date-dz').siblings(
 								'.pl-text').find(
 								'.comment-size-name').attr("data");
-								if(alltext.indexOf("@")==-1){
-									console.log("comment_id:");
-									console.log(comment_id);
-									
+								var sender_id="<%=user_id%>";
+								var article_id="<%=article_id%>"
+								if(alltext.indexOf("@")==-1){		
 									<!--点赞的是评论表 -->
 									var url = "${pageContext.request.contextPath}/servlet/AddZanToComment";
 									var args = {
 										"comment_id":comment_id,
+										"sender_id":sender_id,
+										"article_id":article_id,
+										"status":status,
 										"zan":zNum,
 										"time" : new Date()
 									};
@@ -805,11 +1019,12 @@ $(function(){
 									
 								}else{
 								
-									console.log("comment_id:");
-									console.log(comment_id);
 									var url = "${pageContext.request.contextPath}/servlet/AddZanToAnswer";
 									var args = {
 										"comment_id":comment_id,
+										"sender_id":sender_id,
+										"article_id":article_id,
+										"status":status,
 										"zan":zNum,
 										"time" : new Date()
 									};

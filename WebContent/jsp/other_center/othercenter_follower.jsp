@@ -1,5 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@page import="java.util.ListIterator"%>
+<%@page import="java.util.ArrayList"%>
+<%@ page import="threeblog.entity.*" %>
+<%@ page import="threeblog.service.Service" %>
+<%
+	Service service = new Service();
+	int other_id=Integer.valueOf(request.getParameter("id"));
+	ArrayList<Follow> follows = service.getFollowFromFollower_id(other_id);
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -31,24 +40,32 @@
         <td></td>
     </tr>
     </tfoot>    
-    <tbody><tr>
+    <tbody>
+    <tr>
+    <%
+    if(!follows.isEmpty()){
+    	for(int i=0;i<follows.size();i++){
+    		Follow follow=follows.get(i);
+    		User following=service.getUserFromId(follow.getFollowing_id());
+    %>
 
-        <td>1</td>        
-        <td><a href="#" target="_blank">Marin</a></td>
-        <td>2015.5.15</td>
-        <td><a href="http://www.baidu.com" target="_blank"><img  id="eye" src="${pageContext.request.contextPath}/image/eye.png"  style="width:40px; height:40px;"></a>
+        <td><%=i+1 %></td>        
+        <td><%=following.getUsername() %></td>
+        <td><%=follow.getFollow_date() %></td>
+        <td><a href="${pageContext.request.contextPath}/jsp/other_center/otherscenter.jsp?id=<%=follow.getFollowing_id() %>" target="_blank"><img  id="eye<%=i %>" src="${pageContext.request.contextPath}/image/eye.png"  style="width:40px; height:40px;"></a>
         <!--查看图标更换的jq-->
 <script>
-$('#eye').click(function(){  
+$('#eye<%=i %>').click(function(){  
           
-        if($('#eye').attr('src')=='image/eye.png'){  
-            $('#eye').attr('src','image/eyes.png');  
+        if($('#eye<%=i %>').attr('src')=='image/eye.png'){  
+            $('#eye<%=i %>').attr('src','image/eyes.png');  
         }
           
 });  
 </script>
         </td>
     </tr>  
+         <%}} %>
           
    
 </tbody></table>

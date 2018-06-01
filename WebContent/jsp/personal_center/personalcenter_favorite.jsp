@@ -4,18 +4,9 @@
 <%@ page import="threeblog.service.Service" %>
 <%@page import="java.util.ArrayList"%>
 <%
-	User user = new User();
-	Service service = new Service();
 	int user_id = 10240;
-	if (session.getAttribute("user_id") == null) {
-		response.setContentType("text/html;charset=utf-8");
-		response.getWriter().print("<script>alert(`会话过期，将重新登录！`)</script>");
-		String content = 0 + ";URL= " +request.getContextPath()+ "/jsp/login/sign_in.jsp";
-		response.setHeader("REFRESH ", content);
-	} else {
-		user_id = Integer.valueOf((String) session.getAttribute("user_id"));
-		user = service.getUserFromId(user_id);	
-	}
+	user_id = Integer.valueOf((String) session.getAttribute("user_id"));
+	Service service=new Service();
 	ArrayList<Collect> collects = service.getCollectFromUser_id(user_id);
 %>   
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -24,6 +15,36 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>我的收藏</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/main.css" type="text/css"/>
+
+<script>
+
+$(document)
+.ready(
+		function() {	
+			for (var i=0; i<<%=collects.size()%>; i++){  
+				$("[id=current_"+i+"]").bind("click", {index: i}, clickHandler);  
+		    }  
+		  
+		    function clickHandler(event) {  
+		        var i= event.data.index;  
+		        var collect_id=$("#current_"+i).attr("data");
+		        
+		        var url2="${pageContext.request.contextPath}/servlet/DeleteCollect";
+		        var args={
+		        		"collect_id" : collect_id,
+						"time" : new Date()
+		        }
+		        $.ajaxSettings.async = false; 
+		        $.get(url2, args,
+						function(data) {
+		        	$("#current"+i).remove();
+				}); 
+		       
+		        $.ajaxSettings.async = true; 
+		    }  
+		});
+
+</script>
 </head>
 
 <body>
@@ -58,11 +79,12 @@
 						%>
 						
 						
-						<tr>
+						<tr id="current<%=i%>">
 					        <td><%=i + 1%></td>        
 					        <td><%=article.getTitle() %></td>
 					        <td><%=article.getPublishdate() %></td>
-					        <td><a href="${pageContext.request.contextPath}/jsp/article/article.jsp?id=<%=article.getId() %>" target="_blank"><span>查看&emsp;</span></a><span>取消</span>
+					        <td><a href="${pageContext.request.contextPath}/jsp/article/article.jsp?id=<%=article.getId() %>" target="_blank"><span>查看&emsp;</span></a>
+					        <a href="javascript:;" id="current_<%=i%>" data="<%=collect.getId()%>" target="_blank"><span>取消</span></a>
 					       
 					        </td>
 					    </tr>  

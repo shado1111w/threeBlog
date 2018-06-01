@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="threeblog.entity.User" %>
+<%@ page import="threeblog.entity.*" %>
 <%@ page import="threeblog.service.Service" %>
+<%@page import="java.util.ArrayList"%>
 <%
 	boolean login_flag=false;
 	User user = new User();
@@ -15,6 +16,7 @@
 			for(Cookie c:cookies){
 				if(c.getName().equals("phonenum1")){
 					phonenum=c.getValue();
+					
 					login_flag=true;
 				}
 				if(c.getName().equals("password1")){
@@ -33,6 +35,18 @@
 		user = service.getUserFromId(user_id);	
 		login_flag=true;
 	}
+	int article_id=Integer.valueOf(request.getParameter("article_id"));
+	int answer_id=Integer.valueOf(request.getParameter("answer_id"));
+	Article article=service.getArticleFromId(article_id);
+	Answer answer=service.getAnswertFromAnswer_id(answer_id);
+	User answer_author=service.getUserFromId(answer.getAuthor_id());
+	
+	if(answer.getAuthor_id()==user_id){
+		response.setContentType("text/html;charset=utf-8");
+		response.getWriter().print("<script>alert(`还有举报自己这种操作！你想太多了！回去吧~`)</script>");
+		String   content=0+ ";URL= "+request.getContextPath()+"/jsp/article/article.jsp?id="+article_id; 
+		response.setHeader( "REFRESH ",content);
+	}
 	
 	int feedback_num=0;
 	feedback_num=service.getReportNumFromStatus3();
@@ -48,13 +62,13 @@
 	zan_num=service.getZanNumFromReceiver_id(user_id);
 	report_num=service.getReportNum();
 	all_num=comment_num+follow_num+collect_num+zan_num;
-%> 
+%>   
 <!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="toTop" content="true">
-<title>发表博文</title>
+<title>举报回复</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/main.css" type="text/css"/>
 
 <link href="${pageContext.request.contextPath}/css/owl.carousel.css" rel="stylesheet">
@@ -94,55 +108,60 @@ $(function() {
 });
 </script>
 
- <!--举报栏切换-->
+ <!--导航栏切换-->
 <script>
 	$(document).ready(function() {
-		$("#myreport").click(function() {
-			$('#report_details') 
-			.load('${pageContext.request.contextPath}/jsp/report_center/reportcenter_myreport.jsp');
+		$("#bowen").click(function() {
+			$('#othercenter_body') 
+			.load('personalcenter_messages.html');
+			$('#othercenter_down').show();
 			})
-		$("#myillegal").click(function() {
-				$('#report_details')
-				.load('${pageContext.request.contextPath}/jsp/report_center/reportcenter_myillegal.jsp');
+		$("#shoucang").click(function() {
+				$('#othercenter_body')
+				.load('personalcenter_favorite.html');
+				$('#othercenter_down').show();
 				})
+		$("#guanzhu").click(function() {
+				$('#othercenter_body') 
+				.load('personalcenter_follow.html');
+				$('#othercenter_down').show();
+				})
+		$("#fenshi").click(function() {
+				$('#othercenter_body') 
+				.load('personalcenter_follower.html');
+				$('#othercenter_down').show();
+			})
+		$("#changeinfo").click(function() {
+				$('#othercenter_body') 
+				.load('changeinfo.html');
+				$('#othercenter_down').hide();
+			})
 
 })
 </script>
-<script>
-function myfunction(){
-	$('#report_details') 
-	.load('${pageContext.request.contextPath}/jsp/report_center/reportcenter_myreport.jsp');
-	<%String id = request.getParameter("id");%>
-	var id="<%=id%>";
-	if (id != null) {
-		if (id == "1") {
-			$('#report_details') 
-			.load('${pageContext.request.contextPath}/jsp/report_center/reportcenter_myreport.jsp');
-		} else if (id == "2") {
-			$('#report_details')
-			.load('${pageContext.request.contextPath}/jsp/report_center/reportcenter_myillegal.jsp');
-		} 
-	}
-}
-</script>
+
 </head>
 
-<body onload="myfunction()">
+<body>
 <!--顶端栏begin-->
 <div id="index_head">
   <div id="index_head_logo"> <img src="${pageContext.request.contextPath}/image/logo.png"> </div>
   <div id="index_head_menu">
     <ul>
-    <li><a href="${pageContext.request.contextPath}/index.jsp" >首页</a></li>
+      <li><a href="javascript:;" >首页</a></li>
       <li><a href="${pageContext.request.contextPath}/jsp/index/blog.jsp" >博文</a></li>
       <li><a href="${pageContext.request.contextPath}/jsp/index/pictures.jsp" >画廊</a></li>
+      <%if(login_flag){ %>
       <li><a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp" >我的</a></li>
+      <%}else{ %>
+      <li style="visibility:hidden"><a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp" >我的</a></li>
+      <%} %>
     </ul>
   </div>
   <div id="index_head_tools"> 
   <ul>
   	<li>
-    	<a href="${pageContext.request.contextPath}/jsp/index/search.jsp">
+    	<a href="#">
         	<img  src="${pageContext.request.contextPath}/image/search.png" style="float:left;" />
        	</a> 
     </li>
@@ -160,7 +179,7 @@ function myfunction(){
           	<li><a href="${pageContext.request.contextPath}/jsp/message_center/messagecenter.jsp?id=2">关注消息</a><span  style="min-width: 20px;line-height:20px; text-align: center; position: absolute; background-color: #f00;  border-radius:15px; font-size:15px;color:#fff;width:10px;right:5px; top:80px; z-index:200;" ><%=follow_num %></span></li>
             <li><a href="${pageContext.request.contextPath}/jsp/message_center/messagecenter.jsp?id=3">收藏消息</a><span  style="min-width: 20px;line-height:20px; text-align: center; position: absolute; background-color: #f00;  border-radius:15px; font-size:15px;color:#fff;width:10px;right:5px; top:140px; z-index:200;" ><%=collect_num %></span></li>
             <li><a href="${pageContext.request.contextPath}/jsp/message_center/messagecenter.jsp?id=4">点赞消息</a><span  style="min-width: 20px;line-height:20px; text-align: center; position: absolute; background-color: #f00;  border-radius:15px; font-size:15px;color:#fff;width:10px;right:5px; top:200px; z-index:200;" ><%=zan_num %></span></li>
-            <li><a href="${pageContext.request.contextPath}/jsp/manage_center/managecenter.jsp">举报消息</a><span  style="min-width: 20px;line-height:20px; text-align: center; position: absolute; background-color: #f00;  border-radius:15px; font-size:15px;color:#fff;width:10px;right:5px; top:265px; z-index:200;" ><%=report_num+feedback_num%></span></li>
+            <li><a href="${pageContext.request.contextPath}/jsp/manage_center/managecenter.jsp">举报消息</a><span  style="min-width: 20px;line-height:20px; text-align: center; position: absolute; background-color: #f00;  border-radius:15px; font-size:15px;color:#fff;width:10px;right:5px; top:265px; z-index:200;" ><%=report_num+feedback_num %></span></li>
          </ul>
        
     </li>
@@ -203,7 +222,7 @@ function myfunction(){
        
     </li>
      <%} %>
-   <%if(login_flag&&user_id==3){ %>
+     <%if(login_flag&&user_id==3){ %>
     <li>
     	<a href="javascript:;">
         	<img src="${pageContext.request.contextPath}/image/setting.png"/>
@@ -252,7 +271,7 @@ function myfunction(){
      </div>
   <span style="color:#FFF; font-size:36px;float:left; margin-top:15px;"> |</span>
   <div id="index_head_signin">
-       <%if(login_flag){ %>
+   <%if(login_flag){ %>
     <a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp" style=" float:left;background-color:#FFF; width:55px;height:55px;margin:10px; position:relative;padding-top:5px; padding-left:5px;"><img src="<%=user.getTouxiang() %>"  style="width:50px;height:50px;"/></a><a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp"><span style="width:90px;height:48px;overflow:hidden;float:left;margin-top:20px; font-size:18px; color:#FFF;"><%=user.getUsername() %></span></a>
     <%}else{ %>
     <ul>
@@ -260,7 +279,6 @@ function myfunction(){
       <li><a href="${pageContext.request.contextPath}/jsp/login/sign_in.jsp">登录</a></li>
     </ul>
     <%} %>
- 
   </div>
 </div>
 
@@ -268,15 +286,47 @@ function myfunction(){
 <!--内容框begin-->
 <div id="index_all">
 	<div id="reportcenter_all">
-    	<h1 style=" font-size:24px; width:960px; margin-left:40px;">█ 举报中心</h1>
-            <div id="report_body"> &emsp;&emsp;&emsp; <span id="myreport" style="font-size:24px; font-weight:bold; margin-left:30px; width:150px; cursor:pointer;">我的举报&emsp;|</span><span id="myillegal" style="font-size:24px; font-weight:bold; margin-left:30px; width:250px; cursor:pointer;">我的违规</span>
-      <div id="report_details" style="border:2px;border-style:solid;width:960px;margin-top:20px;background-color:#FFF;">
-       
-            	
-        
-      </div>
-      
-    </div>  
+    	<h1 style=" font-size:20px; width:960px; margin-left:40px;">█ Three Blog举报平台</h1><br/>
+        <form action="${pageContext.request.contextPath}/servlet/AddReport">
+        <div  style="margin-left:100px;">
+        <span style="font-size:20px;">您要举报的是&ensp;</span>
+        <a href="${pageContext.request.contextPath}/jsp/other_center/othercenter.jsp?id=<%=article.getAuthor_id()%>"><u style="font-size:20px;color:#09F; font-weight:bold;"><%=article.getAuthor() %></u></a>
+        <span style="font-size:20px;">&ensp;发表的文章&ensp;</span>
+        <a href="${pageContext.request.contextPath}/jsp/article/article.jsp?id=<%=article.getId()%>"><u style="font-size:20px;color:#09F; font-weight:bold;"><%=article.getTitle() %></u></a>
+        <span style="font-size:20px;">&ensp;中
+         <a href="${pageContext.request.contextPath}/jsp/other_center/othercenter.jsp?id=<%=answer_author.getId()%>"><u style="font-size:20px;color:#09F; font-weight:bold;"><%=answer_author.getUsername() %></u></a>	发表的评论,摘要如下：&ensp;</span><br/><br/>
+        <textarea type="text" style="width:800px; height:200px; border:1px solid;  color:#999; font-size:28px;" name="content" ><%=answer.getText()%></textarea>
+        </div>
+        <div style="clear:both; margin-left:100px;">
+        <br/><br/>
+        <span style="font-size:20px;">&ensp;选择举报类型（必选）：&ensp;</span><br/><br/>
+        <input type="radio" name="radio" onclick="check(this.value)" value="色情" style="font-size:20px;width:20px;height:20px;">色情&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+		<input type="radio" name="radio" onclick="check(this.value)" value="广告" style="font-size:20px;width:20px;height:20px;">广告<br/><br/>
+		<input type="radio" name="radio" onclick="check(this.value)" value="虚假信息" style="font-size:20px;width:20px;height:20px;">虚假信息&emsp;&emsp;&emsp;&emsp;
+		<input type="radio" name="radio" onclick="check(this.value)" value="违反社会主义核心价值观" style="font-size:20px;width:20px;height:20px;">违反社会主义核心价值观<br/><br/>
+        <input type="radio" name="radio" onclick="check(this.value)" value="其他（请在方框内填写）" style="font-size:20px;width:20px;height:20px;">其他<br/><br/>
+       <span style="font-size:20px;"> 您的选择是：</span><input type="text" id="answer"  name="simple_reason" size="50" style="border:1px solid; font-size:20px;" placeholder="若选择其他，请直接在此填写">
+       <script type="text/javascript">
+			function check(browser){
+  				document.getElementById("answer").value=browser
+  				}
+		</script>
+        </div>
+        <div  style="margin-left:100px;">
+        <br/><br/>
+        <span style="font-size:20px;">填写详细违规说明：</span><br/><br/>
+        <textarea style="width:800px; height:200px; border:1px solid;font-size:28px; resize:none;" name="all_reason" placeholder="详细违规理由"></textarea>
+        </div>
+        <input type="hidden"  name="author_id" value="<%=user.getId()%>"> 
+         <input type="hidden"  name="username" value="<%=answer_author.getUsername()%>"> 
+          <input type="hidden"  name="user_id" value="<%=answer_author.getId()%>"> 
+          <input type="hidden"  name="content_id" value="<%=answer_id%>"> 
+        <input type="hidden"  name="type" value="举报回复"> 
+        <input type="hidden"  name="article_id" value="<%=article_id%>"> 
+         <input type="hidden"  name="url" value="${pageContext.request.contextPath}/jsp/article/article.jsp?id=<%=article_id%>"> 
+        <input type="submit" value="提交" style="margin-left:320px; width:80px; height:50px; font-size:20px; margin-top:30px; margin-bottom:30px; border:1px solid; font-weight:bold; background-color:#FFF; border-radius:5px;"/>
+        <input type="submit" value="取消" style="margin-left:150px; width:80px; height:50px; font-size:20px; margin-top:30px; margin-bottom:30px; border:1px solid; font-weight:bold; background-color:#FFF; border-radius:5px;"/>
+        </form>
     </div>
 </div>
 <!--内容框end-->
@@ -285,3 +335,4 @@ function myfunction(){
 <!--置顶框end-->
 </body>
 </html>
+

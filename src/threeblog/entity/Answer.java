@@ -10,7 +10,14 @@ public class Answer {
 	private String text;
 	private Timestamp add_time;
 	private int article_id;
-
+	private String status;
+	
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
 	public int getArticle_id() {
 		return article_id;
 	}

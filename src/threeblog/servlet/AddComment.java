@@ -12,8 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import threeblog.entity.Comment;
-import threeblog.entity.Message;
+import threeblog.entity.*;
 import threeblog.service.Service;
 
 /**
@@ -46,6 +45,8 @@ public class AddComment extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		int article_id=Integer.valueOf(request.getParameter("article_id"));
+		
+		
 		int author_id=Integer.valueOf(request.getParameter("author_id"));
 		int receiver_id=Integer.valueOf(request.getParameter("receiver_id"));
 		String text1=request.getParameter("text1");
@@ -66,10 +67,13 @@ public class AddComment extends HttpServlet {
 		comment.setAdd_time(add_time);
 		
 		
-		
-		
-		
 		Service service=new Service();
+		//增加文章评论数
+		Article article=service.getArticleFromId(article_id);
+		article.setComment_num(article.getComment_num()+1);
+		service.updateArticleComment_num(article);
+		
+		
 		int comment_id=service.addComment(comment);
 		//如果文章评论者不是文章作者本人
 		if(author_id!=receiver_id){

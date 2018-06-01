@@ -9,7 +9,15 @@ public class Comment {
 	private int author_id;
 	private String text;
 	private Timestamp add_time;
+	private String status;
 	
+	
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
 	public void setAdd_time(Timestamp add_time) {
 		this.add_time = add_time;
 	}
