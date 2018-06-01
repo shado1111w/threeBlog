@@ -548,7 +548,7 @@ public class Service {
 		ArrayList<Article> articles=new ArrayList<Article>();
 		
 		DbConMysql db=new DbConMysql();
-		String sql="select * from t_Article ORDER BY RAND()";
+		String sql="select * from t_Article where status!='屏蔽' ORDER BY RAND()";
 		ResultSet rs=db.getQuery(sql);
 		try {
 			while(rs.next()){
@@ -596,7 +596,7 @@ public class Service {
 		ArrayList<Article> articles=new ArrayList<Article>();
 		
 		DbConMysql db=new DbConMysql();
-		String sql="select * from t_Article ORDER BY publishdate DESC";
+		String sql="select * from t_Article where status!='屏蔽' ORDER BY publishdate DESC";
 		ResultSet rs=db.getQuery(sql);
 		try {
 			while(rs.next()){
@@ -644,7 +644,7 @@ public class Service {
 		ArrayList<Article> articles=new ArrayList<Article>();
 		
 		DbConMysql db=new DbConMysql();
-		String sql="select * from t_Article ORDER BY click_num DESC";
+		String sql="select * from t_Article where status!='屏蔽' ORDER BY click_num DESC";
 		ResultSet rs=db.getQuery(sql);
 		try {
 			while(rs.next()){
@@ -1515,11 +1515,11 @@ public class Service {
 		
 	}
 	
-	//根据举报作者id返回举报信息
+	//根据被举报者id返回举报信息
 	public ArrayList<Report> getReportFromUser_id(int user_id){
 		DbConMysql db=new DbConMysql();
 		ArrayList<Report> reports=new ArrayList<>();
-		String sql="select * from t_report where author_id='"+user_id+"' order by status DESC";
+		String sql="select * from t_report where user_id='"+user_id+"' order by status DESC";
 		ResultSet rs=db.getQuery(sql);
 		try{
 			while(rs.next()){

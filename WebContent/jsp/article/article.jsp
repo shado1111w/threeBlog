@@ -315,10 +315,13 @@ $(function(){
 				<script>
 					$('#like').click(function() {
 						var like=$("#liked").text();
+						var article_id="<%=article.getId()%>";
+						var receiver_id="<%=author_id%>";
+						var sender_id="<%=user_id%>";
 						if ($('#like').attr('src') == '${pageContext.request.contextPath}/image/unlike.png') {
-							var article_id="<%=article.getId()%>";
-							var receiver_id="<%=author_id%>";
-							var sender_id="<%=user_id%>";
+							
+							
+							
 							var url = "${pageContext.request.contextPath}/servlet/AddLiked";
 							var args = {
 								"article_id" : article_id,
@@ -351,7 +354,7 @@ $(function(){
 							$.get(url, args,
 									function(data) {
 										
-										$('#like').attr('src', '${pageContext.request.contextPath}/image/like.png');
+										$('#like').attr('src', '${pageContext.request.contextPath}/image/unlike.png');
 										var liked=$("#liked").text();
 										liked--;
 										$("#liked").text(liked);
@@ -390,9 +393,10 @@ $(function(){
 				<script>
 				$('#favor').click(function() {
 					var collect=$("#collected").text();
+					var article_id="<%=article.getId()%>";
+					var author_id="<%=author_id%>";	
 					if ($('#favor').attr('src') == '${pageContext.request.contextPath}/image/unfavor.png') {
-						var article_id="<%=article.getId()%>";
-						var author_id="<%=author_id%>";	
+						
 						
 						
 						var url2 = "${pageContext.request.contextPath}/servlet/CollectArticle";
@@ -436,6 +440,7 @@ $(function(){
 						var url2 = "${pageContext.request.contextPath}/servlet/CollectArticle";
 						var args2 = {
 							"article_id" : article_id,
+							"author_id":author_id,
 							"status":"取消收藏",
 							"time" : new Date()
 						};
@@ -454,7 +459,7 @@ $(function(){
 										$.get(url1, args1,
 												function(data) {
 													
-													$('#favor').attr('src', '${pageContext.request.contextPath}/image/favor.png');
+													$('#favor').attr('src', '${pageContext.request.contextPath}/image/unfavor.png');
 													var collected=$("#collected").text();
 													collected--;
 													$("#collected").text(collected);

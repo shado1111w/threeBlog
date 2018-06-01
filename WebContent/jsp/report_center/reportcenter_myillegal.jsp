@@ -149,7 +149,7 @@ $(document)
 	<%++j;} %>
 
 	<%
-		}if (report.getStatus().equals("已处理")&&report.getStatus2().equals("屏蔽")&&report.getStatus3().equals("已确定")) {
+		}else if (report.getStatus().equals("已处理")&&report.getStatus2().equals("屏蔽")&&report.getStatus3().equals("已确定")) {
 			if(report.getType().equals("举报文章")){
 	%>
 	
@@ -189,7 +189,7 @@ $(document)
 		</tr>
 	<%++j;} %>
 	
-	<%}if (report.getStatus().equals("已处理")&&report.getStatus2().equals("屏蔽")&&report.getStatus3().equals("反馈等待审核")) {
+	<%}else if (report.getStatus().equals("已处理")&&report.getStatus2().equals("屏蔽")&&report.getStatus3().equals("反馈等待审核")) {
 		if(report.getType().equals("举报文章")){
 	%>
 	
@@ -229,7 +229,7 @@ $(document)
 		</tr>
 	<%++j;} %>
 	
-	<%}if (report.getStatus().equals("已处理")&&report.getStatus2().equals("屏蔽")&&report.getStatus3().equals("审核不通过")) {
+	<%}else if (report.getStatus().equals("已处理")&&report.getStatus2().equals("屏蔽")&&report.getStatus3().equals("审核不通过")) {
 		if(report.getType().equals("举报文章")){
 	%>
 	
@@ -269,7 +269,7 @@ $(document)
 		</tr>
 	<%++j;} %>
 	
-	<%}if (report.getStatus().equals("已处理")&&report.getStatus2().equals("正常")&&report.getStatus3().equals("审核通过")) {
+	<%}else if (report.getStatus().equals("已处理")&&report.getStatus2().equals("正常")&&report.getStatus3().equals("审核通过")) {
 		if(report.getType().equals("举报文章")){
 	%>
 	

@@ -176,12 +176,13 @@ public class Publish extends HttpServlet {
 		
 		
 		Service service=new Service();
-		int id=service.addArticle(article); //将游记插入游记表，并返回该游记id
+		int id=0;
+		id=service.addArticle(article); //将游记插入游记表，并返回该游记id
 		
-		
+		if(id!=0){
 		String content=0+ ";URL= "+request.getContextPath()+"/jsp/article/article.jsp?id="+id; 
 		response.setHeader( "REFRESH ",content);
-		
+		}
 	}
 
 }
