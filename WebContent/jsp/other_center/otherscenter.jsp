@@ -286,17 +286,19 @@ $(function() {
             </div>
             <!--关注图标的更换有五种情况：1.未关注、2.我关注ta、3.ta关注我、4.互相关注、5.取消关注-->
             <!--对应图标名称：1.canfollow.png、2.follow.png、3.Tafollow.png、4.followtogether、5.cancelfollow.png-->
-            <%if(service.getFollowRecord(user_id, other_id)){%>
-            <a id="follow" href="javascript:;" style=" border:1px solid;background-color:#FF7256; float:right;width:50px; height:30px;margin-top:50px; margin-right:50px; position:relative; border-radius:5px;"><img id="followed" title="取消关注" src="${pageContext.request.contextPath}/image/cancelfollow.png"  style=" position:relative;width:25px;margin-left:13px; padding-top:5px;"></a>
-          	<%}else{ %>
- 			<a id="follow" href="javascript:;" style=" border:1px solid;background-color:#FF7256; float:right;width:50px; height:30px;margin-top:50px; margin-right:50px; position:relative; border-radius:5px;"><img id="followed" title="关注" src="${pageContext.request.contextPath}/image/canfollow.png"  style=" position:relative;width:25px;margin-left:13px; padding-top:5px;"></a>
-          	<%} %>
-          	<%if(service.getFollowRecord(user_id, other_id)&&service.getFollowRecord(other_id, user_id)){ %>
-          	<a id="statuss" style=" border:1px solid;background-color:#09f; float:right;width:50px; height:30px;margin-top:50px; margin-right:20px; position:relative; border-radius:5px;"><img id="status" title="相互关注" src="${pageContext.request.contextPath}/image/followtogether.png"  style=" position:relative;width:25px;margin-left:13px; padding-top:5px;"></a>
-			<%}else if(service.getFollowRecord(user_id, other_id)){ %>
-			<a id="statuss" style=" border:1px solid;background-color:#09f; float:right;width:50px; height:30px;margin-top:50px; margin-right:20px; position:relative; border-radius:5px;"><img  id="status" title="我关注了Ta" src="${pageContext.request.contextPath}/image/follow.png"  style=" position:relative;width:25px;margin-left:13px; padding-top:5px;"></a>
-			<%}else if(service.getFollowRecord(other_id, user_id)){ %>
-			<a id="statuss" style=" border:1px solid;background-color:#09f; float:right;width:50px; height:30px;margin-top:50px; margin-right:20px; position:relative; border-radius:5px;"><img id="status" title="Ta关注了我" src="${pageContext.request.contextPath}/image/Tafollow.png"  style=" position:relative;width:25px;margin-left:13px; padding-top:5px;"></a>
+            <%if(login_flag){ %>
+	            <%if(service.getFollowRecord(user_id, other_id)){%>
+	            <a id="follow" href="javascript:;" style=" border:1px solid;background-color:#FF7256; float:right;width:50px; height:30px;margin-top:50px; margin-right:50px; position:relative; border-radius:5px;"><img id="followed" title="取消关注" src="${pageContext.request.contextPath}/image/cancelfollow.png"  style=" position:relative;width:25px;margin-left:13px; padding-top:5px;"></a>
+	          	<%}else{ %>
+	 			<a id="follow" href="javascript:;" style=" border:1px solid;background-color:#FF7256; float:right;width:50px; height:30px;margin-top:50px; margin-right:50px; position:relative; border-radius:5px;"><img id="followed" title="关注" src="${pageContext.request.contextPath}/image/canfollow.png"  style=" position:relative;width:25px;margin-left:13px; padding-top:5px;"></a>
+	          	<%} %>
+	          	<%if(service.getFollowRecord(user_id, other_id)&&service.getFollowRecord(other_id, user_id)){ %>
+	          	<a id="statuss" style=" border:1px solid;background-color:#09f; float:right;width:50px; height:30px;margin-top:50px; margin-right:20px; position:relative; border-radius:5px;"><img id="status" title="相互关注" src="${pageContext.request.contextPath}/image/followtogether.png"  style=" position:relative;width:25px;margin-left:13px; padding-top:5px;"></a>
+				<%}else if(service.getFollowRecord(user_id, other_id)){ %>
+				<a id="statuss" style=" border:1px solid;background-color:#09f; float:right;width:50px; height:30px;margin-top:50px; margin-right:20px; position:relative; border-radius:5px;"><img  id="status" title="我关注了Ta" src="${pageContext.request.contextPath}/image/follow.png"  style=" position:relative;width:25px;margin-left:13px; padding-top:5px;"></a>
+				<%}else if(service.getFollowRecord(other_id, user_id)){ %>
+				<a id="statuss" style=" border:1px solid;background-color:#09f; float:right;width:50px; height:30px;margin-top:50px; margin-right:20px; position:relative; border-radius:5px;"><img id="status" title="Ta关注了我" src="${pageContext.request.contextPath}/image/Tafollow.png"  style=" position:relative;width:25px;margin-left:13px; padding-top:5px;"></a>
+				<%} %>
 			<%} %>
 			<script type="text/javascript">
 				
