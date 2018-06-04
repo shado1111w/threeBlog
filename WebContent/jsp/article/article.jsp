@@ -951,6 +951,7 @@ $(function(){
 				</script>
 				<%} %>
 		<!--举报评论块  -->
+		<%if(login_flag){ %>
 		<script type="text/javascript">
 					 $('.commentAll').on('click','.removeBlock',function(){
 						 	var alltext=$(this)
@@ -975,6 +976,32 @@ $(function(){
 
 					}) 
 				</script>
+				<%}else{ %>
+				<script type="text/javascript">
+					 $('.commentAll').on('click','.removeBlock',function(){
+						 	var alltext=$(this)
+							.parents('.date-dz-right').parents(
+							'.date-dz').siblings(
+							'.pl-text').html();
+						 	var article_id="<%=article_id%>";
+							var comment_id = $(this)
+							.parents('.date-dz-right').parents(
+							'.date-dz').siblings(
+							'.pl-text').find(
+							'.comment-size-name').attr("data");
+							if(alltext.indexOf("@")==-1){	
+								<!--举报的是评论 -->
+								window.location.href='${pageContext.request.contextPath}/jsp/login/sign_in.jsp;
+	
+							}else{
+								<!--举报的是回复 -->
+								window.location.href='${pageContext.request.contextPath}/jsp/login/sign_in.jsp;
+							
+							}
+
+					}) 
+				</script>
+				<%} %>
 		<!--删除评论块-->
 		<script type="text/javascript">
 		    $('.commentAll').on('click','.delete',function(){
