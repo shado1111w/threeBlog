@@ -991,11 +991,11 @@ $(function(){
 							'.comment-size-name').attr("data");
 							if(alltext.indexOf("@")==-1){	
 								<!--举报的是评论 -->
-								window.location.href='${pageContext.request.contextPath}/jsp/login/sign_in.jsp;
+								window.location.href='${pageContext.request.contextPath}/jsp/login/sign_in.jsp';
 	
 							}else{
 								<!--举报的是回复 -->
-								window.location.href='${pageContext.request.contextPath}/jsp/login/sign_in.jsp;
+								window.location.href='${pageContext.request.contextPath}/jsp/login/sign_in.jsp';
 							
 							}
 
