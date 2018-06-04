@@ -277,7 +277,7 @@ $(function(){
 			<span style="float: left; margin-top: 10px; margin-left: 20px;"><%=article.getPublishdate()%></span>
 			<span style="float: left; margin-top: 10px; margin-left: 20px;"><%=article.getLable()%></span>
 			<span style="float: left; margin-top: 10px; margin-left: 20px;">阅读&ensp;<%=article.getClick_num()%></span><br>
-			<%if(article.getStatus().equals("正常")){ %>
+			<%if(!article.getStatus().equals("屏蔽")){ %>
 			<div style="margin-left: 70px; margin-top: 30px; width: 820px;"><%=article.getText()%>
 			</div>
 			<%}else{ %>
@@ -534,7 +534,7 @@ $(function(){
 									<a href="${pageContext.request.contextPath}/jsp/other_center/otherscenter.jsp?id=<%=comment.getAuthor_id()%>" class="comment-size-name"
 										data="<%=comment.getId()%>"><%=comment_author.getUsername()%> : </a>
 									<!--评论内容 -->
-									<%if(comment.getStatus().equals("正常")){ %>	
+									<%if(!comment.getStatus().equals("屏蔽")){ %>	
 									<span class="my-pl-con"><%=comment.getText()%></span>
 									<%}else{ %>
 									<span class="my-pl-con">该评论涉嫌违规内容，已被屏蔽！！</span>
@@ -543,7 +543,11 @@ $(function(){
 								<div class="date-dz">
 									<span class="date-dz-left pull-left comment-time"><%=df.format(comment.getAdd_time())%></span>
 									<div class="date-dz-right pull-right comment-pl-block">
+										
 										<a href="javascript:;" class="removeBlock">举报</a>
+										<%if(comment_author.getId()==user_id){ %>
+										<a href="javascript:;" class="delete">删除</a>
+										<%} %>
 										<a href="javascript:;" class="date-dz-pl pl-hf pull-left">回复</a>
 										<span class="pull-left date-dz-line">|</span>
 										<!--赞-->
@@ -569,7 +573,7 @@ $(function(){
 										<div class="pl-text hfpl-text clearfix">
 											<a href="${pageContext.request.contextPath}/jsp/other_center/otherscenter.jsp?id=<%=answer.getAuthor_id()%>" class="comment-size-name" data="<%=answer.getId()%>"><%=answer_author.getUsername() %> : </a> 
 											
-											<%if(answer.getStatus().equals("正常")){ %>
+											<%if(!answer.getStatus().equals("屏蔽")){ %>
 											<span class="my-pl-con"> &nbsp;<%=answer.getText() %></span>
 											<%}else{ %>
 											<span class="my-pl-con"> &nbsp;该回复涉嫌违规内容，已被屏蔽！！</span>
@@ -578,7 +582,11 @@ $(function(){
 										<div class="date-dz">
 											<span class="date-dz-left pull-left comment-time"><%=df.format(answer.getAdd_time() )%></span>
 											<div class="date-dz-right pull-right comment-pl-block">
+												
 												<a href="javascript:;" class="removeBlock">举报</a>
+												<%if(answer_author.getId()==user_id){ %>
+												<a href="javascript:;" class="delete">删除</a>
+												<%} %>
 												<a href="javascript:;"
 													class="date-dz-pl pl-hf hf-con-block pull-left">回复</a> <span
 													class="pull-left date-dz-line">|</span> <a
@@ -675,7 +683,7 @@ $(function(){
 															+ oSize
 															+ '</span> </div> <div class="date-dz"> <span class="date-dz-left pull-left comment-time">'
 															+ add_time
-															+ '</span> <div class="date-dz-right pull-right comment-pl-block"><a href="javascript:;" class="removeBlock">举报</a> <a href="javascript:;" class="date-dz-pl pl-hf hf-con-block pull-left">回复</a> <span class="pull-left date-dz-line">|</span> <a href="javascript:;" class="date-dz-z pull-left"><i class="date-dz-z-click-red"></i>赞 (<i class="z-num">0</i>)</a> </div> </div><div class="hf-list-con"></div></div> </div>';
+															+ '</span> <div class="date-dz-right pull-right comment-pl-block"><a href="javascript:;" class="removeBlock">举报</a><a href="javascript:;" class="delete">删除</a> <a href="javascript:;" class="date-dz-pl pl-hf hf-con-block pull-left">回复</a> <span class="pull-left date-dz-line">|</span> <a href="javascript:;" class="date-dz-z pull-left"><i class="date-dz-z-click-red"></i>赞 (<i class="z-num">0</i>)</a> </div> </div><div class="hf-list-con"></div></div> </div>';
 														
 												     
 											}); 
@@ -886,7 +894,7 @@ $(function(){
 																				+ oAt
 																				+ '</span></div><div class="date-dz"> <span class="date-dz-left pull-left comment-time">'
 																				+ add_time
-																				+ '</span> <div class="date-dz-right pull-right comment-pl-block"> <a href="javascript:;" class="removeBlock">举报</a><a href="javascript:;" class="date-dz-pl pl-hf hf-con-block pull-left">回复</a> <span class="pull-left date-dz-line">|</span> <a href="javascript:;" class="date-dz-z pull-left"><i class="date-dz-z-click-red"></i>赞 (<i class="z-num">0</i>)</a> </div> </div></div>';
+																				+ '</span> <div class="date-dz-right pull-right comment-pl-block"> <a href="javascript:;" class="removeBlock">举报</a><a href="javascript:;" class="delete">删除</a><a href="javascript:;" class="date-dz-pl pl-hf hf-con-block pull-left">回复</a> <span class="pull-left date-dz-line">|</span> <a href="javascript:;" class="date-dz-z pull-left"><i class="date-dz-z-click-red"></i>赞 (<i class="z-num">0</i>)</a> </div> </div></div>';
 																			
 																	     
 																}); 
@@ -942,7 +950,7 @@ $(function(){
 									});
 				</script>
 				<%} %>
-		<!--删除评论块  已屏蔽-->
+		<!--举报评论块  -->
 		<script type="text/javascript">
 					 $('.commentAll').on('click','.removeBlock',function(){
 						 	var alltext=$(this)
@@ -967,6 +975,79 @@ $(function(){
 
 					}) 
 				</script>
+		<!--删除评论块-->
+		<script type="text/javascript">
+		    $('.commentAll').on('click','.delete',function(){
+		        
+		    	 var oT = $(this).parents('.date-dz-right').parents('.date-dz').parents('.all-pl-con');
+		    	 var flag=2;
+		        var alltext=$(this)
+				.parents('.date-dz-right').parents(
+				'.date-dz').siblings(
+				'.pl-text').html();
+		        var comment_id = $(this)
+				.parents('.date-dz-right').parents(
+				'.date-dz').siblings(
+				'.pl-text').find(
+				'.comment-size-name').attr("data");
+		        
+		        if(alltext.indexOf("@")==-1){	
+					<!--删除的是评论 -->
+					var url = "${pageContext.request.contextPath}/servlet/DeleteComment";
+					 var args={
+				        		"comment_id" : comment_id,
+								"time" : new Date()
+				        }
+					 
+						 $.ajaxSettings.async = false; 
+				        $.get(url, args,
+								function(data) {
+						        	var result=eval("("+data+")");
+						        	if(result.bol==1){       
+						        		flag=1;
+						        	}else if(result.bol==2){
+						        		alert("删除失败！由于收到用户举报，该评论暂时被锁定！");
+						        	}
+						        	
+						}); 
+				        $.ajaxSettings.async = true; 
+			
+				}else{
+					<!--删除的是回复 -->
+					var url = "${pageContext.request.contextPath}/servlet/DeleteAnswer";
+					var args={
+			        		"answer_id" : comment_id,
+							"time" : new Date()
+			        }
+					
+					$.ajaxSettings.async = false; 
+			        $.get(url, args,
+							function(data) {
+					        	var result=eval("("+data+")");
+					        	if(result.bol==1){
+					        		 flag=1;
+					        	}else if(result.bol==2){
+					        		alert("删除失败！由于收到用户举报，该回复暂时被锁定！");
+					        	}
+					        	
+					}); 
+			        $.ajaxSettings.async = true; 
+			
+				}
+		        if(flag==1){
+		        	if(oT.siblings('.all-pl-con').length >= 1){
+		                oT.remove();
+		            }else {
+		                $(this).parents('.date-dz-right').parents('.date-dz').parents('.all-pl-con').parents('.hf-list-con').css('display','none')
+		                oT.remove();
+		            }
+		            $(this).parents('.date-dz-right').parents('.date-dz').parents('.comment-show-con-list').parents('.comment-show-con').remove();
+		        }
+		        
+		        
+		    })
+		</script>		
+				
 		<!--点赞-->
 		<script type="text/javascript">
 					$('.comment-show').on(
@@ -1015,13 +1096,7 @@ $(function(){
 									};
 									$.ajaxSettings.async = false;  
 									$.get(url, args); 
-									$.ajaxSettings.async = true;  
-									
-									
-									
-									
-									
-									
+									$.ajaxSettings.async = true;  					
 								}else{
 								
 									var url = "${pageContext.request.contextPath}/servlet/AddZanToAnswer";

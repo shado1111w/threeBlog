@@ -7,6 +7,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import threeblog.entity.Answer;
+import threeblog.entity.Article;
+import threeblog.entity.Comment;
 import threeblog.entity.Report;
 import threeblog.service.Service;
 
@@ -62,6 +65,22 @@ public class AddReport extends HttpServlet {
 		report.setAll_reason(all_reason);
 		report.setAuthor_id(author_id);
 		Service service=new Service();
+		if(type.equals("举报文章")){
+			Article article=new Article();
+			article.setStatus("举报中");
+			article.setId(content_id);
+			service.updateArticleStatus(article);
+		}else if(type.equals("举报评论")){
+			Comment comment=new Comment();
+			comment.setStatus("举报中");
+			comment.setId(content_id);
+			service.updateCommentStatus(comment);
+		}else if(type.equals("举报回复")){
+			Answer answer=new Answer();
+			answer.setStatus("举报中");
+			answer.setId(content_id);
+			service.updateAnswerStatus(answer);
+		}
 		int n=service.addReport(report);
 		if(n==0){
 			response.setContentType("text/html;charset=utf-8");

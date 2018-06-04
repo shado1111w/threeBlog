@@ -56,7 +56,9 @@ $(document)
 		    function clickHandler(event) {  
 		        var i= event.data.index;  
 		        var report_id=$("#current"+i).attr("data");
-		        var url2="${pageContext.request.contextPath}/servlet/UpdateReport";
+		        var content_id=$("#current_"+i).attr("data");
+		        var type=$("#current_____"+i).attr("data");
+		        var url="${pageContext.request.contextPath}/servlet/UpdateReport";
 		        var args={
 		        		"report_id" : report_id,
 		        		"status":"已处理",
@@ -64,7 +66,7 @@ $(document)
 						"time" : new Date()
 		        }
 		        $.ajaxSettings.async = false; 
-		        $.get(url2, args,
+		        $.get(url, args,
 						function(data) {
 			        	$("#current___"+i).empty().append('<span>已处理</span>');
 			        	var new_content=$("#all_result").find("#current____"+i).clone();
@@ -74,7 +76,18 @@ $(document)
 			        	$("#hiddenresult").find("#current____"+i).remove();
 			        	$("#hiddenresult2").find("#information_table").append(new_content);	
 				}); 
-		       
+		        $.ajaxSettings.async = true; 
+		        
+		        if(type=="举报文章") url2="${pageContext.request.contextPath}/servlet/UpdateArticle";
+		        else if(type=="举报评论") url2="${pageContext.request.contextPath}/servlet/UpdateComment";
+		        else if(type=="举报回复") url2="${pageContext.request.contextPath}/servlet/UpdateAnswer";
+		        var args2={
+		        		"content_id" : content_id,
+		        		"status":"正常",
+						"time" : new Date()
+		        }
+		        $.ajaxSettings.async = false; 
+		        $.get(url2, args2); 
 		        $.ajaxSettings.async = true; 
 		    }  
 		});

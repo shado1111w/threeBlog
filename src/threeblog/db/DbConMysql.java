@@ -59,13 +59,14 @@ public class DbConMysql {
 
 	// É¾
 
-	public void delete(String sql) {
+	public int delete(String sql) {
+		int n = 0;
 		Connection conn = getCon();
 		Statement stt = null;
 		try {
 			conn.setAutoCommit(false);
 			stt = conn.createStatement();
-			stt.executeUpdate(sql);
+			n=stt.executeUpdate(sql);
 			conn.commit();
 		} catch (SQLException e) {
 			try {
@@ -82,7 +83,7 @@ public class DbConMysql {
 				e.printStackTrace();
 			}
 		}
-
+		return n;
 	}
 
 	// ¸Ä
