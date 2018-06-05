@@ -696,6 +696,7 @@ public class Service {
 	//获取热门标签 top 9
 		public List getLable() throws SQLException{
 			String sql="SELECT lable,count(*) FROM t_article where status='正常' group  BY lable order BY count(*) DESC ";
+
 			List lable=null;
 			DbConMysql db=new DbConMysql();
 			ResultSet rs=db.getQuery(sql);

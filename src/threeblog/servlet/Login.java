@@ -72,8 +72,13 @@ public class Login extends HttpServlet {
 				response.addCookie(phonenumCookie);
 				response.addCookie(passwordCookie);
 				response.setContentType("text/html;charset=utf-8");
+
 				String   content=0+ ";URL= "+li_url; 
-				if(li_url.equals("http://www.crayon.xin:8080/threeBlog/jsp/login/register.jsp")||li_url.equals("http://www.crayon.xin:8080/threeBlog/jsp/login/register.jsp"))
+				if(li_url.equals("http://www.crayon.xin:8080/threeBlog/jsp/login/register.jsp")||li_url.equals("http://localhost:8080/threeBlog/jsp/login/register.jsp"))
+					content=0+";URL= "+"../index.jsp";
+				if(li_url.equals("http://localhost:8082/threeBlog/jsp/login/register.jsp"))
+					content=0+";URL= "+"../index.jsp";
+				if(li_url.equals(""))
 					content=0+";URL= "+"../index.jsp";
 				response.setHeader( "REFRESH ",content);
 			}else{
