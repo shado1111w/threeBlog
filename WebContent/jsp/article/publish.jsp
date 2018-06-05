@@ -330,7 +330,7 @@ $(function() {
        		 <span style="font-size:24px;">标题：</span>
        		 <input id="bt" type="text" name="bt"  placeholder="请输入标题(限15字)"  maxlength="30" style="font-size:24px; color:#999; border:1px solid #39C; width:430px;">
               <span style="font-size:24px;">标签：</span>
-             <input  type="text" placeholder="添加标签,例<热夏><酷暑>" name="lable" style="font-size:24px;color:#999;width:350px; border:1px solid #39c;" >
+             <input  type="text" placeholder="添加标签,只能一个" name="lable" style="font-size:24px;color:#999;width:350px; border:1px solid #39c;" >
              <span style="font-size:24px;">导语：</span>
        		<input id="pub_daoyu" maxlength="100" type="text" name="pub_daoyu" placeholder="请输入导语（限50字）" style="font-size:24px; color:#999;border:1px solid #39c; margin-top:30px; width:865px;" ><br><br>
    			<textarea name="editor" id="editor" cols="30" rows="30" class="ckeditor" placeholder="点击输入正文" style="font-size:22px;color:#000; border:1px solid #39c;margin-left:27px; margin-top:50px;" ></textarea>

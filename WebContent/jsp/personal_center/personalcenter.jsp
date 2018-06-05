@@ -131,7 +131,10 @@ $(function() {
 <script>
 function myfunction(){
 	
-	<%String id = request.getParameter("id");%>
+	<%
+	String id="";
+	if(request.getParameter("id")!=null){
+		id = request.getParameter("id");}%>
 	var id="<%=id%>";
 	if (id != null) {
 		if (id == "1") {
