@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import threeblog.entity.*;
 import threeblog.service.Service;
+import threeblog.tools.*;
 
 /**
  * Servlet implementation class AddComment
@@ -61,6 +62,8 @@ public class AddComment extends HttpServlet {
 		Timestamp add_time=Timestamp.valueOf(dateNowStr);
 		
 		Comment comment=new Comment();
+		SensitivewordFilter filter = new SensitivewordFilter();
+		text2=filter.replaceSensitiveWord(text2,1,"*");
 		comment.setArticle_id(article_id);
 		comment.setAuthor_id(author_id);
 		comment.setText(text2);

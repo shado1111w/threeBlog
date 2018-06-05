@@ -17,10 +17,10 @@ public class DbConMysql {
 			e1.printStackTrace();
 		}
 
-		String url = "jdbc:mysql://192.168.196.148:3306/threeblog?useUnicode=true&characterEncoding=utf-8";
+		String url = "jdbc:mysql://localhost:3306/threeblog?useUnicode=true&characterEncoding=utf-8";
 
 		try {
-			con = DriverManager.getConnection(url, "guest", "123456");
+			con = DriverManager.getConnection(url, "root", "g518");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

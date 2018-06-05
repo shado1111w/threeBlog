@@ -20,6 +20,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import threeblog.entity.Article;
 import threeblog.service.Service;
+import threeblog.tools.*;
 
 /**
  * Servlet implementation class Publish
@@ -160,6 +161,11 @@ public class Publish extends HttpServlet {
 			current=b+pattern_b.length();//"的下一位		
 		}
 		Article article=new Article();
+		SensitivewordFilter filter = new SensitivewordFilter();
+		pub_daoyu=filter.replaceSensitiveWord(pub_daoyu,1,"*");
+		editor=filter.replaceSensitiveWord(editor,1,"*");
+		bt=filter.replaceSensitiveWord(bt,1,"*");
+		lable=filter.replaceSensitiveWord(lable,1,"*");
 		article.setIntroduction(pub_daoyu);
 		article.setText(editor);
 		article.setTitle(bt);

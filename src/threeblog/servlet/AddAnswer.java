@@ -15,6 +15,7 @@ import threeblog.entity.Article;
 import threeblog.entity.Comment;
 import threeblog.entity.Message;
 import threeblog.service.Service;
+import threeblog.tools.*;
 
 /**
  * Servlet implementation class AddAnswer
@@ -59,6 +60,8 @@ public class AddAnswer extends HttpServlet {
 		Timestamp add_time=Timestamp.valueOf(dateNowStr);
 		
 		Answer answer=new Answer();
+		SensitivewordFilter filter = new SensitivewordFilter();
+		text2=filter.replaceSensitiveWord(text2,1,"*");
 		answer.setAdd_time(add_time);
 		answer.setAuthor_id(author_id);
 		answer.setText(text2);

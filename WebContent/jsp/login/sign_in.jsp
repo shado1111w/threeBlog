@@ -27,7 +27,7 @@
 	       
 	        		<input type="submit" name="submit" class="signin_dlzc" style="font-weight:bold;font-size: 36px;color:#fff;" value="登录" />
 	           		<div class="signin_dlzc"><a href="${pageContext.request.contextPath}/jsp/login/register.jsp" >注册</a></div>
-	           		<input type="hidden"  name="li_url" value=" <%=request.getHeader("Referer")%>">   
+	           		<input type="hidden"  name="li_url" value="<%=request.getHeader("Referer")%>">   
              </form>
         </div>
     </div>

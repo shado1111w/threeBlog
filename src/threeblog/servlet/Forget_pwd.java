@@ -54,12 +54,12 @@ public class Forget_pwd extends HttpServlet {
 		if(b){
 			response.setContentType("text/html;charset=utf-8");
 			response.getWriter().print("<script>alert(`修改密码完成，将自动返回登录页面！`)</script>");
-			String   content=0+ ";URL= "+"../jichu/login.jsp"; 
+			String   content=0+ ";URL= "+"../jsp/login/sign_in.jsp"; 
 			response.setHeader( "REFRESH ",content);
 		}else{
 			response.setContentType("text/html;charset=utf-8");
 			response.getWriter().print("<script>alert(`未知错误，请重试！`)</script>");
-			String   content=3+ ";URL= "+"../jichu/forget_pwd.jsp"; 
+			String   content=0+ ";URL= "+"../jsp/login/forget_password.jsp"; 
 			response.setHeader( "REFRESH ",content);
 		}
 		

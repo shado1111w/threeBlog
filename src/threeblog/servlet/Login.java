@@ -73,6 +73,8 @@ public class Login extends HttpServlet {
 				response.addCookie(passwordCookie);
 				response.setContentType("text/html;charset=utf-8");
 				String   content=0+ ";URL= "+li_url; 
+				if(li_url.equals("http://www.crayon.xin:8080/threeBlog/jsp/login/register.jsp")||li_url.equals("http://www.crayon.xin:8080/threeBlog/jsp/login/register.jsp"))
+					content=0+";URL= "+"../index.jsp";
 				response.setHeader( "REFRESH ",content);
 			}else{
 				java.sql.Date ban_time=service.getBan_time(user_id);

@@ -40,8 +40,10 @@
 	}
 	request.setCharacterEncoding("utf-8");
 	String slable=request.getParameter("lable");      //搜索关键字
+	System.out.println(slable);
 	ArrayList<Article> articles=service.getArticlesByLable(slable);//获取搜索标签文章
-	String temp_lable=chStr.chStr(request.getParameter("lable"));
+	
+	
 	int allUserNum=service.getAllUserNum();
 	
 	int feedback_num=0;
@@ -355,9 +357,9 @@ $(function(){
             
         </form>
         </div>
-        <h4 style="margin-top:80px;">与标签“<%=temp_lable %>”有关的博文</h4>
+        <h4 style="margin-top:80px;">与标签“<%=slable %>”有关的博文</h4>
         
-        <input type="text" style="display:none" name="<%=temp_lable %>" value="<%=temp_lable%>" id="txtSearchKeyword" />
+        <input type="text" style="display:none" name="<%=slable %>" value="<%=slable%>" id="txtSearchKeyword" />
     	
     	<div id="index_body_middle_article">
         	<!--具体N篇文章begin-->    

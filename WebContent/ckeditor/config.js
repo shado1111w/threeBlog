@@ -11,12 +11,12 @@ CKEDITOR.editorConfig = function( config )
 	config.skin='v2';
 	config.uiColor = '#F7B42C';
 	config.height = 900;
-	config.filebrowserBrowseUrl =  '/travelNote/ckfinder/ckfinder.html' ; 
-	config.filebrowserImageBrowseUrl =  '/travelNote/ckfinder/ckfinder.html?type=Images' ;  
-    config.filebrowserFlashBrowseUrl =  '/travelNote/ckfinder/ckfinder.html?type=Flash' ;  
-    config.filebrowserUploadUrl =  '/travelNote/ckfinder/core/connector/java/connector.java?command=QuickUpload&type=Files' ;  
-    config.filebrowserImageUploadUrl =  '/travelNote/ckfinder/core/connector/java/connector.java?command=QuickUpload&type=Images' ;  
-    config.filebrowserFlashUploadUrl =  '/travelNote/ckfinder/core/connector/java/connector.java?command=QuickUpload&type=Flash' ;  
+	config.filebrowserBrowseUrl =  '/threeBlog/ckfinder/ckfinder.html' ; 
+	config.filebrowserImageBrowseUrl =  '/threeBlog/ckfinder/ckfinder.html?type=Images' ;  
+    config.filebrowserFlashBrowseUrl =  '/threeBlog/ckfinder/ckfinder.html?type=Flash' ;  
+    config.filebrowserUploadUrl =  '/threeBlog/ckfinder/core/connector/java/connector.java?command=QuickUpload&type=Files' ;  
+    config.filebrowserImageUploadUrl =  '/threeBlog/ckfinder/core/connector/java/connector.java?command=QuickUpload&type=Images' ;  
+    config.filebrowserFlashUploadUrl =  '/threeBlog/ckfinder/core/connector/java/connector.java?command=QuickUpload&type=Flash' ;  
     config.filebrowserWindowWidth = '1000';  
     config.filebrowserWindowHeight = '700';  
 };
