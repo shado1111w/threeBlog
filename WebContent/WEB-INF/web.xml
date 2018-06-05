@@ -53,6 +53,7 @@
     <servlet-name>Ranks</servlet-name>
     <url-pattern>/servlet/Ranks</url-pattern>
   </servlet-mapping>
+  
   <servlet>
     <servlet-name>Register</servlet-name>
     <servlet-class>threeblog.servlet.Register</servlet-class>
@@ -61,6 +62,7 @@
     <servlet-name>Register</servlet-name>
     <url-pattern>/servlet/Register</url-pattern>
   </servlet-mapping>
+  
   <servlet>
     <servlet-name>ValiateRanks</servlet-name>
     <servlet-class>threeblog.servlet.ValiateRanks</servlet-class>
@@ -309,5 +311,7 @@
     <servlet-name>UpdateUser</servlet-name>
     <url-pattern>/servlet/UpdateUser</url-pattern>
   </servlet-mapping>
+  
+  
   
 </web-app>

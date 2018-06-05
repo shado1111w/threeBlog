@@ -3,6 +3,7 @@
 <%@ page import="threeblog.entity.*" %>
 <%@ page import="threeblog.service.Service" %>
 <%@page import="java.util.ArrayList"%>
+<%@page import="java.util.List"%>
 <%
 	boolean login_flag=false;
 	User user = new User();
@@ -37,6 +38,10 @@
 	int feedback_num=0;
 	feedback_num=service.getReportNumFromStatus3();
 	
+	List lable=service.getLable();  //获取热门标签 top 9 
+	//request.setAttribute("lable", lable);
+
+	
 	int comment_num=0;
 	int follow_num=0;
 	int collect_num=0;
@@ -54,7 +59,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>首页</title>
+<title>搜索</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/main.css" type="text/css"/>
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/calendar.css">
@@ -274,16 +279,26 @@ $(function() {
         </div>
         <div id="index_body_labels">
         	<h3 style="margin-left:20px;">█ 热门标签</h3>
-            <a href="#" style="float:left;margin-top:10px;margin-left:20px;border:1px solid; border-radius:5px; width:55px; height:30px;font-size:14px; padding-top:5px; padding-left:12px;">关键词</a>
-             <a href="#" style="float:left;margin-top:10px;margin-left:20px;border:1px solid; border-radius:5px; width:55px; height:30px;font-size:14px; padding-top:5px; padding-left:12px;">关键词</a>
-              <a href="#" style="float:left;margin-top:10px;margin-left:20px;border:1px solid; border-radius:5px; width:55px; height:30px;font-size:14px; padding-top:5px; padding-left:12px;">关键词</a>
-               <a href="#" style="float:left;margin-top:10px;margin-left:20px;border:1px solid; border-radius:5px; width:55px; height:30px;font-size:14px; padding-top:5px; padding-left:12px;">关键词</a>
-                <a href="#" style="float:left;margin-top:10px;margin-left:20px;border:1px solid; border-radius:5px; width:55px; height:30px;font-size:14px; padding-top:5px; padding-left:12px;">关键词</a>
-                 <a href="#" style="float:left;margin-top:10px;margin-left:20px;border:1px solid; border-radius:5px; width:55px; height:30px;font-size:14px; padding-top:5px; padding-left:12px;">关键词</a>
-                  <a href="#" style="float:left;margin-top:10px;margin-left:20px;border:1px solid; border-radius:5px; width:55px; height:30px;font-size:14px; padding-top:5px; padding-left:12px;">关键词</a>
-                   <a href="#" style="float:left;margin-top:10px;margin-left:20px;border:1px solid; border-radius:5px; width:55px; height:30px;font-size:14px; padding-top:5px; padding-left:12px;">关键词</a>
-                    <a href="#" style="float:left;margin-top:10px;margin-left:20px;border:1px solid; border-radius:5px; width:55px; height:30px;font-size:14px; padding-top:5px; padding-left:12px;">关键词</a>
-        </div>
+            
+             <%
+ 	        int num_lable=lable.size();
+ 	       for(int i=0;i<num_lable;i++){	
+ 	        %>  
+ 	           
+                 <form  action="${pageContext.request.contextPath}/jsp/index/searchLable_result.jsp">
+				
+							<!-- lable 的值 -->
+							<input type="hidden" value="<%=lable.get(i)%>" name="lable">	     				
+						    <input  type="submit" value="<%=lable.get(i)%>"  style="float:left;margin-top:10px;margin-left:20px;border:1px solid; border-radius:5px; height:30px;font-size:14px;background-color:#FFF;">
+							</form>
+                 
+            <%
+                
+                  if(i==8) break;
+						}
+			%>
+            
+            </div>
         
     </div>
     <!--右侧栏end-->
@@ -291,10 +306,12 @@ $(function() {
     <div id="search_left">
     	<img src="${pageContext.request.contextPath}/image/search_pic.png">
         <div>
-        <form>
-        	<input type="text" placeholder="请输入你感兴趣的事物！" style="border:1px solid #CCC;width:470px;font-size:20px; float:left;margin-top:5px;">
+        <form action="${pageContext.request.contextPath}/jsp/index/search_result.jsp" method="post" onsubmit="return check();">
+        
+        	<input type="text" name="sname" id="sname" placeholder="请输入你感兴趣的事物！" style="border:1px solid #CCC;width:470px;font-size:20px; float:left;margin-top:5px;">
+        	<input type="submit" name="submit" style=" float:left;width:100px;height:30px;border:1px solid #6cf;font-size:20px; text-align:center;padding-top:5px; margin-left:30px; background-color:#6cf; color:#FFF; "style=" float:left;width:100px;height:30px;border:1px solid #6cf;font-size:20px; text-align:center;padding-top:5px; margin-left:30px; background-color:#6cf; color:#FFF; " value="搜索" />
+            
         </form>
-        <a href="#" style=" float:left;width:100px;height:30px;border:1px solid #6cf;font-size:20px; text-align:center;padding-top:5px; margin-left:30px; background-color:#6cf; color:#FFF; ">搜索</a>
         </div>
         <h3 style="margin-top:80px;">热门搜索</h3>
          <a href="#" style="float:left;margin-top:10px;margin-left:20px;border:1px solid; border-radius:5px; width:55px; height:30px;font-size:14px; padding-top:5px; padding-left:12px;">关键词</a>
@@ -320,5 +337,15 @@ $(function() {
     </div>
 </footer>
 <!--脚部end-->
+
+<script type="text/javascript">  
+function check(){  
+	
+	if($('#sname').val()==""){
+		alert("搜索内容不能为空！请输入搜索内容！");
+		return false;
+	}		 
+    }  
+</script> 
 </body>
 </html>

@@ -1,7 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="threeblog.entity.User" %>
+<%@ page import="threeblog.entity.*" %>
+<%@ page import="threeblog.tools.*" %>
 <%@ page import="threeblog.service.Service" %>
+<%@page import="java.util.ArrayList"%>
+<jsp:useBean id="chStr" scope="page" class="threeblog.tools.ChStr" />
 <%@page import="java.util.List"%>
 <%
 	boolean login_flag=false;
@@ -16,6 +19,7 @@
 			for(Cookie c:cookies){
 				if(c.getName().equals("phonenum1")){
 					phonenum=c.getValue();
+					
 					login_flag=true;
 				}
 				if(c.getName().equals("password1")){
@@ -34,6 +38,12 @@
 		user = service.getUserFromId(user_id);	
 		login_flag=true;
 	}
+	request.setCharacterEncoding("utf-8");
+	String slable=request.getParameter("lable");      //搜索关键字
+	ArrayList<Article> articles=service.getArticlesByLable(slable);//获取搜索标签文章
+	String temp_lable=chStr.chStr(request.getParameter("lable"));
+	int allUserNum=service.getAllUserNum();
+	
 	int feedback_num=0;
 	feedback_num=service.getReportNumFromStatus3();
 	int comment_num=0;
@@ -48,21 +58,23 @@
 	zan_num=service.getZanNumFromReceiver_id(user_id);
 	report_num=service.getReportNum();
 	all_num=comment_num+follow_num+collect_num+zan_num;
+
+    List lable=service.getLable();  //获取热门标签 top 9 
 	
-	List lable=service.getLable();  //获取热门标签 top 9 
-%>  
+	
+%>   
 <!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>首页</title>
+<title>标签搜索结果</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/main.css" type="text/css"/>
-
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/calendar.css">
-
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/pagination.css" type="text/css" />
 <link href="${pageContext.request.contextPath}/css/owl.carousel.css" rel="stylesheet">
 <script src="${pageContext.request.contextPath}/js/jquery-1.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/owl.carousel.js"></script>
+<script src="${pageContext.request.contextPath}/js/jquery.pagination.js"></script>
 
 <!--头部show的js-->
 <script>
@@ -92,29 +104,41 @@ $(function() {
 </script>
 
 <script>
-	$(document).ready(function() {
-		$("#newest").click(function() {
-			$('#blog_passages') 
-			.load('${pageContext.request.contextPath}/jsp/index/newest.jsp');
-			})
-		$("#hotest").click(function() {
-				$('#blog_passages')
-				.load('${pageContext.request.contextPath}/jsp/index/hotest.jsp');
-				})
-		
+	
 
-})
+$(function(){	
+	$('.M-box').pagination({
+		totalData:<%=articles.size()%>,
+	    current:1,
+		showData:5,
+	    jump: false,
+	    coping: true,
+	    homePage: '首页',
+	    endPage: '末页',
+	    prevContent: '上页',
+	    nextContent: '下页',
+	    callback: function (api) {
+	    	var new_content = $("#hiddenresult div.result:eq("+api.getCurrent()+")").clone();
+			$("#index_body_middle_article").empty().append(new_content); //装载对应分页的内容
+			return false;
+	    }
+	},
+	   function (api) {
+	    	var new_content = $("#hiddenresult div.result:eq("+api.getCurrent()+")").clone();
+			$("#index_body_middle_article").empty().append(new_content); //装载对应分页的内容
+	    
+	}); 
+
+});	
 </script>
-<script>
-	function myfunction(){
-		$('#blog_passages') 
-		.load('${pageContext.request.contextPath}/jsp/index/newest.jsp');
-	}
-</script>
+
+
+
+
 
 </head>
 
-<body onload="myfunction()">
+<body>
 <!--顶端栏begin-->
 <div id="index_head">
   <div id="index_head_logo"> <img src="${pageContext.request.contextPath}/image/logo.png"> </div>
@@ -123,7 +147,7 @@ $(function() {
       <li><a href="${pageContext.request.contextPath}/index.jsp" >首页</a></li>
       <li><a href="${pageContext.request.contextPath}/jsp/index/blog.jsp" >博文</a></li>
       <li><a href="${pageContext.request.contextPath}/jsp/index/pictures.jsp" >画廊</a></li>
-       <%if(login_flag){ %>
+      <%if(login_flag){ %>
       <li><a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp" >我的</a></li>
       <%}else{ %>
       <li style="visibility:hidden"><a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp" >我的</a></li>
@@ -137,7 +161,7 @@ $(function() {
         	<img  src="${pageContext.request.contextPath}/image/search.png" style="float:left;" />
        	</a> 
     </li>
-   <%if(login_flag&&user_id==3){ %>
+    <%if(login_flag&&user_id==3){ %>
     <li>
     	<a href="javascript:;">
         	<div style="float:left; position:relative;">
@@ -151,7 +175,7 @@ $(function() {
           	<li><a href="${pageContext.request.contextPath}/jsp/message_center/messagecenter.jsp?id=2">关注消息</a><span  style="min-width: 20px;line-height:20px; text-align: center; position: absolute; background-color: #f00;  border-radius:15px; font-size:15px;color:#fff;width:10px;right:5px; top:80px; z-index:200;" ><%=follow_num %></span></li>
             <li><a href="${pageContext.request.contextPath}/jsp/message_center/messagecenter.jsp?id=3">收藏消息</a><span  style="min-width: 20px;line-height:20px; text-align: center; position: absolute; background-color: #f00;  border-radius:15px; font-size:15px;color:#fff;width:10px;right:5px; top:140px; z-index:200;" ><%=collect_num %></span></li>
             <li><a href="${pageContext.request.contextPath}/jsp/message_center/messagecenter.jsp?id=4">点赞消息</a><span  style="min-width: 20px;line-height:20px; text-align: center; position: absolute; background-color: #f00;  border-radius:15px; font-size:15px;color:#fff;width:10px;right:5px; top:200px; z-index:200;" ><%=zan_num %></span></li>
-            <li><a href="${pageContext.request.contextPath}/jsp/manage_center/managecenter.jsp">举报消息</a><span  style="min-width: 20px;line-height:20px; text-align: center; position: absolute; background-color: #f00;  border-radius:15px; font-size:15px;color:#fff;width:10px;right:5px; top:265px; z-index:200;" ><%=report_num +feedback_num%></span></li>
+            <li><a href="${pageContext.request.contextPath}/jsp/manage_center/managecenter.jsp">举报消息</a><span  style="min-width: 20px;line-height:20px; text-align: center; position: absolute; background-color: #f00;  border-radius:15px; font-size:15px;color:#fff;width:10px;right:5px; top:265px; z-index:200;" ><%=report_num+feedback_num %></span></li>
          </ul>
        
     </li>
@@ -194,7 +218,7 @@ $(function() {
        
     </li>
      <%} %>
-      <%if(login_flag&&user_id==3){ %>
+     <%if(login_flag&&user_id==3){ %>
     <li>
     	<a href="javascript:;">
         	<img src="${pageContext.request.contextPath}/image/setting.png"/>
@@ -243,7 +267,7 @@ $(function() {
      </div>
   <span style="color:#FFF; font-size:36px;float:left; margin-top:15px;"> |</span>
   <div id="index_head_signin">
-   <%if(login_flag){ %>
+  <%if(login_flag){ %>
     <a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp" style=" float:left;background-color:#FFF; width:55px;height:55px;margin:10px; position:relative;padding-top:5px; padding-left:5px;"><img src="<%=user.getTouxiang() %>"  style="width:50px;height:50px;"/></a><a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp"><span style="width:90px;height:48px;overflow:hidden;float:left;margin-top:20px; font-size:18px; color:#FFF;"><%=user.getUsername() %></span></a>
     <%}else{ %>
     <ul>
@@ -253,13 +277,14 @@ $(function() {
     <%} %>
   </div>
 </div>
-	<!--顶端栏end-->
+<!--顶端栏end-->
 <!--内容框begin-->
 <div id="index_all">
+	
     <!--右侧栏begin-->
     <div id="index_body_right">
     	<div id="index_body_enter">
-        	<%if(login_flag){ %>
+    		<%if(login_flag){ %>
         	<div id="index_body_enter_write">
             	<a href="${pageContext.request.contextPath}/jsp/article/publish.jsp"><img src="${pageContext.request.contextPath}/image/write.png" style="float:left;">
                 <div style="margin-top:10px;width:260px;height:30px;float:left;">
@@ -280,9 +305,9 @@ $(function() {
             <%} %>
             <div id="index_body_enter_guideboard">
             	<h3 style="margin-left:20px;padding-top:20px;">█ 指路牌</h3>
-                  <a href="${pageContext.request.contextPath}/jsp/index/blog.jsp"><span style="margin-left:20px;color:#000;">博客文章欣赏</span></a><br/><br/>
+                <a href="${pageContext.request.contextPath}/jsp/index/blog.jsp"><span style="margin-left:20px;color:#000;">博客文章欣赏</span></a><br/><br/>
                 <a href="${pageContext.request.contextPath}/jsp/index/pictures.jsp"><span style="margin-left:20px;margin-top:20px;color:#000;">博客图片画廊</span></a><br /><br/>
-               <%if(login_flag){ %>
+                <%if(login_flag){ %>
                 <a href="${pageContext.request.contextPath}/jsp/report_center/reportcenter.jsp"><span style="margin-left:20px;margin-top:20px;color:#000;">博客举报中心入口</span></a>
             	<%}else{ %>
             	<a href="${pageContext.request.contextPath}/jsp/login/sign_in.jsp"><span style="margin-left:20px;margin-top:20px;color:#000;">博客举报中心入口</span></a>
@@ -296,7 +321,8 @@ $(function() {
         </div>
         <div id="index_body_labels">
         	<h3 style="margin-left:20px;">█ 热门标签</h3>
-              <%
+        	
+        	  <%
  	        int num_lable=lable.size();
  	       for(int i=0;i<num_lable;i++){	
  	        %>  
@@ -313,27 +339,89 @@ $(function() {
                   if(i==8) break;
 						}
 			%>
-           </div>
+       </div>
         
     </div>
     <!--右侧栏end-->
-    <!--左侧栏begin-->
-    <div id="index_body_left">
-    	<div id="blog_title">
-			<ul>
-        		<li><a id="newest" href="javascript:;">&emsp;最新&emsp;</a></li>
-            	<li><a id="hotest" href="javascript:;">&emsp;所有&emsp;</a></li>
-        	</ul>
+    <!--内容中部begin-->
+    
+    <div id="search_left">
+    	<img src="${pageContext.request.contextPath}/image/search_result.png" style="float:left;">
+        <div>
+        <form action="${pageContext.request.contextPath}/jsp/index/search_result.jsp" method="post"  onsubmit="return check();">
+        
+        	<input type="text" name="sname" id="sname" placeholder="请输入你感兴趣的事物！" style="border:1px solid #CCC;width:350px;font-size:20px; float:left;margin-top:5px;">
+        	<input type="submit" name="submit" style=" float:left;width:100px;height:40px;border:1px solid #6cf;font-size:20px; text-align:center;padding-top:5px; margin-left:30px; background-color:#6cf; color:#FFF; "style=" float:left;width:100px;height:30px;border:1px solid #6cf;font-size:20px; text-align:center;padding-top:5px; margin-left:30px; background-color:#6cf; color:#FFF; " value="搜索" />
+            
+        </form>
         </div>
-        <div id="blog_passages">
-        	<!--具体N篇文章begin-->
-        	
-        	
-        	
+        <h4 style="margin-top:80px;">与标签“<%=temp_lable %>”有关的博文</h4>
+        
+        <input type="text" style="display:none" name="<%=temp_lable %>" value="<%=temp_lable%>" id="txtSearchKeyword" />
+    	
+    	<div id="index_body_middle_article">
+        	<!--具体N篇文章begin-->    
+           
             <!--文章end-->
         </div>
+        
+        <div id="hiddenresult" style="display: none;">
+			<!-- 列表元素 -->
+			<div class="result"></div>
+			<%
+			int num=articles.size();
+			int time=num/4;
+			if(num%4>0) time+=1;
+			int j=0;
+	    	for(int i=0;i<time;i++){
+    		%>
+			<div class="result">
+				<ul style="padding:0;">
+					<%
+					int k=0;
+					while(j<articles.size()&&k<5){
+						Article article=articles.get(j);
+		    			int author_id=article.getAuthor_id();
+		    			User author=service.getUserFromId(author_id);
+		
+					%>
+				
+					
+				<div class="article_n">
+	        		<div class="article_pic">
+	            		<img  src="<%=article.getPic() %>" style="width:200px;height:150px;">
+	                    <a href="${pageContext.request.contextPath }/jsp/other_center/otherscenter.jsp?id=<%=author.getId() %>"><span style="font-size:14px;color:#000;margin-left:20px;"><%=article.getAuthor() %></span></a><br/>
+	                    <span style="font-size:14px;color:#000;margin-left:20px;"><%=article.getPublishdate() %></span>
+	                </div>
+	            	<div class="passages_details">
+	            	<div id="searchTextTest">
+                	<div style="width:430px; float:right;height:60px;padding-top:10px;">
+                	<a style="color:#000" href="${pageContext.request.contextPath}/jsp/article/article.jsp?id=<%=article.getId()%>"><span style="margin-left:20px; font-size:24px; font-weight:bold;"><%=article.getTitle() %></span></a>
+                    </div>
+                    <div style="width:430px; margin-left:20px;float:right; height:85px;overflow:hidden; margin-top:10px;">
+                    <a style="color:#000" href="${pageContext.request.contextPath}/jsp/article/article.jsp?id=<%=article.getId()%>"><span><%=article.getIntroduction() %></span></a>
+					</div>
+                    <div style="margin-top:10px; float:right;">
+					<span >阅读：<%=article.getClick_num() %>&emsp;|</span>
+                    <span>评论：<%=article.getComment_num() %>&emsp;|</span>
+                    <span>喜欢：<%=article.getLiked() %>&emsp;|</span>
+                    <span style="margin-right:65px;">收藏：<%=article.getCollected() %></span>
+                    </div>
+            	</div>
+          	  </div>
+          	  </div>
+						
+					<%
+						j++;k++;}
+					%>
+				</ul>
+			</div>
+
+			<%} %>
+		</div>
+        <div class="m-style M-box" ></div>
     </div>
-    <!--左侧栏end-->
+    <!--内容中部end-->
 </div>
 <!--内容框end-->
 
@@ -346,5 +434,16 @@ $(function() {
     </div>
 </footer>
 <!--脚部end-->
+
+
+<script type="text/javascript">  
+function check(){  
+	
+	if($('#sname').val()==""){
+		alert("搜索内容不能为空！请输入搜索内容！");
+		return false;
+	}		 
+    }  
+</script> 
 </body>
 </html>

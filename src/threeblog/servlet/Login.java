@@ -77,7 +77,7 @@ public class Login extends HttpServlet {
 			}else{
 				java.sql.Date ban_time=service.getBan_time(user_id);
 				response.setContentType("text/html;charset=utf-8");
-				response.getWriter().print("<script>alert(`由于多次发布违规内容，你已被限制登录直到"+ban_time+"！`)</script>");
+				response.getWriter().print("<script>alert(`由于多次发布违规内容，你已被限制登录 直到"+ban_time+"！`)</script>");
 				String   content=0+ ";URL= "+request.getContextPath()+"/jsp/login/sign_in.jsp"; 
 				response.setHeader( "REFRESH ",content);
 			}

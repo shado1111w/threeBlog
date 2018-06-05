@@ -275,7 +275,7 @@ $(function(){
 				style="width: 40px; height: 40px; border-radius: 20px; float: left; margin-left: 70px;" /></a>
 			<a style="color:#000" href="${pageContext.request.contextPath}/jsp/other_center/otherscenter.jsp?id=<%=author.getId()%>"><span style="float: left; margin-top: 10px; margin-left: 5px;"><%=author.getUsername()%></span></a>
 			<span style="float: left; margin-top: 10px; margin-left: 20px;"><%=article.getPublishdate()%></span>
-			<span style="float: left; margin-top: 10px; margin-left: 20px;"><%=article.getLable()%></span>
+			<span style="float: left; margin-top: 10px; margin-left: 20px;"><<%=article.getLable()%>></span>
 			<span style="float: left; margin-top: 10px; margin-left: 20px;">阅读&ensp;<%=article.getClick_num()%></span><br>
 			<%if(article.getStatus().equals("正常")){ %>
 			<div style="margin-left: 70px; margin-top: 30px; width: 820px;"><%=article.getText()%>

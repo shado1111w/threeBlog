@@ -3,6 +3,7 @@
 <%@ page import="threeblog.entity.*" %>
 <%@ page import="threeblog.service.Service" %>
 <%@page import="java.util.ArrayList"%>
+<%@page import="java.util.List"%>
 <%
 	boolean login_flag=false;
 	User user = new User();
@@ -48,6 +49,8 @@
 	zan_num=service.getZanNumFromReceiver_id(user_id);
 	report_num=service.getReportNum();
 	all_num=comment_num+follow_num+collect_num+zan_num;
+	
+	List lable=service.getLable();  //获取热门标签 top 9 
 %>  
 <!DOCTYPE html>
 
@@ -275,16 +278,24 @@ $(function() {
         </div>
         <div id="index_body_labels">
         	<h3 style="margin-left:20px;">█ 热门标签</h3>
-            <a href="#" style="float:left;margin-top:10px;margin-left:20px;border:1px solid; border-radius:5px; width:55px; height:30px;font-size:14px; padding-top:5px; padding-left:12px;">关键词</a>
-             <a href="#" style="float:left;margin-top:10px;margin-left:20px;border:1px solid; border-radius:5px; width:55px; height:30px;font-size:14px; padding-top:5px; padding-left:12px;">关键词</a>
-              <a href="#" style="float:left;margin-top:10px;margin-left:20px;border:1px solid; border-radius:5px; width:55px; height:30px;font-size:14px; padding-top:5px; padding-left:12px;">关键词</a>
-               <a href="#" style="float:left;margin-top:10px;margin-left:20px;border:1px solid; border-radius:5px; width:55px; height:30px;font-size:14px; padding-top:5px; padding-left:12px;">关键词</a>
-                <a href="#" style="float:left;margin-top:10px;margin-left:20px;border:1px solid; border-radius:5px; width:55px; height:30px;font-size:14px; padding-top:5px; padding-left:12px;">关键词</a>
-                 <a href="#" style="float:left;margin-top:10px;margin-left:20px;border:1px solid; border-radius:5px; width:55px; height:30px;font-size:14px; padding-top:5px; padding-left:12px;">关键词</a>
-                  <a href="#" style="float:left;margin-top:10px;margin-left:20px;border:1px solid; border-radius:5px; width:55px; height:30px;font-size:14px; padding-top:5px; padding-left:12px;">关键词</a>
-                   <a href="#" style="float:left;margin-top:10px;margin-left:20px;border:1px solid; border-radius:5px; width:55px; height:30px;font-size:14px; padding-top:5px; padding-left:12px;">关键词</a>
-                    <a href="#" style="float:left;margin-top:10px;margin-left:20px;border:1px solid; border-radius:5px; width:55px; height:30px;font-size:14px; padding-top:5px; padding-left:12px;">关键词</a>
-        </div>
+        	 <%
+ 	        int num_lable=lable.size();
+ 	       for(int i=0;i<num_lable;i++){	
+ 	        %>  
+ 	           
+                 <form  action="${pageContext.request.contextPath}/jsp/index/searchLable_result.jsp">
+				
+							<!-- lable 的值 -->
+							<input type="hidden" value="<%=lable.get(i)%>" name="lable">	     				
+						    <input  type="submit" value="<%=lable.get(i)%>"  style="float:left;margin-top:10px;margin-left:20px;border:1px solid; border-radius:5px; height:30px;font-size:14px;background-color:#FFF;">
+							</form>
+                 
+            <%
+                
+                  if(i==8) break;
+						}
+			%>
+             </div>
         
     </div>
     <!--右侧栏end-->

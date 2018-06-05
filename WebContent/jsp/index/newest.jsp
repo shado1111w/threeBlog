@@ -51,6 +51,7 @@ $(function(){
         	
             <!--文章end-->
      </div>
+     
      <div id="hiddenresult" style="display: none;">
 			<!-- 列表元素 -->
 			<div class="result"></div>

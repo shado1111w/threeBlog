@@ -12,10 +12,12 @@ import java.sql.SQLException;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.jdt.internal.compiler.ast.ReturnStatement;
 
 import threeblog.db.*;
+import threeblog.tools.*;
 import threeblog.entity.*;
 
 
@@ -687,6 +689,152 @@ public class Service {
 		}
 		return articles;
 	}
+	
+	
+	
+	
+	//获取热门标签 top 9
+		public List getLable() throws SQLException{
+			String sql="SELECT lable,count(*) FROM t_article group  BY lable order BY count(*) DESC ";
+			List lable=null;
+			DbConMysql db=new DbConMysql();
+			ResultSet rs=db.getQuery(sql);
+			if(rs!=null){
+				lable=new ArrayList();
+				while(rs.next()){
+					String temp_lable=new String();
+					temp_lable=rs.getString(1);
+					lable.add(temp_lable);
+				}
+			}
+			return lable;
+		}
+	
+	//获取搜索文章
+		public ArrayList<Article> getArticlesBySearchName(String sname){
+		    ChStr chStr=new ChStr();
+			ArrayList<Article> articles=new ArrayList<Article>();
+			
+			DbConMysql db=new DbConMysql();
+			//String sql="select * from t_Article where status!='屏蔽' ORDER BY click_num DESC";
+			
+			StringBuffer sql = new StringBuffer();
+			sql.append("select * from t_Article where status!='屏蔽' ");
+		    
+		    if(sname==null){
+		    	sname="";
+		    }
+		    sql.append("and title like '%"+chStr.chStr(sname)+"%' or introduction like '%"+chStr.chStr(sname)+"%'");
+			
+		    //sql.append("order by manager desc ");
+			
+			ResultSet rs=db.getQuery(sql.toString());
+			try {
+				while(rs.next()){
+					Article article=new Article();
+					int click_num=rs.getInt("click_num");
+					article.setClick_num(click_num);
+					String fengmian=rs.getString("fengmian");
+					article.setPic(fengmian);
+					String title=rs.getString("title");
+					article.setTitle(title);
+					String introduction=rs.getString("introduction");
+					article.setIntroduction(introduction);
+					String lable=rs.getString("lable");
+					article.setLable(lable);
+					String text=rs.getString("text");
+					article.setText(text);
+					String author=rs.getString("author");
+					article.setAuthor(author);
+					Date publishdate=rs.getDate("publishdate");
+					article.setPublishdate(publishdate);
+					String id=rs.getString("id");
+					article.setId(Integer.valueOf(id));
+					int author_id=rs.getInt("author_id");
+					article.setAuthor_id(author_id);
+					String allpic=rs.getString("allpic");
+					article.setAllpic(allpic);
+					int liked=rs.getInt("liked");
+					article.setLiked(liked);
+					int collected=rs.getInt("collected");
+					article.setCollected(collected);
+					int comment_num=rs.getInt("comment_num");
+					article.setComment_num(comment_num);
+					articles.add(article);
+					
+				}
+					
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return articles;
+		}
+		
+		
+		//获取搜索标签文章
+				public ArrayList<Article> getArticlesByLable(String sname){
+				    ChStr chStr=new ChStr();
+					ArrayList<Article> articles=new ArrayList<Article>();
+					
+					DbConMysql db=new DbConMysql();
+					//String sql="select * from t_Article where status!='屏蔽' ORDER BY click_num DESC";
+					
+					StringBuffer sql = new StringBuffer();
+					sql.append("select * from t_Article where status!='屏蔽' ");
+				    
+				    if(sname==null){
+				    	sname="";
+				    }
+				    sql.append("and lable like '%"+chStr.chStr(sname)+"%' ");
+					
+				    //sql.append("order by manager desc ");
+					
+					ResultSet rs=db.getQuery(sql.toString());
+					try {
+						while(rs.next()){
+							Article article=new Article();
+							int click_num=rs.getInt("click_num");
+							article.setClick_num(click_num);
+							String fengmian=rs.getString("fengmian");
+							article.setPic(fengmian);
+							String title=rs.getString("title");
+							article.setTitle(title);
+							String introduction=rs.getString("introduction");
+							article.setIntroduction(introduction);
+							String lable=rs.getString("lable");
+							article.setLable(lable);
+							String text=rs.getString("text");
+							article.setText(text);
+							String author=rs.getString("author");
+							article.setAuthor(author);
+							Date publishdate=rs.getDate("publishdate");
+							article.setPublishdate(publishdate);
+							String id=rs.getString("id");
+							article.setId(Integer.valueOf(id));
+							int author_id=rs.getInt("author_id");
+							article.setAuthor_id(author_id);
+							String allpic=rs.getString("allpic");
+							article.setAllpic(allpic);
+							int liked=rs.getInt("liked");
+							article.setLiked(liked);
+							int collected=rs.getInt("collected");
+							article.setCollected(collected);
+							int comment_num=rs.getInt("comment_num");
+							article.setComment_num(comment_num);
+							articles.add(article);
+							
+						}
+							
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					return articles;
+				}
+	
+	
+	
 	//通过文章id获取文章
 	public Article getArticleFromId(int article_id){
 

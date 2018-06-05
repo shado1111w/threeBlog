@@ -1,8 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="threeblog.entity.*" %>
+<%@ page import="threeblog.tools.*" %>
 <%@ page import="threeblog.service.Service" %>
 <%@page import="java.util.ArrayList"%>
+<%@page import="java.util.List"%>
+<jsp:useBean id="chStr" scope="page" class="threeblog.tools.ChStr" />
 <%
 	boolean login_flag=false;
 	User user = new User();
@@ -16,6 +19,7 @@
 			for(Cookie c:cookies){
 				if(c.getName().equals("phonenum1")){
 					phonenum=c.getValue();
+					
 					login_flag=true;
 				}
 				if(c.getName().equals("password1")){
@@ -25,7 +29,7 @@
 		}
 		if(login_flag){
 			response.setContentType("text/html;charset=utf-8");
-			String content = 0 + ";URL= " +request.getContextPath()+ "//servlet/Login?zh="+phonenum+"&mm="+password+"&li_url="+request.getRequestURL();
+			String content = 0 + ";URL= " +request.getContextPath()+ "/servlet/Login?zh="+phonenum+"&mm="+password+"&li_url="+request.getRequestURL();
 			response.setHeader("REFRESH ", content);
 		}
 		
@@ -34,6 +38,10 @@
 		user = service.getUserFromId(user_id);	
 		login_flag=true;
 	}
+	String sname=request.getParameter("sname");      //搜索关键字
+	ArrayList<Article> articles=service.getArticlesBySearchName(sname);//获取搜索文章
+	String temp_sname=chStr.chStr(request.getParameter("sname"));
+	int allUserNum=service.getAllUserNum();
 	
 	int feedback_num=0;
 	feedback_num=service.getReportNumFromStatus3();
@@ -49,19 +57,22 @@
 	zan_num=service.getZanNumFromReceiver_id(user_id);
 	report_num=service.getReportNum();
 	all_num=comment_num+follow_num+collect_num+zan_num;
-%>  
+	
+	List lable=service.getLable();  //获取热门标签 top 9 
+	
+%>   
 <!DOCTYPE html>
-
+<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>首页</title>
+<title>搜索结果</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/main.css" type="text/css"/>
-
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/calendar.css">
-
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/pagination.css" type="text/css" />
 <link href="${pageContext.request.contextPath}/css/owl.carousel.css" rel="stylesheet">
 <script src="${pageContext.request.contextPath}/js/jquery-1.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/owl.carousel.js"></script>
+<script src="${pageContext.request.contextPath}/js/jquery.pagination.js"></script>
 
 <!--头部show的js-->
 <script>
@@ -90,6 +101,38 @@ $(function() {
 });
 </script>
 
+<script>
+	
+
+$(function(){	
+	$('.M-box').pagination({
+		totalData:<%=articles.size()%>,
+	    current:1,
+		showData:5,
+	    jump: false,
+	    coping: true,
+	    homePage: '首页',
+	    endPage: '末页',
+	    prevContent: '上页',
+	    nextContent: '下页',
+	    callback: function (api) {
+	    	var new_content = $("#hiddenresult div.result:eq("+api.getCurrent()+")").clone();
+			$("#index_body_middle_article").empty().append(new_content); //装载对应分页的内容
+			return false;
+	    }
+	},
+	   function (api) {
+	    	var new_content = $("#hiddenresult div.result:eq("+api.getCurrent()+")").clone();
+			$("#index_body_middle_article").empty().append(new_content); //装载对应分页的内容
+	    
+	}); 
+
+});	
+</script>
+
+
+
+
 </head>
 
 <body>
@@ -98,16 +141,20 @@ $(function() {
   <div id="index_head_logo"> <img src="${pageContext.request.contextPath}/image/logo.png"> </div>
   <div id="index_head_menu">
     <ul>
-      <li><a href="#" >首页</a></li>
-      <li><a href="#" >博文</a></li>
-      <li><a href="#" >画廊</a></li>
-      <li><a href="#" >我的</a></li>
+      <li><a href="${pageContext.request.contextPath}/index.jsp" >首页</a></li>
+      <li><a href="${pageContext.request.contextPath}/jsp/index/blog.jsp" >博文</a></li>
+      <li><a href="${pageContext.request.contextPath}/jsp/index/pictures.jsp" >画廊</a></li>
+      <%if(login_flag){ %>
+      <li><a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp" >我的</a></li>
+      <%}else{ %>
+      <li style="visibility:hidden"><a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp" >我的</a></li>
+      <%} %>
     </ul>
   </div>
   <div id="index_head_tools"> 
   <ul>
   	<li>
-    	<a href="#">
+    	<a href="${pageContext.request.contextPath}/jsp/index/search.jsp">
         	<img  src="${pageContext.request.contextPath}/image/search.png" style="float:left;" />
        	</a> 
     </li>
@@ -116,7 +163,7 @@ $(function() {
     	<a href="javascript:;">
         	<div style="float:left; position:relative;">
     			<img src="${pageContext.request.contextPath}/image/message.png"/>
-                	<span  style="min-width: 20px;line-height:20px; text-align: center; position: absolute; background-color: #f00;  border-radius:15px; font-size:15px;color:#fff;width:10px;right:10px; top:15px; z-index:200;" ><%=all_num+report_num+feedback_num %></span>
+                	<span  style="min-width: 20px;line-height:20px; text-align: center; position: absolute; background-color: #f00;  border-radius:15px; font-size:15px;color:#fff;width:10px;right:10px; top:15px; z-index:200;" ><%=collect_num+report_num+feedback_num%></span>
              </div>
          </a> 
          
@@ -168,7 +215,7 @@ $(function() {
        
     </li>
      <%} %>
-    <%if(login_flag&&user_id==3){ %>
+     <%if(login_flag&&user_id==3){ %>
     <li>
     	<a href="javascript:;">
         	<img src="${pageContext.request.contextPath}/image/setting.png"/>
@@ -217,7 +264,7 @@ $(function() {
      </div>
   <span style="color:#FFF; font-size:36px;float:left; margin-top:15px;"> |</span>
   <div id="index_head_signin">
-     <%if(login_flag){ %>
+  <%if(login_flag){ %>
     <a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp" style=" float:left;background-color:#FFF; width:55px;height:55px;margin:10px; position:relative;padding-top:5px; padding-left:5px;"><img src="<%=user.getTouxiang() %>"  style="width:50px;height:50px;"/></a><a href="${pageContext.request.contextPath}/jsp/personal_center/personalcenter.jsp"><span style="width:90px;height:48px;overflow:hidden;float:left;margin-top:20px; font-size:18px; color:#FFF;"><%=user.getUsername() %></span></a>
     <%}else{ %>
     <ul>
@@ -227,14 +274,14 @@ $(function() {
     <%} %>
   </div>
 </div>
-
 <!--顶端栏end-->
 <!--内容框begin-->
 <div id="index_all">
+	
     <!--右侧栏begin-->
     <div id="index_body_right">
     	<div id="index_body_enter">
-        	<%if(login_flag){ %>
+    		<%if(login_flag){ %>
         	<div id="index_body_enter_write">
             	<a href="${pageContext.request.contextPath}/jsp/article/publish.jsp"><img src="${pageContext.request.contextPath}/image/write.png" style="float:left;">
                 <div style="margin-top:10px;width:260px;height:30px;float:left;">
@@ -255,8 +302,8 @@ $(function() {
             <%} %>
             <div id="index_body_enter_guideboard">
             	<h3 style="margin-left:20px;padding-top:20px;">█ 指路牌</h3>
-                <a href="#"><span style="margin-left:20px;color:#000;">博客文章欣赏</span></a><br/><br/>
-                <a href="#"><span style="margin-left:20px;margin-top:20px;color:#000;">博客图片画廊</span></a><br /><br/>
+                <a href="${pageContext.request.contextPath}/jsp/index/blog.jsp"><span style="margin-left:20px;color:#000;">博客文章欣赏</span></a><br/><br/>
+                <a href="${pageContext.request.contextPath}/jsp/index/pictures.jsp"><span style="margin-left:20px;margin-top:20px;color:#000;">博客图片画廊</span></a><br /><br/>
                 <%if(login_flag){ %>
                 <a href="${pageContext.request.contextPath}/jsp/report_center/reportcenter.jsp"><span style="margin-left:20px;margin-top:20px;color:#000;">博客举报中心入口</span></a>
             	<%}else{ %>
@@ -271,130 +318,107 @@ $(function() {
         </div>
         <div id="index_body_labels">
         	<h3 style="margin-left:20px;">█ 热门标签</h3>
-            <a href="#" style="float:left;margin-top:10px;margin-left:20px;border:1px solid; border-radius:5px; width:55px; height:30px;font-size:14px; padding-top:5px; padding-left:12px;">关键词</a>
-             <a href="#" style="float:left;margin-top:10px;margin-left:20px;border:1px solid; border-radius:5px; width:55px; height:30px;font-size:14px; padding-top:5px; padding-left:12px;">关键词</a>
-              <a href="#" style="float:left;margin-top:10px;margin-left:20px;border:1px solid; border-radius:5px; width:55px; height:30px;font-size:14px; padding-top:5px; padding-left:12px;">关键词</a>
-               <a href="#" style="float:left;margin-top:10px;margin-left:20px;border:1px solid; border-radius:5px; width:55px; height:30px;font-size:14px; padding-top:5px; padding-left:12px;">关键词</a>
-                <a href="#" style="float:left;margin-top:10px;margin-left:20px;border:1px solid; border-radius:5px; width:55px; height:30px;font-size:14px; padding-top:5px; padding-left:12px;">关键词</a>
-                 <a href="#" style="float:left;margin-top:10px;margin-left:20px;border:1px solid; border-radius:5px; width:55px; height:30px;font-size:14px; padding-top:5px; padding-left:12px;">关键词</a>
-                  <a href="#" style="float:left;margin-top:10px;margin-left:20px;border:1px solid; border-radius:5px; width:55px; height:30px;font-size:14px; padding-top:5px; padding-left:12px;">关键词</a>
-                   <a href="#" style="float:left;margin-top:10px;margin-left:20px;border:1px solid; border-radius:5px; width:55px; height:30px;font-size:14px; padding-top:5px; padding-left:12px;">关键词</a>
-                    <a href="#" style="float:left;margin-top:10px;margin-left:20px;border:1px solid; border-radius:5px; width:55px; height:30px;font-size:14px; padding-top:5px; padding-left:12px;">关键词</a>
-        </div>
+        	
+   <%
+ 	        int num_lable=lable.size();
+ 	       for(int i=0;i<num_lable;i++){	
+ 	        %>  
+ 	           
+                 <form  action="${pageContext.request.contextPath}/jsp/index/searchLable_result.jsp">
+				
+							<!-- lable 的值 -->
+							<input type="hidden" value="<%=lable.get(i)%>" name="lable">	     				
+						    <input  type="submit" value="<%=lable.get(i)%>"  style="float:left;margin-top:10px;margin-left:20px;border:1px solid; border-radius:5px; height:30px;font-size:14px;background-color:#FFF;">
+							</form>
+                 
+            <%
+                
+                  if(i==8) break;
+						}
+			%>
+           </div>
         
     </div>
     <!--右侧栏end-->
-    <!--左侧栏begin-->
+    <!--内容中部begin-->
+    
     <div id="search_left">
     	<img src="${pageContext.request.contextPath}/image/search_result.png" style="float:left;">
         <div>
-        <form>
-        	<input type="text" placeholder="请输入你感兴趣的事物！" style="border:1px solid #CCC;width:400px;font-size:20px; float:left;margin-top:20px; margin-left:10px;">
+        <form action="${pageContext.request.contextPath}/jsp/index/search_result.jsp" method="post"  onsubmit="return check();">
+        
+        	<input type="text" name="sname" id="sname" placeholder="请输入你感兴趣的事物！" style="border:1px solid #CCC;width:350px;font-size:20px; float:left;margin-top:5px;">
+        	<input type="submit" name="submit" style=" float:left;width:100px;height:40px;border:1px solid #6cf;font-size:20px; text-align:center;padding-top:5px; margin-left:30px; background-color:#6cf; color:#FFF; "style=" float:left;width:100px;height:30px;border:1px solid #6cf;font-size:20px; text-align:center;padding-top:5px; margin-left:30px; background-color:#6cf; color:#FFF; " value="搜索" />
+            
         </form>
-        <a href="#" style=" float:left;width:100px;height:30px;border:1px solid #6cf;font-size:20px; text-align:center;padding-top:5px; margin-left:25px;  margin-top:15px;background-color:#6cf; color:#FFF; ">搜索</a>
         </div>
-        <h4 style="margin-top:80px;">与“xxx”有关的博文</h4>
-         <!--具体N篇文章begin-->
-        	<div class="article_n">
-        		<div class="result_passages_pic">
-            		<img  src="${pageContext.request.contextPath}/image/pic1.jpg" title="灯塔" style="width:200px;height:150px;">
-                    <span style="font-size:14px;color:#000;margin-left:20px;">陌上行</span><br/>
-                    <span style="font-size:14px;color:#000;margin-left:20px;">2018-05-18</span>
-                </div>
-            	<div class="result_passages_details">
-                	<h1 style="margin-left:20px;">最爱的，还是这人和烟火</h1>
-                    <p style="margin-left:20px;">关于孤独，到此为止。
-天空很蓝，却很悲伤。 阳光很暖，却很刺眼。 花儿很美，却很碍眼。 世界很好，却不温柔。</p><br/>
-					<span style="margin-left:20px;">阅读：xxx&emsp;|</span>
-                    <span>评论：xxx&emsp;|</span>
-                    <span>喜欢：xxx&emsp;|</span>
-                    <span>收藏：xxx</span>
-            	</div>
-            </div>
-            <div class="article_n">
-        		<div class="result_passages_pic">
-            		<img  src="${pageContext.request.contextPath}/image/pic1.jpg" style="width:200px;height:150px;">
-                    <span style="font-size:14px;color:#000;margin-left:20px;">陌上行</span><br/>
-                    <span style="font-size:14px;color:#000;margin-left:20px;">2018-05-18</span>
-                </div>
-            	<div class="result_passages_details">
-                	<h1 style="margin-left:20px;">最爱的，还是这人和烟火</h1>
-                    <p style="margin-left:20px;">关于孤独，到此为止。
-天空很蓝，却很悲伤。 阳光很暖，却很刺眼。 花儿很美，却很碍眼。 世界很好，却不温柔。</p><br/>
-					<span style="margin-left:20px;">阅读：xxx&emsp;|</span>
-                    <span>评论：xxx&emsp;|</span>
-                    <span>喜欢：xxx&emsp;|</span>
-                    <span>收藏：xxx</span>
-            	</div>
-            </div>
-            <div class="article_n">
-        		<div class="result_passages_pic">
-            		<img  src="${pageContext.request.contextPath}/image/pic1.jpg" style="width:200px;height:150px;">
-                    <span style="font-size:14px;color:#000;margin-left:20px;">陌上行</span><br/>
-                    <span style="font-size:14px;color:#000;margin-left:20px;">2018-05-18</span>
-                </div>
-            	<div class="result_passages_details">
-                	<h1 style="margin-left:20px;">最爱的，还是这人和烟火</h1>
-                    <p style="margin-left:20px;">关于孤独，到此为止。
-天空很蓝，却很悲伤。 阳光很暖，却很刺眼。 花儿很美，却很碍眼。 世界很好，却不温柔。</p><br/>
-					<span style="margin-left:20px;">阅读：xxx&emsp;|</span>
-                    <span>评论：xxx&emsp;|</span>
-                    <span>喜欢：xxx&emsp;|</span>
-                    <span>收藏：xxx</span>
-            	</div>
-            </div>
-            <div class="article_n">
-        		<div class="result_passages_pic">
-            		<img  src="${pageContext.request.contextPath}/image/pic1.jpg" style="width:200px;height:150px;">
-                    <span style="font-size:14px;color:#000;margin-left:20px;">陌上行</span><br/>
-                    <span style="font-size:14px;color:#000;margin-left:20px;">2018-05-18</span>
-                </div>
-            	<div class="result_passages_details">
-                	<h1 style="margin-left:20px;">最爱的，还是这人和烟火</h1>
-                    <p style="margin-left:20px;">关于孤独，到此为止。
-天空很蓝，却很悲伤。 阳光很暖，却很刺眼。 花儿很美，却很碍眼。 世界很好，却不温柔。</p><br/>
-					<span style="margin-left:20px;">阅读：xxx&emsp;|</span>
-                    <span>评论：xxx&emsp;|</span>
-                    <span>喜欢：xxx&emsp;|</span>
-                    <span>收藏：xxx</span>
-            	</div>
-            </div>
-            <div class="article_n">
-        		<div class="result_passages_pic">
-            		<img  src="${pageContext.request.contextPath}/image/pic1.jpg" style="width:200px;height:150px;">
-                    <span style="font-size:14px;color:#000;margin-left:20px;">陌上行</span><br/>
-                    <span style="font-size:14px;color:#000;margin-left:20px;">2018-05-18</span>
-                </div>
-            	<div class="result_passages_details">
-                	<h1 style="margin-left:20px;">最爱的，还是这人和烟火</h1>
-                    <p style="margin-left:20px;">关于孤独，到此为止。
-天空很蓝，却很悲伤。 阳光很暖，却很刺眼。 花儿很美，却很碍眼。 世界很好，却不温柔。</p><br/>
-					<span style="margin-left:20px;">阅读：xxx&emsp;|</span>
-                    <span>评论：xxx&emsp;|</span>
-                    <span>喜欢：xxx&emsp;|</span>
-                    <span>收藏：xxx</span>
-            	</div>
-            </div>
-            <div class="article_n">
-        		<div class="result_passages_pic">
-            		<img  src="${pageContext.request.contextPath}/image/pic1.jpg" style="width:200px;height:150px;">
-                    <span style="font-size:14px;color:#000;margin-left:20px;">陌上行</span><br/>
-                    <span style="font-size:14px;color:#000;margin-left:20px;">2018-05-18</span>
-                </div>
-            	<div class="result_passages_details">
-                	<h1 style="margin-left:20px;">最爱的，还是这人和烟火</h1>
-                    <p style="margin-left:20px;">关于孤独，到此为止。
-天空很蓝，却很悲伤。 阳光很暖，却很刺眼。 花儿很美，却很碍眼。 世界很好，却不温柔。</p><br/>
-					<span style="margin-left:20px;">阅读：xxx&emsp;|</span>
-                    <span>评论：xxx&emsp;|</span>
-                    <span>喜欢：xxx&emsp;|</span>
-                    <span>收藏：xxx</span>
-            	</div>
-            </div>
+        <h4 style="margin-top:80px;">与“<%=temp_sname %>”有关的博文</h4>
+        
+        <input type="text" style="display:none" name="<%=temp_sname %>" value="<%=temp_sname%>" id="txtSearchKeyword" />
+    	
+    	<div id="index_body_middle_article">
+        	<!--具体N篇文章begin-->    
+           
             <!--文章end-->
+        </div>
+        
+        <div id="hiddenresult" style="display: none;">
+			<!-- 列表元素 -->
+			<div class="result"></div>
+			<%
+			int num=articles.size();
+			int time=num/4;
+			if(num%4>0) time+=1;
+			int j=0;
+	    	for(int i=0;i<time;i++){
+    		%>
+			<div class="result">
+				<ul style="padding:0;">
+					<%
+					int k=0;
+					while(j<articles.size()&&k<5){
+						Article article=articles.get(j);
+		    			int author_id=article.getAuthor_id();
+		    			User author=service.getUserFromId(author_id);
+		
+					%>
+				
+					
+				<div class="article_n">
+	        		<div class="article_pic">
+	            		<img  src="<%=article.getPic() %>" style="width:200px;height:150px;">
+	                    <a href="${pageContext.request.contextPath }/jsp/other_center/otherscenter.jsp?id=<%=author.getId() %>"><span style="font-size:14px;color:#000;margin-left:20px;"><%=article.getAuthor() %></span></a><br/>
+	                    <span style="font-size:14px;color:#000;margin-left:20px;"><%=article.getPublishdate() %></span>
+	                </div>
+	            	<div class="passages_details">
+	            	<div id="searchTextTest">
+                	<div style="width:430px; float:right;height:60px;padding-top:10px;">
+                	<a style="color:#000" href="${pageContext.request.contextPath}/jsp/article/article.jsp?id=<%=article.getId()%>"><span style="margin-left:20px; font-size:24px; font-weight:bold;"><%=article.getTitle() %></span></a>
+                    </div>
+                    <div style="width:430px; margin-left:20px;float:right; height:85px;overflow:hidden; margin-top:10px;">
+                    <a style="color:#000" href="${pageContext.request.contextPath}/jsp/article/article.jsp?id=<%=article.getId()%>"><span><%=article.getIntroduction() %></span></a>
+					</div>
+                    <div style="margin-top:10px; float:right;">
+					<span >阅读：<%=article.getClick_num() %>&emsp;|</span>
+                    <span>评论：<%=article.getComment_num() %>&emsp;|</span>
+                    <span>喜欢：<%=article.getLiked() %>&emsp;|</span>
+                    <span style="margin-right:65px;">收藏：<%=article.getCollected() %></span>
+                    </div>
+            	</div>
+          	  </div>
+          	  </div>
+						
+					<%
+						j++;k++;}
+					%>
+				</ul>
+			</div>
+
+			<%} %>
+		</div>
+        <div class="m-style M-box" ></div>
     </div>
-    <!--左侧栏end-->
-    
+    <!--内容中部end-->
 </div>
 <!--内容框end-->
 
@@ -407,5 +431,16 @@ $(function() {
     </div>
 </footer>
 <!--脚部end-->
+
+
+<script type="text/javascript">  
+function check(){  
+	
+	if($('#sname').val()==""){
+		alert("搜索内容不能为空！请输入搜索内容！");
+		return false;
+	}		 
+    }  
+</script> 
 </body>
 </html>
