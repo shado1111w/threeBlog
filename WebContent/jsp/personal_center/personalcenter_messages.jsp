@@ -18,6 +18,43 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>我的博文</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/main.css" type="text/css"/>
+
+<script>
+
+$(document)
+.ready(
+		function() {	
+			for (var i=0; i<<%=articles.size()%>; i++){  
+				$("[id=current_"+i+"]").bind("click", {index: i}, clickHandler);  
+		    }  
+		  
+		    function clickHandler(event) {  
+		        var i= event.data.index;  
+		        var article_id=$("#current_"+i).attr("data");
+		        
+		        var url2="${pageContext.request.contextPath}/servlet/DeleteArticle";
+		        var args={
+		        		"article_id" : article_id,
+						"time" : new Date()
+		        }
+		        $.ajaxSettings.async = false; 
+		        $.get(url2, args,
+						function(data) {
+				        	var result=eval("("+data+")");
+				        	if(result.bol==1){
+				        		$("#current"+i).remove();
+				        	}else if(result.bol==2){
+				        		alert("删除失败！由于收到用户举报，该文章暂时被锁定！");
+				        	}
+				        	
+				}); 
+		       
+		        $.ajaxSettings.async = true; 
+		    }  
+		});
+
+</script>
+
 </head>
 
 <body>
@@ -50,14 +87,17 @@
 								for (int i = 0; i < articles.size(); i++) {
 									Article article = articles.get(i);
 						%>
-						<tr>
+						<tr id="current<%=i%>">
 
 							<td><%=i + 1%></td>
 							<td><%=article.getTitle()%></td>
 							<td><%=article.getPublishdate()%></td>
-							 <td><a href="${pageContext.request.contextPath}/jsp/article/article.jsp?id=<%=article.getId() %>" target="_blank"><span>查看&emsp;</span></a>
-		</td>
-
+							 <td>
+							 <a href="javascript:;" id="current_<%=i%>" data="<%=article.getId()%>"><span>删除&emsp;</span></a>
+						
+							 <a href="${pageContext.request.contextPath}/jsp/article/article.jsp?id=<%=article.getId() %>" target="_blank"><span>查看&emsp;</span></a>
+							</td>
+							
 						</tr>
 						<%
 							}

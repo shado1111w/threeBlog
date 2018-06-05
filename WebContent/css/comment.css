@@ -156,7 +156,18 @@ a{ text-decoration:none;}
     border-top: 0;
 }
 
+.delete {
+    float: left;
+    font-size: 12px;
+    color: #8b8b8b;
+    margin-right: 24px;
+    display: block;
+    opacity: 0;
+}
 
+.date-dz:hover .delete {
+    opacity: 1;
+}
 
 /*----------评论区域 end----------*/
 

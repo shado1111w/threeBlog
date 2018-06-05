@@ -969,6 +969,14 @@ public class Service {
 		db.update(sql);
 		
 	}
+	//删除文章
+	public boolean deleteArticle(Article article){
+		boolean flag=false;
+		DbConMysql db=new DbConMysql();
+		String sql="delete from t_article where id='"+article.getId()+"'and status='正常'";
+		if(0!=db.delete(sql)) flag=true;
+		return flag;
+	}
 	
 	//*************************************************************
 	
@@ -1073,6 +1081,14 @@ public class Service {
 		String sql="update t_comment set status='"+comment.getStatus()+"'where id='"+comment.getId()+"'";
 		db.update(sql);
 		
+	}
+	//删除评论
+	public boolean deleteComment(Comment comment){
+		boolean flag=false;
+		DbConMysql db=new DbConMysql();
+		String sql="delete from t_comment where id='"+comment.getId()+"'and status='正常'";
+		if(0!=db.delete(sql)) flag=true;
+		return flag;
 	}
 	
 	//*************************************************************
@@ -1179,6 +1195,14 @@ public class Service {
 		
 	}
 	
+	//删除评论
+	public boolean deleteAnswer(Answer answer){
+		boolean flag=false;
+		DbConMysql db=new DbConMysql();
+		String sql="delete from t_answer where id='"+answer.getId()+"'and status='正常'";
+		if(0!=db.delete(sql)) flag=true;
+		return flag;
+	}
 	
 	//*************************************************************
 	

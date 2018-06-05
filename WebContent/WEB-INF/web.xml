@@ -303,13 +303,37 @@
     <servlet-name>UpdateAnswer</servlet-name>
     <url-pattern>/servlet/UpdateAnswer</url-pattern>
   </servlet-mapping>
-   <servlet>
+  <servlet>
     <servlet-name>UpdateUser</servlet-name>
     <servlet-class>threeblog.servlet.UpdateUser</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>UpdateUser</servlet-name>
     <url-pattern>/servlet/UpdateUser</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>DeleteArticle</servlet-name>
+    <servlet-class>threeblog.servlet.DeleteArticle</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DeleteArticle</servlet-name>
+    <url-pattern>/servlet/DeleteArticle</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>DeleteComment</servlet-name>
+    <servlet-class>threeblog.servlet.DeleteComment</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DeleteComment</servlet-name>
+    <url-pattern>/servlet/DeleteComment</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>DeleteAnswer</servlet-name>
+    <servlet-class>threeblog.servlet.DeleteAnswer</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DeleteAnswer</servlet-name>
+    <url-pattern>/servlet/DeleteAnswer</url-pattern>
   </servlet-mapping>
   
   
