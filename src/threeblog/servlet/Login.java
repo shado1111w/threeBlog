@@ -72,7 +72,13 @@ public class Login extends HttpServlet {
 				response.addCookie(phonenumCookie);
 				response.addCookie(passwordCookie);
 				response.setContentType("text/html;charset=utf-8");
-				String   content=0+ ";URL= "+li_url; 
+				String   content=0+ ";URL= "+li_url;
+				System.out.println(li_url);        //查看上一个页面的url（用于测试）
+				
+				//解决登录跳转bug
+				if(li_url==null||li_url.equals(" null")||li_url.equals(" http://localhost:8082/threeBlog/jsp/login/register.jsp")||li_url.equals("http://www.crayon.xin:8080/threeBlog/jsp/login/register.jsp")){
+					content=0+ ";URL= "+request.getContextPath()+"/index.jsp";
+				} 
 				response.setHeader( "REFRESH ",content);
 			}else{
 				java.sql.Date ban_time=service.getBan_time(user_id);
