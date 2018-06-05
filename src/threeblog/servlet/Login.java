@@ -76,7 +76,7 @@ public class Login extends HttpServlet {
 				System.out.println(li_url);        //查看上一个页面的url（用于测试）
 				
 				//解决登录跳转bug
-				if(li_url==null||li_url.equals(" null")||li_url.equals(" http://localhost:8082/threeBlog/jsp/login/register.jsp")||li_url.equals("http://www.crayon.xin:8080/threeBlog/jsp/login/register.jsp")){
+				if(li_url==null||li_url.equals(" null")||li_url.equals(" http://localhost:8082/threeBlog/jsp/login/register.jsp")||li_url.equals(" http://localhost:8082/threeBlog/jsp/login/sign_in.jsp")||li_url.equals("http://www.crayon.xin:8080/threeBlog/jsp/login/register.jsp")||li_url.equals("http://www.crayon.xin:8080/threeBlog/jsp/login/sign_in.jsp")){
 					content=0+ ";URL= "+request.getContextPath()+"/index.jsp";
 				} 
 				response.setHeader( "REFRESH ",content);
