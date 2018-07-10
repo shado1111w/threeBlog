@@ -47,6 +47,9 @@
 	click_num++;
 	article.setClick_num(click_num);
 	service.updateArticleClicknum(article);
+
+
+
 	int feedback_num=0;
 	feedback_num=service.getReportNumFromStatus3();
 	int comment_num=0;
@@ -61,7 +64,6 @@
 	zan_num=service.getZanNumFromReceiver_id(user_id);
 	report_num=service.getReportNum();
 	all_num=comment_num+follow_num+collect_num+zan_num;
-	
 %>
 <!DOCTYPE html>
 <html>

@@ -155,7 +155,7 @@ $(function(){
     	<a href="javascript:;">
         	<div style="float:left; position:relative;">
     			<img src="${pageContext.request.contextPath}/image/message.png"/>
-                	<span  style="min-width: 20px;line-height:20px; text-align: center; position: absolute; background-color: #f00;  border-radius:15px; font-size:15px;color:#fff;width:10px;right:10px; top:15px; z-index:200;" ><%=collect_num+report_num+feedback_num%></span>
+                	<span  style="min-width: 20px;line-height:20px; text-align: center; position: absolute; background-color: #f00;  border-radius:15px; font-size:15px;color:#fff;width:10px;right:10px; top:15px; z-index:200;" ><%=all_num+report_num+feedback_num%></span>
              </div>
          </a> 
          

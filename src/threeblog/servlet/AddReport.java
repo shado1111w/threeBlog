@@ -41,6 +41,7 @@ public class AddReport extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		
 		request.setCharacterEncoding("utf-8");
 		int content_id=Integer.valueOf(request.getParameter("content_id"));
 		int article_id=Integer.valueOf(request.getParameter("article_id"));

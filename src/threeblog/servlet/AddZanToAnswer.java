@@ -42,6 +42,8 @@ public class AddZanToAnswer extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		
+		request.setCharacterEncoding("utf-8");
 		String status=request.getParameter("status");
 		int zan=Integer.valueOf(request.getParameter("zan"));
 		int answer_id=Integer.valueOf(request.getParameter("comment_id"));

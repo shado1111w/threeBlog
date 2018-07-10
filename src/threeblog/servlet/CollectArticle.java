@@ -43,7 +43,7 @@ public class CollectArticle extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
-		
+		request.setCharacterEncoding("utf-8");
 		int user_id=Integer.valueOf((String)request.getSession().getAttribute("user_id"));
 		int article_id=Integer.valueOf(request.getParameter("article_id"));
 		String status=request.getParameter("status");

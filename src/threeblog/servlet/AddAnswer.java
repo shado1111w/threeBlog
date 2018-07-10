@@ -46,6 +46,7 @@ public class AddAnswer extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		request.setCharacterEncoding("utf-8");
 		int author_id=Integer.valueOf(request.getParameter("author_id"));
 		int comment_id=Integer.valueOf(request.getParameter("comment_id"));
 		int last_answer_id=Integer.valueOf(request.getParameter("last_answer_id"));

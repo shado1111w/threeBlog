@@ -40,6 +40,7 @@ public class AddFollow extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		request.setCharacterEncoding("utf-8");
 		int following_id=Integer.valueOf(request.getParameter("following_id"));
 		int follower_id=Integer.valueOf(request.getParameter("follower_id"));
 		String status=request.getParameter("status");

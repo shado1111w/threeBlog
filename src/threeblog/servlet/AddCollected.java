@@ -38,6 +38,7 @@ public class AddCollected extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		request.setCharacterEncoding("utf-8");
 		int collected=Integer.valueOf(request.getParameter("collected"));
 		int article_id=Integer.valueOf(request.getParameter("article_id"));
 		String status=request.getParameter("status");
